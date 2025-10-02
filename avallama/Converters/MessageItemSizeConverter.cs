@@ -8,7 +8,7 @@ using Avalonia.Data.Converters;
 
 namespace avallama.Converters;
 
-public class MessageBlockSizeConverter : IValueConverter
+public class MessageItemSizeConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -22,6 +22,6 @@ public class MessageBlockSizeConverter : IValueConverter
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return new BindingNotification(new NotSupportedException("Message Block size value cannot be converted back."));
+        return new BindingNotification(new NotSupportedException("MessageItem size value cannot be converted back."));
     }
 }

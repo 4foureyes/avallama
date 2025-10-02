@@ -13,7 +13,7 @@ namespace avallama.Converters;
 // rendező enum típust alakítja lokalizált szövegre, hogy ne ezeket kelljen használni a háttérben
 public class SortingOptionConverter : IValueConverter
 {
-    
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is SortingOption sortingOption)
@@ -33,6 +33,6 @@ public class SortingOptionConverter : IValueConverter
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return new BindingNotification(new NotSupportedException("Sorting Option value cannot be converted back."));
+        return new BindingNotification(new NotSupportedException("SortingOption value cannot be converted back."));
     }
 }

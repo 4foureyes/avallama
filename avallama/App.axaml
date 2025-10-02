@@ -26,7 +26,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <StyleInclude Source="Styles/Button.axaml" />
         <StyleInclude Source="Styles/TextBox.axaml" />
         <StyleInclude Source="Styles/TextBlock.axaml" />
-        <StyleInclude Source="Styles/GeneralBlock.axaml" />
+        <StyleInclude Source="Styles/TextItem.axaml" />
         <StyleInclude Source="Styles/ComboBox.axaml" />
         <StyleInclude Source="Styles/ModelBlock.axaml" />
         <StyleInclude Source="Styles/General.axaml" />

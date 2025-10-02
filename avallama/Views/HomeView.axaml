@@ -1,4 +1,4 @@
-﻿<!-- 
+﻿<!--
 Copyright (c) Márk Csörgő and Martin Bartos
 Licensed under the MIT License. See LICENSE file for details.
 -->
@@ -19,7 +19,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
     <UserControl.Resources>
         <converters:GenerationSpeedConverter x:Key="GenerationSpeedConverter" />
-        <converters:MessageBlockSizeConverter x:Key="MessageBlockSizeConverter" />
+        <converters:MessageItemSizeConverter x:Key="MessageItemSizeConverter" />
     </UserControl.Resources>
 
     <Grid RowDefinitions="Auto,Auto,*,Auto" x:Name="MainGrid">
@@ -59,7 +59,7 @@ Licensed under the MIT License. See LICENSE file for details.
                 <ItemsControl ItemsSource="{Binding Conversations}" VerticalAlignment="Stretch">
                     <ItemsControl.DataTemplates>
                         <DataTemplate DataType="models:Conversation">
-                            <controls:GeneralBlock
+                            <controls:ConversationItem
                                 Classes="conversationElement"
                                 Id="{Binding ConversationId}"
                                 SelectedId="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=((vm:HomeViewModel)DataContext).SelectedConversation.ConversationId}"
@@ -242,7 +242,7 @@ Licensed under the MIT License. See LICENSE file for details.
                             <DataTemplate DataType="models:FailedMessage">
                                 <Border Background="{DynamicResource SurfaceContainerHighest}"
                                         CornerRadius="20" Padding="15,8" HorizontalAlignment="Left"
-                                        MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageBlockSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}">
+                                        MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageItemSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}">
                                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Left">
                                         <controls:DynamicSvg Grid.Column="0" Path="/Assets/Svg/info.svg"
                                                              FillColor="{DynamicResource Error}"
@@ -257,23 +257,23 @@ Licensed under the MIT License. See LICENSE file for details.
                             </DataTemplate>
 
                             <DataTemplate DataType="models:GeneratedMessage">
-                                <controls:GeneralBlock
+                                <controls:MessageItem
                                     Classes="generatedMessage"
                                     Text="{Binding Content}"
                                     TextColor="{DynamicResource SurfaceContainerHighest}"
                                     SubText="{Binding Path=GenerationSpeed, Converter={StaticResource GenerationSpeedConverter}}"
                                     Background="{DynamicResource OutlineVariant}"
-                                    MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageBlockSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                    MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageItemSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
                             </DataTemplate>
 
                             <DataTemplate DataType="models:Message">
-                                <controls:GeneralBlock
+                                <controls:MessageItem
                                     HorizontalAlignment="Right"
                                     Classes="userMessage"
                                     Text="{Binding Content}"
                                     TextColor="{DynamicResource OnPrimary}"
                                     Background="{DynamicResource Primary}"
-                                    MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageBlockSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                    MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageItemSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
                             </DataTemplate>
 
                         </ItemsControl.DataTemplates>
