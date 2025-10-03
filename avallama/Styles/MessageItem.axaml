@@ -1,4 +1,4 @@
-﻿<!--
+<!--
 Copyright (c) Márk Csörgő and Martin Bartos
 Licensed under the MIT License. See LICENSE file for details.
 -->
@@ -7,29 +7,35 @@ Licensed under the MIT License. See LICENSE file for details.
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:avallama.Controls">
     <Design.PreviewWith>
-        <!-- Dark/Light mód váltáshoz a Previewben írd át a RequestedThemeVariant értékét -->
         <ThemeVariantScope RequestedThemeVariant="Light">
             <Border Padding="20" Background="{DynamicResource Surface}">
                 <StackPanel Orientation="Vertical" Spacing="10">
                     <controls:MessageItem
                         Classes="userMessage"
-                        Text="User Message"/>
+                        Text="Short user message" />
 
                     <controls:MessageItem
                         Classes="generatedMessage"
-                        Text="Generated Message"
-                        SubText="SubText"/>
+                        Text="Generated message"
+                        SubText="SubText" />
 
-                    <controls:ConversationItem
-                        Text="Conversation Title"
-                        Width="300"
-                        SubText="llama3.2"/>
+                    <controls:MessageItem
+                        Classes="userMessage"
+                        MaxWidth="350"
+                        Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis eros non diam blandit facilisis at non lectus. Mauris neque nibh, tempus quis est eget, porta cursus arcu. Fusce molestie magna lectus, vitae vestibulum dolor varius a." />
+
+                    <controls:MessageItem
+                        Classes="generatedMessage"
+                        MaxWidth="350"
+                        Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis eros non diam blandit facilisis at non lectus. Mauris neque nibh, tempus quis est eget, porta cursus arcu. Fusce molestie magna lectus, vitae vestibulum dolor varius a."
+                        SubText="50.0 tokens/sec"/>
                 </StackPanel>
             </Border>
         </ThemeVariantScope>
     </Design.PreviewWith>
 
-    <Style Selector="controls|TextItem, controls|MessageItem, controls|ConversationItem">
+    <!-- Base styles -->
+    <Style Selector="controls|MessageItem">
         <Setter Property="TextAlignment" Value="Left"/>
         <Setter Property="TextFontSize" Value="14"/>
         <Setter Property="CornerRadius" Value="20"/>
@@ -39,6 +45,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="FontFamily" Value="{StaticResource Manrope}"/>
     </Style>
 
+    <!-- User message styles -->
     <Style Selector="controls|MessageItem.userMessage">
         <Setter Property="Background" Value="{DynamicResource Primary}"/>
         <Setter Property="TextColor" Value="{DynamicResource OnPrimary}"/>
@@ -46,6 +53,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="SelectionBrush" Value="{DynamicResource OnPrimary}"/>
     </Style>
 
+    <!-- Generated message styles -->
     <Style Selector="controls|MessageItem.generatedMessage">
         <Setter Property="Background" Value="{DynamicResource SurfaceContainerHighest}"/>
         <Setter Property="TextColor" Value="{DynamicResource OnSurfaceVariant}"/>
@@ -55,18 +63,5 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="SubTextColor" Value="{DynamicResource Outline}"/>
         <Setter Property="SelectionBrush" Value="{DynamicResource Primary}"/>
         <Setter Property="Spacing" Value="5"/>
-    </Style>
-
-    <Style Selector="controls|ConversationItem">
-        <Setter Property="Background" Value="{DynamicResource SurfaceContainerHighest}"/>
-        <Setter Property="TextColor" Value="{DynamicResource OnSurface}"/>
-        <Setter Property="TextFontSize" Value="16"/>
-        <Setter Property="SubTextColor" Value="{DynamicResource OnSurface}"/>
-        <Setter Property="SubTextFontSize" Value="12"/>
-        <Setter Property="Padding" Value="15,10"/>
-        <Setter Property="CornerRadius" Value="10"/>
-        <Setter Property="MaxLines" Value="1"/>
-        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
-        <Setter Property="Spacing" Value="10"/>
     </Style>
 </Styles>

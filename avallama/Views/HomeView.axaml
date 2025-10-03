@@ -60,7 +60,6 @@ Licensed under the MIT License. See LICENSE file for details.
                     <ItemsControl.DataTemplates>
                         <DataTemplate DataType="models:Conversation">
                             <controls:ConversationItem
-                                Classes="conversationElement"
                                 Id="{Binding ConversationId}"
                                 SelectedId="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=((vm:HomeViewModel)DataContext).SelectedConversation.ConversationId}"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=((vm:HomeViewModel)DataContext).SelectConversation}"
@@ -231,14 +230,14 @@ Licensed under the MIT License. See LICENSE file for details.
                         IsVisible="{Binding IsRetryButtonVisible}" />
             </StackPanel>
 
-            <!-- Kiválasztott beszélgetés -->
+            <!-- Selected conversation -->
             <Grid Grid.Row="0" HorizontalAlignment="Stretch" Margin="0, 15, 0, 0"
                   IsVisible="{Binding !IsRetryPanelVisible}">
                 <ScrollViewer ScrollChanged="ScrollViewer_OnScrollChanged" x:Name="ConversationScrollViewer">
                     <ItemsControl ItemsSource="{Binding SelectedConversation.Messages}">
                         <ItemsControl.DataTemplates>
 
-                            <!-- A Message különböző típusait kell előre venni, hogy ne rakja az összeset egyből sima Message elemnek -->
+                            <!-- Specific message types need to be defined first, so the base Message type won't catch all -->
                             <DataTemplate DataType="models:FailedMessage">
                                 <Border Background="{DynamicResource SurfaceContainerHighest}"
                                         CornerRadius="20" Padding="15,8" HorizontalAlignment="Left"
@@ -260,7 +259,6 @@ Licensed under the MIT License. See LICENSE file for details.
                                 <controls:MessageItem
                                     Classes="generatedMessage"
                                     Text="{Binding Content}"
-                                    TextColor="{DynamicResource SurfaceContainerHighest}"
                                     SubText="{Binding Path=GenerationSpeed, Converter={StaticResource GenerationSpeedConverter}}"
                                     Background="{DynamicResource OutlineVariant}"
                                     MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageItemSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
@@ -271,8 +269,6 @@ Licensed under the MIT License. See LICENSE file for details.
                                     HorizontalAlignment="Right"
                                     Classes="userMessage"
                                     Text="{Binding Content}"
-                                    TextColor="{DynamicResource OnPrimary}"
-                                    Background="{DynamicResource Primary}"
                                     MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageItemSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}" />
                             </DataTemplate>
 

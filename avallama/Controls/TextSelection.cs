@@ -3,24 +3,19 @@
 
 using System;
 using Avalonia;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.Media.TextFormatting;
 
 namespace avallama.Controls;
 
-public class TextSelection
+public class TextSelection()
 {
-    private IBrush _selectionBrush;
-
-    public TextSelection(IBrush selectionBrush)
-    {
-        _selectionBrush = selectionBrush;
-    }
-
     public int Start { get; set; }
     public int End { get; set; }
-    public string SelectedText { get; set; } = string.Empty;
+    public string SelectedText { get; private set; } = string.Empty;
+    public IBrush? SelectionBrush { get; set; }
 
     public void Render(DrawingContext context, TextLayout? textLayout, Thickness padding)
     {
@@ -31,7 +26,7 @@ public class TextSelection
         var selectionRange = Math.Max(Start, End) - selectionFrom;
 
         var rects = textLayout.HitTestTextRange(selectionFrom, selectionRange);
-        var selectedColor = (_selectionBrush as ImmutableSolidColorBrush)?.Color ?? Colors.Teal;
+        var selectedColor = (SelectionBrush as ImmutableSolidColorBrush)?.Color ?? Colors.Teal;
         var selectionBrush = new ImmutableSolidColorBrush(
             selectedColor,
             0.5
@@ -73,6 +68,7 @@ public class TextSelection
 
         Start = wordStartIndex;
         End = wordEndIndex + 1;
+        Update(text);
     }
 
     public void SelectParagraphByIndex(string? text, int index)
@@ -102,6 +98,7 @@ public class TextSelection
 
         Start = paragraphStartIndex;
         End = paragraphEndIndex + 1;
+        Update(text);
     }
 
     public void SelectAll(string? text)
@@ -109,6 +106,7 @@ public class TextSelection
         if (text == null) return;
         Start = 0;
         End = text.Length;
+        Update(text);
     }
 
     public void Update(string? text)

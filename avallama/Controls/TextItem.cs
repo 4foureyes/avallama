@@ -193,7 +193,7 @@ public class TextItem : Control
     }
 
     // Létrehozott TextLayoutok renderelése (amennyiben nem null)
-    private void RenderText(DrawingContext context)
+    protected void RenderText(DrawingContext context)
     {
         var mainTextPosition = TextHelper.CalculateMainTextPosition(
             this,

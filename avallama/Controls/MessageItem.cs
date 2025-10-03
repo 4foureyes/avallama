@@ -14,7 +14,7 @@ namespace avallama.Controls;
 public class MessageItem : TextItem
 {
     public static readonly StyledProperty<IBrush> SelectionBrushProperty =
-        AvaloniaProperty.Register<TextItem, IBrush>(nameof(SelectionBrush));
+        AvaloniaProperty.Register<MessageItem, IBrush>(nameof(SelectionBrush));
 
     public IBrush SelectionBrush
     {
@@ -22,17 +22,24 @@ public class MessageItem : TextItem
         set => SetValue(SelectionBrushProperty, value);
     }
 
-    private TextSelection _mainTextSelection;
+    private readonly TextSelection _mainTextSelection;
 
     public MessageItem()
     {
         // focusable mert azt akarjuk hogy el lehessen kapni benne a fókuszt és el is lehessen veszíteni
         Focusable = true;
 
-        // a tunnel routingstrategies miatt tudja megkapni a keydowneventeket előbb a messageblock
+        // a tunnel routingstrategies miatt tudja megkapni a keydowneventeket előbb a messageitem
         AddHandler(KeyDownEvent, OnKeyDownHandler, RoutingStrategies.Tunnel);
 
-        _mainTextSelection = new TextSelection(SelectionBrush);
+        _mainTextSelection = new TextSelection();
+    }
+
+    public override void Render(DrawingContext context)
+    {
+        RenderBackground(context);
+        _mainTextSelection.Render(context, MainTextLayout, Padding ?? new Thickness(0));
+        RenderText(context);
     }
 
     protected override void OnPointerMoved(PointerEventArgs e)
@@ -79,6 +86,7 @@ public class MessageItem : TextItem
                                || e.KeyModifiers.HasFlag(KeyModifiers.Meta)))
         {
             _mainTextSelection.SelectAll(Text);
+            InvalidateVisual();
             e.Handled = true;
         }
 
@@ -112,6 +120,7 @@ public class MessageItem : TextItem
             ContextMenu is not { IsOpen: true })
         {
             _mainTextSelection.Clear();
+            InvalidateVisual();
         }
 
         _mainTextSelection.Update(Text);
@@ -131,21 +140,36 @@ public class MessageItem : TextItem
                 if (_mainTextSelection.SelectedText.Length > 0)
                 {
                     _mainTextSelection.Clear();
+                    InvalidateVisual();
                 }
 
                 break;
             case 2:
                 _mainTextSelection.SelectWordByIndex(Text, textIndex);
+                InvalidateVisual();
                 break;
             case >= 3:
                 _mainTextSelection.SelectParagraphByIndex(Text, textIndex);
+                InvalidateVisual();
                 break;
         }
     }
 
-    // nesze neked async
     private void OnKeyDownHandler(object? sender, KeyEventArgs e)
     {
         _ = OnKeyDown(sender, e);
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        switch (change.Property.Name)
+        {
+            // Méretet érintő változások:
+            case nameof(SelectionBrush):
+                _mainTextSelection.SelectionBrush = SelectionBrush;
+                break;
+        }
     }
 }
