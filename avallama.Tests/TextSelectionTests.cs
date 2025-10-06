@@ -8,75 +8,180 @@ namespace avallama.Tests;
 
 public class TextSelectionTests
 {
+    private const string LoremIpsumShort = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+
+    private const string LoremIpsumUnique = "Lorem$$ipsum.dolor-*-sit/$#amet,, consectetur - adipi . /scing elit.";
+
+    private const string LoremIpsumParagraph1 =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n";
+
+    private const string LoremIpsumParagraph2 =
+        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n";
+
+    private const string LoremIpsumParagraph3 =
+        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+    private const string LoremIpsumCombinedParagraph =
+        LoremIpsumParagraph1 + "\n" + LoremIpsumParagraph2 + "\n" + LoremIpsumParagraph3;
+
     [Fact]
-    public void SelectWord_WhenWordClicked_CorrectWordIsSelected()
+    public void SelectWord_WithIndexOfCharacter_CorrectWordIsSelected()
     {
-        const string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
         var selection = new TextSelection();
 
-        selection.SelectWordByIndex(text, 23);
+        selection.SelectWordByIndex(LoremIpsumShort, 23);
         Assert.Equal("amet", selection.SelectedText);
 
-        selection.SelectWordByIndex(text, 0);
+        selection.SelectWordByIndex(LoremIpsumShort, 0);
         Assert.Equal("Lorem", selection.SelectedText);
 
-        selection.SelectWordByIndex(text, 37);
+        selection.SelectWordByIndex(LoremIpsumShort, 37);
         Assert.Equal("consectetur", selection.SelectedText);
     }
 
     [Fact]
-    public void SelectWord_WhenWhitespaceClicked_EmptySelection()
+    public void SelectWord_WithIndexOfWhitespaceCharacter_EmptySelection()
     {
-        const string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
         var selection = new TextSelection();
 
-        selection.SelectWordByIndex(text, 11);
+        selection.SelectWordByIndex(LoremIpsumShort, 11);
         Assert.Equal(string.Empty, selection.SelectedText);
 
-        selection.SelectWordByIndex(text, 17);
+        selection.SelectWordByIndex(LoremIpsumShort, 17);
         Assert.Equal(string.Empty, selection.SelectedText);
     }
 
     [Fact]
-    public void SelectWord_WhenSpecialCharacterClicked_EmptySelection()
+    public void SelectWord_WithIndexOfSpecialCharacter_EmptySelection()
     {
-        const string text = "Lorem$$ipsum.dolor-*-sit/$#amet,, consectetur - adipi . /scing elit.";
         var selection = new TextSelection();
 
-        selection.SelectWordByIndex(text, 6);
+        selection.SelectWordByIndex(LoremIpsumUnique, 6);
         Assert.Equal(string.Empty, selection.SelectedText);
 
-        selection.SelectWordByIndex(text, 12);
+        selection.SelectWordByIndex(LoremIpsumUnique, 12);
         Assert.Equal(string.Empty, selection.SelectedText);
 
-        selection.SelectWordByIndex(text, 19);
+        selection.SelectWordByIndex(LoremIpsumUnique, 19);
         Assert.Equal(string.Empty, selection.SelectedText);
 
-        selection.SelectWordByIndex(text, text.Length - 1);
+        selection.SelectWordByIndex(LoremIpsumUnique, LoremIpsumUnique.Length - 1);
         Assert.Equal(string.Empty, selection.SelectedText);
     }
 
     [Fact]
-    public void SelectParagraph_WhenWordClicked_CorrectParagraphIsSelected()
+    public void SelectParagraph_WithIndexInParagraphRange_CorrectParagraphIsSelected()
     {
-        const string firstParagraph =
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n";
-        const string secondParagraph =
-            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n";
-        const string thirdParagraph =
-            "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-
-        const string text = firstParagraph + "\n" + secondParagraph + "\n" + thirdParagraph;
-
         var selection = new TextSelection();
 
-        selection.SelectParagraphByIndex(text, 3);
-        Assert.Equal(firstParagraph, selection.SelectedText);
+        selection.SelectParagraphByIndex(LoremIpsumCombinedParagraph, 3);
+        Assert.Equal(LoremIpsumParagraph1, selection.SelectedText);
 
-        selection.SelectParagraphByIndex(text, firstParagraph.Length + 10);
-        Assert.Equal(secondParagraph, selection.SelectedText);
+        selection.SelectParagraphByIndex(LoremIpsumCombinedParagraph, LoremIpsumParagraph1.Length + 10);
+        Assert.Equal(LoremIpsumParagraph2, selection.SelectedText);
 
-        selection.SelectParagraphByIndex(text, firstParagraph.Length + secondParagraph.Length + 10);
-        Assert.Equal(thirdParagraph, selection.SelectedText);
+        selection.SelectParagraphByIndex(LoremIpsumCombinedParagraph,
+            LoremIpsumParagraph1.Length + LoremIpsumParagraph2.Length + 10);
+        Assert.Equal(LoremIpsumParagraph3, selection.SelectedText);
+    }
+
+    [Fact]
+    public void SelectAll_SelectsAllText()
+    {
+        var selection = new TextSelection();
+
+        selection.SelectAll(LoremIpsumUnique);
+        Assert.Equal(LoremIpsumUnique, selection.SelectedText);
+
+        selection.SelectAll(LoremIpsumParagraph1);
+        Assert.Equal(LoremIpsumParagraph1, selection.SelectedText);
+
+        selection.SelectAll(LoremIpsumCombinedParagraph);
+        Assert.Equal(LoremIpsumCombinedParagraph, selection.SelectedText);
+    }
+
+    [Fact]
+    public void Update_TextWithSelectionRange_UpdatesSelectedText()
+    {
+        var selection = new TextSelection
+        {
+            Start = 2,
+            End = 13
+        };
+
+        selection.Update(LoremIpsumShort);
+
+        Assert.Equal("rem ipsum d", selection.SelectedText);
+
+        selection.Clear();
+
+        selection.Start = 6;
+        selection.End = 21;
+        selection.Update(LoremIpsumUnique);
+
+        Assert.Equal("$ipsum.dolor-*-", selection.SelectedText);
+    }
+
+    [Fact]
+    public void Update_TextWithReversedSelectionRange_UpdatesSelectedText()
+    {
+        var selection = new TextSelection
+        {
+            Start = 13,
+            End = 2
+        };
+
+        selection.Update(LoremIpsumShort);
+
+        Assert.Equal("rem ipsum d", selection.SelectedText);
+
+        selection.Clear();
+
+        selection.Start = 21;
+        selection.End = 6;
+        selection.Update(LoremIpsumUnique);
+
+        Assert.Equal("$ipsum.dolor-*-", selection.SelectedText);
+    }
+
+    [Fact]
+    public void Update_TextWithEmptySelectionRange_EmptySelection()
+    {
+        var selection = new TextSelection
+        {
+            Start = 5,
+            End = 5
+        };
+
+        selection.Update(LoremIpsumShort);
+
+        Assert.Equal(string.Empty, selection.SelectedText);
+
+        selection.Clear();
+
+        selection.Start = 2;
+        selection.End = 2;
+        selection.Update(LoremIpsumUnique);
+
+        Assert.Equal(string.Empty, selection.SelectedText);
+    }
+
+    [Fact]
+    public void Clear_ClearsSelection()
+    {
+        var selection = new TextSelection();
+        selection.SelectAll(LoremIpsumUnique);
+        Assert.Equal(LoremIpsumUnique, selection.SelectedText);
+
+        selection.Clear();
+        Assert.Equal(string.Empty, selection.SelectedText);
+        Assert.Equal(selection.End, selection.Start);
+
+        selection.SelectParagraphByIndex(LoremIpsumCombinedParagraph, LoremIpsumParagraph1.Length + 10);
+        Assert.Equal(LoremIpsumParagraph2, selection.SelectedText);
+
+        selection.Clear();
+        Assert.Equal(string.Empty, selection.SelectedText);
+        Assert.Equal(selection.End, selection.Start);
     }
 }

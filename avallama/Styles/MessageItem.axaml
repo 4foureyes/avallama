@@ -57,7 +57,7 @@ Licensed under the MIT License. See LICENSE file for details.
     <Style Selector="controls|MessageItem.generatedMessage">
         <Setter Property="Background" Value="{DynamicResource SurfaceContainerHighest}"/>
         <Setter Property="TextColor" Value="{DynamicResource OnSurfaceVariant}"/>
-        <Setter Property="SubTextAlignment" Value="End"/>
+        <Setter Property="SubTextAlignment" Value="Right"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="SubTextFontSize" Value="10"/>
         <Setter Property="SubTextColor" Value="{DynamicResource Outline}"/>
