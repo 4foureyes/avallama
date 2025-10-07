@@ -165,7 +165,7 @@ namespace avallama.Controls
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The key event arguments.</param>
-        private async Task OnKeyDown(object? sender, KeyEventArgs e)
+        private async Task OnKeyDownAsync(object? sender, KeyEventArgs e)
         {
             // macOS keys:
             // Meta - held Command
@@ -195,7 +195,7 @@ namespace avallama.Controls
         /// </summary>
         private void OnKeyDownHandler(object? sender, KeyEventArgs e)
         {
-            _ = OnKeyDown(sender, e);
+            _ = OnKeyDownAsync(sender, e);
         }
 
         #endregion

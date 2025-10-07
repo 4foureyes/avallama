@@ -34,6 +34,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="TextFontSize" Value="16"/>
         <Setter Property="SubTextColor" Value="{DynamicResource OnSurface}"/>
         <Setter Property="SubTextFontSize" Value="12"/>
+        <Setter Property="SubTextAlignment" Value="End"/>
         <Setter Property="Padding" Value="14,12"/>
         <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="MaxLines" Value="1"/>

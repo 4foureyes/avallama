@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Márk Csörgő and Martin Bartos
 // Licensed under the MIT License. See LICENSE file for details.
 
+using System;
 using System.Linq;
 using System.Runtime.InteropServices;
 using avallama.Services;
@@ -162,7 +163,7 @@ public partial class HomeView : UserControl
 
             MainGrid.ColumnDefinitions = columnDefinitions;
             _sideBarExpanded = false;
-            
+
             SideBarButton.Margin = new Thickness(10,-10,0,0);
         }
         else
@@ -192,7 +193,7 @@ public partial class HomeView : UserControl
     {
         // ha átméretezi a sidebart akkor beállítjuk reszponzívan az új csevegés gomb szövegét
         _sideBarWidth = SideBar.Bounds.Width;
-        
+
         // textblock lekérése közvetlenül hogy tudjuk módosítani a láthatóságot és így középre tud igazodni az ikon
         var buttonTextBlock = NewConversationBtn.GetTemplateChildren().FirstOrDefault(c => c is TextBlock) as TextBlock;
         switch (_sideBarWidth)

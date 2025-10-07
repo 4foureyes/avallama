@@ -36,7 +36,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
     <!-- Base styles -->
     <Style Selector="controls|MessageItem">
-        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="TextAlignment" Value="Start"/>
         <Setter Property="TextFontSize" Value="14"/>
         <Setter Property="CornerRadius" Value="20"/>
         <Setter Property="Padding" Value="15,8"/>
@@ -57,7 +57,7 @@ Licensed under the MIT License. See LICENSE file for details.
     <Style Selector="controls|MessageItem.generatedMessage">
         <Setter Property="Background" Value="{DynamicResource SurfaceContainerHighest}"/>
         <Setter Property="TextColor" Value="{DynamicResource OnSurfaceVariant}"/>
-        <Setter Property="SubTextAlignment" Value="Right"/>
+        <Setter Property="SubTextAlignment" Value="End"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="SubTextFontSize" Value="10"/>
         <Setter Property="SubTextColor" Value="{DynamicResource Outline}"/>

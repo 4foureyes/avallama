@@ -85,7 +85,7 @@ namespace avallama.Controls
         /// Gets or sets the command executed when the item is clicked.
         /// </summary>
         public static readonly StyledProperty<ICommand?> CommandProperty =
-            AvaloniaProperty.Register<TextItem, ICommand?>(nameof(Command));
+            AvaloniaProperty.Register<ConversationItem, ICommand?>(nameof(Command));
 
         #endregion
 

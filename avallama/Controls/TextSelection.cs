@@ -177,7 +177,7 @@ namespace avallama.Controls
 
             var selectionFrom = Math.Min(Start, End);
             var selectionRange = Math.Max(Start, End) - selectionFrom;
-            SelectedText = text.Substring(selectionFrom, selectionRange);
+            SelectedText = text.AsSpan(selectionFrom, selectionRange).ToString();
         }
 
         /// <summary>
