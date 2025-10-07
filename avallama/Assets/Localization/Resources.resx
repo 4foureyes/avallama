@@ -81,7 +81,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <value>Generating response...</value>
     </data>
     <data name="NOT_DOWNLOADED_WARNING" xml:space="preserve">
-        <value>Model is not downloaded</value>
+        <value>No downloaded models found, download models through the Model Manager</value>
     </data>
     <data name="LOADING_MODELS" xml:space="preserve">
         <value>Loading models...</value>

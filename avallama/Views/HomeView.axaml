@@ -111,7 +111,7 @@ Licensed under the MIT License. See LICENSE file for details.
                       VerticalAlignment="Center"
                       ItemsSource="{Binding AvailableModels}"
                       SelectedItem="{Binding CurrentlySelectedModel, Mode=TwoWay}"
-                      IsEnabled="{Binding IsModelsLoaded}" />
+                      IsEnabled="{Binding IsModelsDropdownEnabled}" Name="ModelsComboBox"/>
         </StackPanel>
 
         <!-- Tájékoztató szövegek -->
@@ -161,15 +161,16 @@ Licensed under the MIT License. See LICENSE file for details.
 
             <!-- Modell nincs letöltve szöveg -->
             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Center"
-                  IsVisible="{Binding IsNotDownloadedVisible}">
+                  IsVisible="{Binding IsNoModelsDownloadedVisible}">
                 <controls:DynamicSvg Grid.Column="0" Path="/Assets/Svg/info.svg"
                                      FillColor="{DynamicResource Error}"
                                      Width="18" />
 
-                <TextBlock Grid.Column="1" Text="{Binding NotDownloadedWarning}"
+                <TextBlock Grid.Column="1" Text="{Binding NoModelsDownloadedWarning}"
                            Foreground="{DynamicResource Error}"
                            TextAlignment="Left"
-                           TextWrapping="Wrap" />
+                           TextWrapping="Wrap"
+                           Name="NoModelsWarningTextBlock" />
             </Grid>
         </StackPanel>
 

@@ -30,7 +30,7 @@ public partial class App : Application
     {
         AvaloniaXamlLoader.Load(this);
     }
-    
+
     public override void OnFrameworkInitializationCompleted()
     {
         // Az összes dependency létrehozása és eltárolása egy ServiceCollectionben
@@ -39,46 +39,46 @@ public partial class App : Application
 
         // ServiceProvider ami biztosítja a létrehozott dependencyket
         var services = collection.BuildServiceProvider();
-        
+
         // nem lehet semmilyen dependency lekérés a ConfigurationService előtt
         // különben nem lesznek jól megjelenítve a lokalizált szövegek, színek
         // a lokalizáció a rendszer nyelve alapján állítódik be, ezt kell felülírni a ConfigurationService-el
-        
+
         // nyelv és színséma lekérdezése, beállítása
         var configurationService = services.GetRequiredService<ConfigurationService>();
-        
+
         var colorScheme = configurationService.ReadSetting(ConfigurationKey.ColorScheme);
         var language = configurationService.ReadSetting(ConfigurationKey.Language);
-        
+
         var showInformationalMessages = configurationService.ReadSetting(ConfigurationKey.ShowInformationalMessages);
-        
+
         // új felhasználóknak alapértelmezetten bekapcsoljuk a tájékoztató üzeneteket
         if (string.IsNullOrWhiteSpace(showInformationalMessages))
         {
             configurationService.SaveSetting(ConfigurationKey.ShowInformationalMessages, true.ToString());
         }
-        
+
         var cultureInfo = language switch
         {
             "hungarian" => CultureInfo.GetCultureInfo("hu-HU"),
             _ => CultureInfo.InvariantCulture
         };
-        
+
         RequestedThemeVariant = colorScheme switch
         {
             "dark" => ThemeVariant.Dark,
             "light" => ThemeVariant.Light,
             _ => ThemeVariant.Default
         };
-            
+
         LocalizationService.ChangeLanguage(cultureInfo);
-        
+
         var appService = services.GetRequiredService<IApplicationService>();
         _ollamaService = services.GetRequiredService<OllamaService>();
         _dialogService = services.GetRequiredService<DialogService>();
         _databaseInitService = services.GetRequiredService<DatabaseInitService>();
         SharedDbConnection = Task.Run(() => _databaseInitService.GetOpenConnectionAsync()).GetAwaiter().GetResult();
-        
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             //feliratkozunk az OnStartup-ra és az OnExitre
@@ -86,7 +86,7 @@ public partial class App : Application
             desktop.Exit += OnExit;
             desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
 
-            // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
+            // Avoid duplicate validations from both Avalonia and the CommunityToolkit.
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             appService.InitializeMainWindow();
@@ -130,7 +130,7 @@ public partial class App : Application
             BindingPlugins.DataValidators.Remove(plugin);
         }
     }
-    
+
     private void About_OnClick(object? sender, EventArgs e)
     {
         // ezt később majd vmi fancy dialogra

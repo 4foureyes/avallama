@@ -28,13 +28,13 @@ public partial class HomeViewModel : PageViewModel
 
     public string ResourceLimitWarning { get; } = string.Format(LocalizationService.GetString("LOW_VRAM_WARNING"));
 
-    public string NotDownloadedWarning { get; } =
+    public string NoModelsDownloadedWarning { get; } =
         string.Format(LocalizationService.GetString("NOT_DOWNLOADED_WARNING"));
 
-    private readonly OllamaService _ollamaService;
-    private readonly DialogService _dialogService;
-    private readonly ConfigurationService _configurationService;
-    private readonly DatabaseService _databaseService;
+    private readonly IOllamaService _ollamaService;
+    private readonly IDialogService _dialogService;
+    private readonly IConfigurationService _configurationService;
+    private readonly IDatabaseService _databaseService;
 
     private readonly TaskCompletionSource<bool> _ollamaServerStarted = new();
     private readonly IMessenger _messenger;
@@ -60,7 +60,7 @@ public partial class HomeViewModel : PageViewModel
 
     [ObservableProperty] private string _newMessageText = string.Empty;
     [ObservableProperty] private bool _isResourceWarningVisible;
-    [ObservableProperty] private bool _isNotDownloadedVisible;
+    [ObservableProperty] private bool _isNoModelsDownloadedVisible;
     [ObservableProperty] private bool _isDownloaded;
     [ObservableProperty] private string _currentlySelectedModel;
     [ObservableProperty] private bool _isDownloading;
@@ -76,7 +76,7 @@ public partial class HomeViewModel : PageViewModel
     [ObservableProperty] private bool _isRetryButtonVisible;
     [ObservableProperty] private string _retryInfoText = string.Empty;
     [ObservableProperty] private bool _showInformationalMessages;
-    [ObservableProperty] private bool _isModelsLoaded = true;
+    [ObservableProperty] private bool _isModelsDropdownEnabled = true;
 
     // TODO:
     // Van egy bug amit kicsit nehezen lehet reprodukálni, de épp a 3. üzenetem írtam, generálta volna az új beszélgetés címet az ollama
@@ -116,17 +116,17 @@ public partial class HomeViewModel : PageViewModel
     public async Task SelectConversation(object parameter)
     {
         if (parameter is not Guid guid) return;
-        
+
         if (guid == SelectedConversation.ConversationId) return;
 
         var selectedConversation = Conversations.FirstOrDefault(x => x.ConversationId == guid);
         if (selectedConversation == null) return;
 
         SelectedConversation = selectedConversation;
-        
+
         var state = GetState(SelectedConversation);
         if (state.MessagesLoaded) return;
-        
+
         SelectedConversation.Messages = await _databaseService.GetMessagesForConversation(SelectedConversation);
         state.MessagesLoaded = true;
     }
@@ -143,7 +143,7 @@ public partial class HomeViewModel : PageViewModel
         SelectedConversation.AddMessage(generatedMessage);
         var messageHistory = new List<Message>(SelectedConversation.Messages.ToList());
         messageHistory.RemoveAt(messageHistory.Count - 1);
-        
+
         // hibás (nem generált) üzenetek kitörlése
         messageHistory.RemoveAll(message => message is FailedMessage);
 
@@ -189,14 +189,14 @@ public partial class HomeViewModel : PageViewModel
     private async Task CheckModelDownload()
     {
         IsDownloaded = await _ollamaService.IsModelDownloaded();
-        IsNotDownloadedVisible = !IsDownloaded;
+        IsNoModelsDownloadedVisible = !IsDownloaded;
     }
 
     public HomeViewModel(
-        OllamaService ollamaService,
-        DialogService dialogService,
-        ConfigurationService configurationService,
-        DatabaseService databaseService,
+        IOllamaService ollamaService,
+        IDialogService dialogService,
+        IConfigurationService configurationService,
+        IDatabaseService databaseService,
         IMessenger messenger
     )
     {
@@ -215,19 +215,37 @@ public partial class HomeViewModel : PageViewModel
 
         LoadSettings();
 
-        _ = InitializeConversations();
-        
-        Task.Run(OllamaInit);
         _ollamaService.ServiceStatusChanged += OllamaServiceStatusChanged;
         if (_ollamaService.CurrentServiceStatus != null)
         {
             OllamaServiceStatusChanged(_ollamaService.CurrentServiceStatus, _ollamaService.CurrentServiceMessage);
         }
-        
-        _ = InitializeModels();
+
+        // Yes I know this is also fire-and-forget but exceptions are "handled"
+        _ = Task.Run(InitializePipelineAsync);
     }
 
-    private async Task OllamaInit()
+    private async Task InitializePipelineAsync()
+    {
+        try
+        {
+            // Triggering conversations and ollama task in parallel
+            var conversationsTasks = InitializeConversations();
+            var ollamaTask  = InitializeOllama();
+
+            await Task.WhenAll(conversationsTasks, ollamaTask);
+
+            // Initialize models has hard dependency on ollama init, so we run after
+            await InitializeModels();
+        }
+        catch (Exception ex)
+        {
+            //TODO implement logging service, console logged for now
+            Console.WriteLine(ex);
+        }
+    }
+
+    private async Task InitializeOllama()
     {
         // megvárja amíg kapcsolódik az ollama szerverhez, ez gondolom azért kell, mert hamarabb futna le ez a metódus mint hogy a szerver elindul (?)
         await _ollamaServerStarted.Task;
@@ -303,7 +321,8 @@ public partial class HomeViewModel : PageViewModel
                         _messenger.Send(new ApplicationMessage.Shutdown());
                     },
                     closeAction: () => { _messenger.Send(new ApplicationMessage.Shutdown()); },
-                    description: LocalizationService.GetString("OLLAMA_NOT_INSTALLED_DESC")
+                    description: LocalizationService.GetString("OLLAMA_NOT_INSTALLED_DESC"),
+                    false
                 );
                 break;
             case ServiceStatus.Retrying:
@@ -313,7 +332,7 @@ public partial class HomeViewModel : PageViewModel
                 break;
             default:
                 // ServiceStatus.Failed
-                
+
                 // ha az utolsó egy "generálásnak" szánt üzenet, akkor azt lecseréljük FailedMessagere
                 if (SelectedConversation.Messages.Count > 0)
                 {
@@ -323,7 +342,7 @@ public partial class HomeViewModel : PageViewModel
                         SelectedConversation.Messages.Add(new FailedMessage());
                     }
                 }
-                
+
                 RetryInfoText = message ?? LocalizationService.GetString("OLLAMA_CONNECTION_ERROR");
                 IsRemoteConnectionTextVisible = false;
                 IsRetryPanelVisible = true;
@@ -351,19 +370,28 @@ public partial class HomeViewModel : PageViewModel
         return _conversationStates.GetOrCreateValue(conversation);
     }
 
-    private async Task InitializeModels()
+    public async Task InitializeModels()
     {
-        IsModelsLoaded = false;
+        IsModelsDropdownEnabled = false;
         AvailableModels.Add(LocalizationService.GetString("LOADING_MODELS"));
         CurrentlySelectedModel = AvailableModels[0];
         var downloadedModels = await _ollamaService.ListDownloaded();
+        if (downloadedModels.Count == 0)
+        {
+            AvailableModels.Clear();
+            AvailableModels.Add(LocalizationService.GetString("NO_MODELS_FOUND"));
+            CurrentlySelectedModel = AvailableModels[0];
+            IsModelsDropdownEnabled = false;
+            IsNoModelsDownloadedVisible = true;
+            return;
+        }
         foreach (var model in downloadedModels)
         {
             AvailableModels.Add(model.Name);
         }
         AvailableModels.RemoveAt(0);
         CurrentlySelectedModel = AvailableModels.LastOrDefault() ?? string.Empty;
-        IsModelsLoaded = true;
+        IsModelsDropdownEnabled = true;
     }
 }
 

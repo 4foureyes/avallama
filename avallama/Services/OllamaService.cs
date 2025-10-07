@@ -19,11 +19,13 @@ using System.Text.Json.Nodes;
 using avallama.Dtos;
 using avallama.Models;
 using avallama.Utilities;
-using Avalonia.Threading;
 
 namespace avallama.Services;
 
-internal interface IOllamaService
+// A delegate where we provide the method definition that subscribers must conform to
+public delegate void ServiceStatusChangedHandler(ServiceStatus? status, string? message);
+
+public interface IOllamaService
 {
     Task Start();
     void Stop();
@@ -32,6 +34,13 @@ internal interface IOllamaService
     Task<string> GetModelParamNum(string modelName);
     IAsyncEnumerable<DownloadResponse> PullModel(string modelName);
     IAsyncEnumerable<OllamaResponse> GenerateMessage(List<Message> messageHistory, string modelName);
+    Task<bool> IsOllamaServerRunning();
+    Task<List<OllamaModel>> ListLibraryModelsAsOllamaModelsAsync();
+    Task<bool> DeleteModel(string modelName);
+    Task<ObservableCollection<OllamaModel>> ListDownloaded();
+    ServiceStatus? CurrentServiceStatus { get; }
+    string? CurrentServiceMessage { get; }
+    event ServiceStatusChangedHandler? ServiceStatusChanged;
 }
 
 public class OllamaService : IOllamaService
@@ -39,46 +48,49 @@ public class OllamaService : IOllamaService
     public const int DefaultApiPort = 11434;
     public const string DefaultApiHost = "localhost";
 
+    private readonly IConfigurationService _configurationService;
+    private readonly IDialogService _dialogService;
+
+    // Maximum wait time for requests, currently 15 seconds for slower machines
+    // but might need to be readjusted in the future
+    private readonly TimeSpan _timeout = TimeSpan.FromSeconds(15);
+
     private Process? _ollamaProcess;
-    public ServiceStatus? CurrentServiceStatus { get; private set; }
-    public string? CurrentServiceMessage { get; private set; }
-    private string OllamaPath { get; set; }
     private HttpClient _httpClient;
-
-    // egy delegate ahol megadjuk hogy milyen metódus definícióval kell rendelkezniük a feliratkozó metódusoknak
-    public delegate void ServiceStatusChangedHandler(ServiceStatus? status, string? message);
-
-    // az event létrehozása, ami ugye az előzőleg létrehozott delegate típusú, tehát a megfelelő szignatúrájú metódusok
-    // tudnak feliratkozni rá
-    // a MainViewModelben az OllamaServiceStatusChanged iratkozik fel ide erre az eventre
-
-    // ez most rinyál hogy jajj de jobb lenne a ServiceStatusChanged név a privátnak is, de muszáj hogy legyen privát
-    // különben nem lennének kezelhetőek az add és remove accessorok
-    public event ServiceStatusChangedHandler? ServiceStatusChanged;
-
+    private readonly IAvaloniaDispatcher _dispatcher;
     private string? _apiHost = DefaultApiHost;
     private string? _apiPort = DefaultApiPort.ToString();
-    private readonly ConfigurationService _configurationService;
-    private readonly DialogService _dialogService;
+    private string OllamaPath { get; set; } = "";
+    private bool _started;
 
-    // maximális időtartam ameddig a különböző kérésekre vár az alkalmazás
-    // ez azért 15 mp, mert lassabb gépeknél több idő lehet mire legelső üzenet generálásnál megjön a kérés
-    // ezt majd később lehet korrigálni kell
-    private readonly TimeSpan _timeout = TimeSpan.FromSeconds(15);
+    public ServiceStatus? CurrentServiceStatus { get; private set; }
+    public string? CurrentServiceMessage { get; private set; }
 
     private string ApiBaseUrl => $"http://{_apiHost}:{_apiPort}";
 
-    public OllamaService(ConfigurationService configurationService, DialogService dialogService)
+    // Delegate for subscribers (MainViewModel subscribes here)
+    public event ServiceStatusChangedHandler? ServiceStatusChanged;
+
+    // Delegate for the start process function to allow mocking in tests
+    public Func<ProcessStartInfo, Process?> StartProcessFunc { get; init; } = Process.Start;
+
+    // Delegate for getting ollama processes
+    // This is needed because for some godforsaken reason the method started ollama on my local during testing
+    // so we mock it
+    public Func<int> GetProcessCountFunc { get; init; } = () => Process.GetProcessesByName("ollama").Length;
+
+    public OllamaService(IConfigurationService configurationService, IDialogService dialogService,
+        IAvaloniaDispatcher dispatcher)
     {
-        OllamaPath = "";
         _configurationService = configurationService;
         _dialogService = dialogService;
+        _dispatcher = dispatcher;
         _httpClient = new HttpClient();
         LoadSettings();
     }
 
-    // Ezt a metódust minden API hívásnál meghívja az app hogy up-to-date beállításokkal rendelkezzen
-    // anélkül hogy újra kelljen indítani a service beállítás módosításakor
+    // This method is called during every API call so the app has up-to-date settings in memory
+    // without having to restart the service after every settings change
     private void LoadSettings()
     {
         var hostSetting = _configurationService.ReadSetting(ConfigurationKey.ApiHost);
@@ -87,7 +99,7 @@ public class OllamaService : IOllamaService
         var portSetting = _configurationService.ReadSetting(ConfigurationKey.ApiPort);
         _apiPort = string.IsNullOrEmpty(portSetting) ? "11434" : portSetting;
 
-        // BaseAddress beállítása, így az összes kérés alapértelmezetten efelé a cím felé fog menni
+        // Setting BaseAddress so all requests are directed towards this address by default
         var newBaseUri = new Uri($"http://{_apiHost}:{_apiPort}");
         if (_httpClient.BaseAddress == null || _httpClient.BaseAddress != newBaseUri)
         {
@@ -99,6 +111,10 @@ public class OllamaService : IOllamaService
 
     public async Task Start()
     {
+        if (_started)
+        {
+            return;
+        }
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             OllamaPath = Path.Combine(
@@ -108,11 +124,11 @@ public class OllamaService : IOllamaService
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            // mac-en és linuxon ugyanaz a path
+            // same path on Mac and Linux
             OllamaPath = @"/usr/local/bin/ollama";
         }
 
-        var ollamaProcessCount = OllamaProcessCount();
+        var ollamaProcessCount = GetProcessCountFunc();
         switch (ollamaProcessCount)
         {
             case 1:
@@ -120,9 +136,10 @@ public class OllamaService : IOllamaService
                     ServiceStatus.Running,
                     LocalizationService.GetString("OLLAMA_ALREADY_RUNNING")
                 );
+                _started = true;
                 return;
             case >= 2:
-                // TODO: ehelyett ténylegesen kezelje automatikusan a processeket és ne kelljen újraindítani manuálisan
+                // TODO: Automatically handling these processes instead of having to manually restart
                 OnServiceStatusChanged(
                     ServiceStatus.Failed,
                     LocalizationService.GetString("MULTIPLE_INSTANCES_ERROR")
@@ -140,12 +157,12 @@ public class OllamaService : IOllamaService
 
         try
         {
-            _ollamaProcess = Process.Start(startInfo);
+            _ollamaProcess = StartProcessFunc(startInfo);
         }
         catch (Win32Exception)
         {
-            // ez az az exception amikor nem tud a megadott pathre ollama processt indítani
-            // ha nincs ollama telepítve akkor először ezt az exceptiont kapja el
+            // This is the exception that is thrown when an Ollama process cant be started on the specified path
+            // This is the first exception caught if Ollama isn't installed
             OnServiceStatusChanged(ServiceStatus.NotInstalled);
         }
         catch (Exception ex)
@@ -157,8 +174,8 @@ public class OllamaService : IOllamaService
             return;
         }
 
-        // ha nem tud elindítani 'ollama' processt akkor null, tehát nincs telepítve
-        // máshogy nem lehet null (szerintem)
+        // If an 'ollama' process can't be started then it's null, so it isn't installed
+        // I don't think it could otherwise be null
         if (_ollamaProcess == null)
         {
             OnServiceStatusChanged(ServiceStatus.NotInstalled);
@@ -172,19 +189,25 @@ public class OllamaService : IOllamaService
                 ServiceStatus.Running,
                 LocalizationService.GetString("OLLAMA_STARTED")
             );
+            _started = true;
         }
         else
         {
-            // újrapróbálkozik a kapcsolatra
-            // macOS-en erre mindenképp szükség van, mert később indulhat el a szerver mint az ellenőrzés
+            // Retries connection
+            // This is necessary on macOS, because the server starts later than the IsOllamaServerRunning() call
             await Retry();
         }
     }
 
-    private static uint OllamaProcessCount()
+    // Method to guard api calls against being called before the Ollama process is started
+    // Within methods that perform API calls this method should be called before any API call
+    // Consumers must call Start() before calling an API method, or else an exception is thrown
+    private void EnsureStarted()
     {
-        var ollamaProcesses = Process.GetProcessesByName("ollama");
-        return (uint)ollamaProcesses.Length;
+        if (!_started)
+        {
+            throw new InvalidOperationException("OllamaService has not been started yet. Call Start() first.");
+        }
     }
 
     public async Task<bool> IsOllamaServerRunning()
@@ -213,12 +236,12 @@ public class OllamaService : IOllamaService
 
     public async Task Retry()
     {
-        // Retrying event küldése (HomeViewModelnek, hogy megjelenítse a státuszt a UI-on)
+        // Sending Retrying event (for the HomeViewModel, so it shows the status on the UI)
         OnServiceStatusChanged(ServiceStatus.Retrying);
 
-        var maxTotalWait = TimeSpan.FromSeconds(30); // max teljes idő, ameddig újrapróbálja
-        var delay = TimeSpan.FromMilliseconds(200); // kezdő késleltetés
-        var maxDelay = TimeSpan.FromSeconds(5); // max késleltetés
+        var maxTotalWait = TimeSpan.FromSeconds(30); // Max full time while it retries
+        var delay = TimeSpan.FromMilliseconds(200); // Starting delay
+        var maxDelay = TimeSpan.FromSeconds(5); // Maximum delay
         var stopwatch = Stopwatch.StartNew();
 
         while (stopwatch.Elapsed < maxTotalWait)
@@ -229,12 +252,13 @@ public class OllamaService : IOllamaService
                     ServiceStatus.Running,
                     LocalizationService.GetString("OLLAMA_STARTED")
                 );
+                _started = true;
                 return;
             }
 
             await Task.Delay(delay);
 
-            // növeli a késleltetést minden alkalommal, de úgy hogy ne menjen a max fölé
+            // Increases the delay every time, but stays under the maximum
             delay = TimeSpan.FromMilliseconds(Math.Min(delay.TotalMilliseconds * 2, maxDelay.TotalMilliseconds));
         }
 
@@ -253,6 +277,7 @@ public class OllamaService : IOllamaService
 
     public async Task<bool> IsModelDownloaded()
     {
+        EnsureStarted();
         LoadSettings();
 
         try
@@ -266,7 +291,7 @@ public class OllamaService : IOllamaService
         }
         catch (JsonException ex)
         {
-            _dialogService.ShowErrorDialog(ex.Message);
+            _dialogService.ShowErrorDialog(ex.Message, false);
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
         {
@@ -280,6 +305,7 @@ public class OllamaService : IOllamaService
 
     public async Task<string> GetModelParamNum(string modelName)
     {
+        EnsureStarted();
         LoadSettings();
 
         var payload = new
@@ -300,7 +326,7 @@ public class OllamaService : IOllamaService
         }
         catch (JsonException ex)
         {
-            _dialogService.ShowErrorDialog(ex.Message);
+            _dialogService.ShowErrorDialog(ex.Message, false);
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
         {
@@ -315,6 +341,7 @@ public class OllamaService : IOllamaService
 
     public async IAsyncEnumerable<OllamaResponse> GenerateMessage(List<Message> messageHistory, string modelName)
     {
+        EnsureStarted();
         LoadSettings();
 
         var chatRequest = new ChatRequest(messageHistory, modelName);
@@ -333,8 +360,8 @@ public class OllamaService : IOllamaService
             response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                // sikeres üzenetküldésnél szintén elküldi hogy fut az ollama
-                // hogy ha esetleg megváltozna a host akkor annak megfelelően jelenítse meg a HomeViewModel
+                // Upon a successful message send it also sends Ollama is running
+                // If the host were to change then the HomeViewModel can display accordingly
                 OnServiceStatusChanged(ServiceStatus.Running);
             }
         }
@@ -349,31 +376,29 @@ public class OllamaService : IOllamaService
 
         await using var stream = await response.Content.ReadAsStreamAsync();
         using var reader = new StreamReader(stream);
-        string? line;
-        while ((line = await reader.ReadLineAsync()) != null)
+        while (await reader.ReadLineAsync() is { } line)
         {
-            if (!string.IsNullOrWhiteSpace(line))
+            if (string.IsNullOrWhiteSpace(line)) continue;
+            OllamaResponse? json = null;
+            try
             {
-                OllamaResponse? json = null;
-                try
-                {
-                    json = JsonSerializer.Deserialize<OllamaResponse>(line);
-                }
-                catch (JsonException e)
-                {
-                    _dialogService.ShowErrorDialog(e.Message);
-                }
+                json = JsonSerializer.Deserialize<OllamaResponse>(line);
+            }
+            catch (JsonException e)
+            {
+                _dialogService.ShowErrorDialog(e.Message, false);
+            }
 
-                if (json != null)
-                {
-                    yield return json;
-                }
+            if (json != null)
+            {
+                yield return json;
             }
         }
     }
 
     public async IAsyncEnumerable<DownloadResponse> PullModel(string modelName)
     {
+        EnsureStarted();
         LoadSettings();
 
         var payload = new
@@ -397,8 +422,8 @@ public class OllamaService : IOllamaService
             response = await _httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
             if (response.StatusCode == HttpStatusCode.OK)
             {
-                // OK válasznál szintén elküldi hogy fut az ollama
-                // hogy ha esetleg megváltozna a host akkor annak megfelelően jelenítse meg a HomeViewModel
+                // Sends that Ollama is running upon an OK response
+                // If the host were to change then the HomeViewModel can display accordingly
                 OnServiceStatusChanged(ServiceStatus.Running);
             }
 
@@ -415,38 +440,32 @@ public class OllamaService : IOllamaService
         await using var stream = await response.Content.ReadAsStreamAsync();
         using var reader = new StreamReader(stream);
 
-        string? line;
-        while ((line = await reader.ReadLineAsync()) != null)
+        while (await reader.ReadLineAsync() is { } line)
         {
-            if (!string.IsNullOrWhiteSpace(line))
+            if (string.IsNullOrWhiteSpace(line)) continue;
+            DownloadResponse? json = null;
+            try
             {
-                DownloadResponse? json = null;
-                try
-                {
-                    json = JsonSerializer.Deserialize<DownloadResponse>(line);
-                }
-                catch (JsonException e)
-                {
-                    _dialogService.ShowErrorDialog(e.Message);
-                }
+                json = JsonSerializer.Deserialize<DownloadResponse>(line);
+            }
+            catch (JsonException e)
+            {
+                _dialogService.ShowErrorDialog(e.Message, false);
+            }
 
-                if (json != null)
-                {
-                    yield return json;
-                }
+            if (json != null)
+            {
+                yield return json;
             }
         }
     }
 
     public async Task<List<OllamaModel>> ListLibraryModelsAsOllamaModelsAsync()
     {
+        EnsureStarted();
         var libraryInfos = await new LibraryScraper(_httpClient).ListModelsFromLibraryAsync();
 
-        var result = new List<OllamaModel>();
-
-        foreach (var li in libraryInfos)
-        {
-            var model = new OllamaModel
+        return libraryInfos.Select(li => new OllamaModel
             {
                 Name = li.Name,
                 Format = string.Empty,
@@ -454,16 +473,14 @@ public class OllamaService : IOllamaService
                 Size = 0,
                 DownloadStatus = ModelDownloadStatus.Ready,
                 RunsSlow = false
-            };
-            result.Add(model);
-        }
-
-        return result;
+            })
+            .ToList();
     }
 
 
     public async Task<bool> DeleteModel(string modelName)
     {
+        EnsureStarted();
         LoadSettings();
 
         var payload = new
@@ -487,6 +504,7 @@ public class OllamaService : IOllamaService
 
     public async Task<ObservableCollection<OllamaModel>> ListDownloaded()
     {
+        EnsureStarted();
         LoadSettings();
 
         var request = new HttpRequestMessage(HttpMethod.Get, "/api/tags");
@@ -497,7 +515,7 @@ public class OllamaService : IOllamaService
         var result = JsonSerializer.Deserialize<OllamaTagsResponse>(json, options);
 
         if (result?.Models == null)
-            return new ObservableCollection<OllamaModel>();
+            return [];
 
         return new ObservableCollection<OllamaModel>(
             result.Models.Select(m =>
@@ -543,22 +561,22 @@ public class OllamaService : IOllamaService
         );
     }
 
-    // meghívjuk az eventet, ami azt jelenti hogy a feliratkozott metódusok is meghívódnak
-    // erre egy metódus iratkozott fel, HomeViewModelben
+    // We call the event, meaning the subscribed methods are also called
+    // One method subscribed to this in the HomeViewModel
     private void OnServiceStatusChanged(ServiceStatus? status, string? message = null)
     {
         CurrentServiceStatus = status;
         CurrentServiceMessage = message;
 
-        // ezt azért adtam hozzá mert tesztelés során 'NSWindow should only be instantiated on the main thread!' kivételt dobott
-        // macOS specific error i guess de azért legyen mindenképp UI szálon ha UI hívások vannak
-        if (Dispatcher.UIThread.CheckAccess())
+        // I added this because during testing an 'NSWindow should only be instantiated on the main thread!' exception was thrown
+        // This is a macOS specific error I guess but let the UI calls be on the UI thread
+        if (_dispatcher.CheckAccess())
         {
             ServiceStatusChanged?.Invoke(status, message);
         }
         else
         {
-            Dispatcher.UIThread.Post(() => { ServiceStatusChanged?.Invoke(status, message); });
+            _dispatcher.Post(() => { ServiceStatusChanged?.Invoke(status, message); });
         }
     }
 }

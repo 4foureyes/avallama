@@ -74,10 +74,10 @@ Licensed under the MIT License. See LICENSE file for details.
         <value>Generálás folyamatban...</value>
     </data>
     <data name="NOT_DOWNLOADED_WARNING" xml:space="preserve">
-        <value>A modell nincs letöltve</value>
+        <value>Nincs letöltött modell, tölts le modellt a Modellkezelő felületen</value>
     </data>
     <data name="LOADING_MODELS" xml:space="preserve">
-        <value>Modellek betöltése...</value>
+        <value>Modellek töltése...</value>
     </data>
     <data name="STARTING_DOWNLOAD" xml:space="preserve">
         <value>Letöltés indítása...</value>
@@ -275,7 +275,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <value>Kérlek add meg a szerver IP címét és portját</value>
     </data>
     <data name="NO_MODELS_FOUND" xml:space="preserve">
-        <value>Nincs megjeleníthető modell</value>
+        <value>Nincs modell</value>
     </data>
     <data name="NO_CONNECTION_DOWNLOAD" xml:space="preserve">
         <value>Nincs kapcsolat a letöltéshez</value>
