@@ -36,6 +36,7 @@ public interface IOllamaService
     IAsyncEnumerable<DownloadResponse> PullModel(string modelName);
     IAsyncEnumerable<OllamaResponse> GenerateMessage(List<Message> messageHistory, string modelName);
     Task<bool> IsOllamaServerRunning();
+    Task<IList<OllamaModelFamily>> GetScrapedFamiliesAsync();
     IAsyncEnumerable<OllamaModel> StreamAllScrapedModelsAsync();
     Task<bool> DeleteModel(string modelName);
     Task<ObservableCollection<OllamaModel>> ListDownloaded();
@@ -63,6 +64,7 @@ public class OllamaService : IOllamaService
     private string? _apiPort = DefaultApiPort.ToString();
     private string OllamaPath { get; set; } = "";
     private bool _started;
+    private OllamaLibraryScraper.OllamaLibraryScraperResult? _cachedScrapeResult;
 
     public ServiceStatus? CurrentServiceStatus { get; private set; }
     public string? CurrentServiceMessage { get; private set; }
@@ -505,10 +507,31 @@ public class OllamaService : IOllamaService
         }
     }
 
+    private async Task<OllamaLibraryScraper.OllamaLibraryScraperResult> EnsureScrapeResultAsync()
+    {
+        if (_cachedScrapeResult is not null)
+            return _cachedScrapeResult;
+
+        EnsureStarted();
+        _cachedScrapeResult = await OllamaLibraryScraper.GetAllOllamaModelsAsync();
+        return _cachedScrapeResult;
+    }
+
+    public async Task<IList<OllamaModelFamily>> GetScrapedFamiliesAsync()
+    {
+        var result = await EnsureScrapeResultAsync();
+
+        // Clear the cached result after getting families so if a scrape is started again within the same OllamaService instance
+        // it fetches fresh data
+        _cachedScrapeResult = null;
+        return result.Families;
+    }
+
     public async IAsyncEnumerable<OllamaModel> StreamAllScrapedModelsAsync()
     {
-        EnsureStarted();
-        await foreach (var model in OllamaLibraryScraper.GetAllOllamaModelsAsync())
+        var result = await EnsureScrapeResultAsync();
+
+        await foreach (var model in result.Models)
         {
             yield return model;
         }

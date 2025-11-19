@@ -94,63 +94,65 @@ public class ModelCacheService : IModelCacheService
                 .Where(f => HasModelFamilyChanged(f, existingModelFamilies[f.Name]));
 
             var insertList = toInsert.ToList();
-            if (insertList.Count != 0)
+            const int batchSize = 100;
+
+            for (var offset = 0; offset < insertList.Count; offset += batchSize)
             {
-                await using var insertCmd = _connection.CreateCommand();
-                var values = string.Join(", ", insertList.Select((_, i) =>
-                    $"(@name{i}, @description{i}, @pullCount{i}, @labels{i}, @tagCount{i}, @lastUpdated{i}, @cachedAt{i})"));
-
-                insertCmd.CommandText = $"""
-                                                 INSERT INTO model_families (name, description, pull_count, labels, tag_count, last_updated, cached_at)
-                                                 VALUES {values}
-                                         """;
-
-                for (var i = 0; i < insertList.Count; i++)
+                var batch = insertList.Skip(offset).Take(batchSize);
+                foreach (var family in batch)
                 {
-                    var family = insertList[i];
-                    insertCmd.Parameters.AddWithValue($"@name{i}", family.Name);
-                    insertCmd.Parameters.AddWithValue($"@description{i}", family.Description);
-                    insertCmd.Parameters.AddWithValue($"@pullCount{i}", family.PullCount);
-                    insertCmd.Parameters.AddWithValue($"@labels{i}", JsonSerializer.Serialize(family.Labels));
-                    insertCmd.Parameters.AddWithValue($"@tagCount{i}", family.TagCount);
-                    insertCmd.Parameters.AddWithValue($"@lastUpdated{i}", family.LastUpdated);
-                    insertCmd.Parameters.AddWithValue($"@cachedAt{i}", now);
-                }
+                    await using var insertCmd = _connection.CreateCommand();
+                    insertCmd.CommandText = """
+                                            INSERT INTO model_families
+                                                (name, description, pull_count, labels,
+                                                 tag_count, last_updated, cached_at)
+                                            VALUES
+                                                (@name, @description, @pullCount, @labels,
+                                                 @tagCount, @lastUpdated, @cachedAt)
+                                            """;
 
-                await insertCmd.ExecuteNonQueryAsync();
+                    insertCmd.Parameters.AddWithValue("@name", family.Name);
+                    insertCmd.Parameters.AddWithValue("@description", family.Description);
+                    insertCmd.Parameters.AddWithValue("@pullCount", family.PullCount);
+                    insertCmd.Parameters.AddWithValue("@labels",
+                        JsonSerializer.Serialize(family.Labels));
+                    insertCmd.Parameters.AddWithValue("@tagCount", family.TagCount);
+                    insertCmd.Parameters.AddWithValue("@lastUpdated", family.LastUpdated);
+                    insertCmd.Parameters.AddWithValue("@cachedAt", now);
+
+                    await insertCmd.ExecuteNonQueryAsync();
+                }
             }
 
             var updateList = toUpdate.ToList();
-            if (updateList.Count != 0)
+            for (var offset = 0; offset < updateList.Count; offset += batchSize)
             {
-                await using var updateCmd = _connection.CreateCommand();
-                var nameParams = string.Join(", ", updateList.Select((_, i) => $"@name{i}"));
-
-                updateCmd.CommandText = $"""
-                                                 UPDATE model_families
-                                                 SET description = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @description{i}"))} END,
-                                                     pull_count = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @pullCount{i}"))} END,
-                                                     labels = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @labels{i}"))} END,
-                                                     tag_count = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @tagCount{i}"))} END,
-                                                     last_updated = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @lastUpdated{i}"))} END,
-                                                     cached_at = @cachedAt
-                                                 WHERE name IN ({nameParams})
-                                         """;
-
-                for (var i = 0; i < updateList.Count; i++)
+                var batch = updateList.Skip(offset).Take(batchSize);
+                foreach (var family in batch)
                 {
-                    var family = updateList[i];
-                    updateCmd.Parameters.AddWithValue($"@name{i}", family.Name);
-                    updateCmd.Parameters.AddWithValue($"@description{i}", family.Description);
-                    updateCmd.Parameters.AddWithValue($"@pullCount{i}", family.PullCount);
-                    updateCmd.Parameters.AddWithValue($"@labels{i}", JsonSerializer.Serialize(family.Labels));
-                    updateCmd.Parameters.AddWithValue($"@tagCount{i}", family.TagCount);
-                    updateCmd.Parameters.AddWithValue($"@lastUpdated{i}", family.LastUpdated);
+                    await using var updateCmd = _connection.CreateCommand();
+                    updateCmd.CommandText = """
+                                            UPDATE model_families
+                                            SET description = @description,
+                                                pull_count = @pullCount,
+                                                labels = @labels,
+                                                tag_count = @tagCount,
+                                                last_updated = @lastUpdated,
+                                                cached_at = @cachedAt
+                                            WHERE name = @name
+                                            """;
+
+                    updateCmd.Parameters.AddWithValue("@name", family.Name);
+                    updateCmd.Parameters.AddWithValue("@description", family.Description);
+                    updateCmd.Parameters.AddWithValue("@pullCount", family.PullCount);
+                    updateCmd.Parameters.AddWithValue("@labels",
+                        JsonSerializer.Serialize(family.Labels));
+                    updateCmd.Parameters.AddWithValue("@tagCount", family.TagCount);
+                    updateCmd.Parameters.AddWithValue("@lastUpdated", family.LastUpdated);
+                    updateCmd.Parameters.AddWithValue("@cachedAt", now);
+
+                    await updateCmd.ExecuteNonQueryAsync();
                 }
-
-                updateCmd.Parameters.AddWithValue("@cachedAt", now);
-
-                await updateCmd.ExecuteNonQueryAsync();
             }
 
             var deleteList = toDelete.ToList();
@@ -282,89 +284,94 @@ public class ModelCacheService : IModelCacheService
                 .Where(m => HasModelChanged(m, existingModels[m.Name]));
 
             var insertList = toInsert.ToList();
-            if (insertList.Count != 0)
+            const int batchSize = 100;
+
+            for (var offset = 0; offset < insertList.Count; offset += batchSize)
             {
-                await using var insertCmd = _connection.CreateCommand();
-                var values = string.Join(", ", insertList.Select((_, i) =>
-                    $"(@name{i}, @familyName{i}, @parameters{i}, @size{i}, @format{i}, @quantization{i}, @architecture{i}, @blockCount{i}, @contextLength{i}, @embeddingLength{i}, @additionalInfo{i}, @downloadStatus{i}, @cachedAt{i})"));
-
-                insertCmd.CommandText = $"""
-                                         INSERT INTO ollama_models (name, family_name, parameters, size, format, quantization, architecture, block_count, context_length, embedding_length, additional_info, download_status, cached_at)
-                                         VALUES {values}
-                                         """;
-
-                for (var i = 0; i < insertList.Count; i++)
+                var batch = insertList.Skip(offset).Take(batchSize);
+                foreach (var model in batch)
                 {
-                    var model = insertList[i];
-                    var (format, quantization, architecture, blockCount, contextLength, embeddingLength, additionalInfo
-                            ) =
+                    var (format, quantization, architecture, blockCount, contextLength, embeddingLength,
+                            additionalInfo) =
                         ExtractModelInfo(model.Info);
 
-                    insertCmd.Parameters.AddWithValue($"@name{i}", model.Name);
-                    insertCmd.Parameters.AddWithValue($"@familyName{i}", ExtractFamilyName(model.Name));
-                    insertCmd.Parameters.AddWithValue($"@parameters{i}", model.Parameters);
-                    insertCmd.Parameters.AddWithValue($"@size{i}", model.Size);
-                    insertCmd.Parameters.AddWithValue($"@format{i}", format ?? (object)DBNull.Value);
-                    insertCmd.Parameters.AddWithValue($"@quantization{i}", quantization ?? (object)DBNull.Value);
-                    insertCmd.Parameters.AddWithValue($"@architecture{i}", architecture ?? (object)DBNull.Value);
-                    insertCmd.Parameters.AddWithValue($"@blockCount{i}", blockCount ?? (object)DBNull.Value);
-                    insertCmd.Parameters.AddWithValue($"@contextLength{i}", contextLength ?? (object)DBNull.Value);
-                    insertCmd.Parameters.AddWithValue($"@embeddingLength{i}", embeddingLength ?? (object)DBNull.Value);
-                    insertCmd.Parameters.AddWithValue($"@additionalInfo{i}", additionalInfo ?? (object)DBNull.Value);
-                    insertCmd.Parameters.AddWithValue($"@downloadStatus{i}", (int)model.DownloadStatus);
-                    insertCmd.Parameters.AddWithValue($"@cachedAt{i}", now);
-                }
+                    await using var insertCmd = _connection.CreateCommand();
+                    insertCmd.CommandText = """
+                                            INSERT INTO ollama_models
+                                                (name, family_name, parameters, size, format,
+                                                 quantization, architecture, block_count,
+                                                 context_length, embedding_length, additional_info,
+                                                 download_status, cached_at)
+                                            VALUES
+                                                (@name, @familyName, @parameters, @size, @format,
+                                                 @quantization, @architecture, @blockCount,
+                                                 @contextLength, @embeddingLength, @additionalInfo,
+                                                 @downloadStatus, @cachedAt)
+                                            """;
 
-                await insertCmd.ExecuteNonQueryAsync();
+                    insertCmd.Parameters.AddWithValue("@name", model.Name);
+                    insertCmd.Parameters.AddWithValue("@familyName", ExtractFamilyName(model.Name));
+                    insertCmd.Parameters.AddWithValue("@parameters", model.Parameters);
+                    insertCmd.Parameters.AddWithValue("@size", model.Size);
+                    insertCmd.Parameters.AddWithValue("@format", format ?? (object)DBNull.Value);
+                    insertCmd.Parameters.AddWithValue("@quantization", quantization ?? (object)DBNull.Value);
+                    insertCmd.Parameters.AddWithValue("@architecture", architecture ?? (object)DBNull.Value);
+                    insertCmd.Parameters.AddWithValue("@blockCount", blockCount ?? (object)DBNull.Value);
+                    insertCmd.Parameters.AddWithValue("@contextLength", contextLength ?? (object)DBNull.Value);
+                    insertCmd.Parameters.AddWithValue("@embeddingLength", embeddingLength ?? (object)DBNull.Value);
+                    insertCmd.Parameters.AddWithValue("@additionalInfo", additionalInfo ?? (object)DBNull.Value);
+                    insertCmd.Parameters.AddWithValue("@downloadStatus", (int)model.DownloadStatus);
+                    insertCmd.Parameters.AddWithValue("@cachedAt", now);
+
+                    await insertCmd.ExecuteNonQueryAsync();
+                }
             }
 
             var updateList = toUpdate.ToList();
-            if (updateList.Count != 0)
+
+            for (var offset = 0; offset < updateList.Count; offset += batchSize)
             {
-                await using var updateCmd = _connection.CreateCommand();
-                var nameParams = string.Join(", ", updateList.Select((_, i) => $"@name{i}"));
-
-                updateCmd.CommandText = $"""
-                                         UPDATE ollama_models
-                                         SET family_name = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @familyName{i}"))} END,
-                                             parameters = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @parameters{i}"))} END,
-                                             size = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @size{i}"))} END,
-                                             format = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @format{i}"))} END,
-                                             quantization = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @quantization{i}"))} END,
-                                             architecture = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @architecture{i}"))} END,
-                                             block_count = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @blockCount{i}"))} END,
-                                             context_length = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @contextLength{i}"))} END,
-                                             embedding_length = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @embeddingLength{i}"))} END,
-                                             additional_info = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @additionalInfo{i}"))} END,
-                                             download_status = CASE name {string.Join(" ", updateList.Select((_, i) => $"WHEN @name{i} THEN @downloadStatus{i}"))} END,
-                                             cached_at = @cachedAt
-                                         WHERE name IN ({nameParams})
-                                         """;
-
-                for (var i = 0; i < updateList.Count; i++)
+                var batch = updateList.Skip(offset).Take(batchSize);
+                foreach (var model in batch)
                 {
-                    var model = updateList[i];
-
-                    var (format, quantization, architecture, blockCount, contextLength, embeddingLength, additionalInfo
-                            ) =
+                    var (format, quantization, architecture, blockCount, contextLength, embeddingLength,
+                            additionalInfo) =
                         ExtractModelInfo(model.Info);
 
-                    updateCmd.Parameters.AddWithValue($"@name{i}", model.Name);
-                    updateCmd.Parameters.AddWithValue($"@familyName{i}", ExtractFamilyName(model.Name));
-                    updateCmd.Parameters.AddWithValue($"@parameters{i}", model.Parameters);
-                    updateCmd.Parameters.AddWithValue($"@size{i}", model.Size);
-                    updateCmd.Parameters.AddWithValue($"@format{i}", format ?? (object)DBNull.Value);
-                    updateCmd.Parameters.AddWithValue($"@quantization{i}", quantization ?? (object)DBNull.Value);
-                    updateCmd.Parameters.AddWithValue($"@architecture{i}", architecture ?? (object)DBNull.Value);
-                    updateCmd.Parameters.AddWithValue($"@blockCount{i}", blockCount ?? (object)DBNull.Value);
-                    updateCmd.Parameters.AddWithValue($"@contextLength{i}", contextLength ?? (object)DBNull.Value);
-                    updateCmd.Parameters.AddWithValue($"@embeddingLength{i}", embeddingLength ?? (object)DBNull.Value);
-                    updateCmd.Parameters.AddWithValue($"@additionalInfo{i}", additionalInfo ?? (object)DBNull.Value);
-                    updateCmd.Parameters.AddWithValue($"@downloadStatus{i}", (int)model.DownloadStatus);
-                }
+                    await using var updateCmd = _connection.CreateCommand();
+                    updateCmd.CommandText = """
+                                            UPDATE ollama_models
+                                            SET family_name = @familyName,
+                                                parameters = @parameters,
+                                                size = @size,
+                                                format = @format,
+                                                quantization = @quantization,
+                                                architecture = @architecture,
+                                                block_count = @blockCount,
+                                                context_length = @contextLength,
+                                                embedding_length = @embeddingLength,
+                                                additional_info = @additionalInfo,
+                                                download_status = @downloadStatus,
+                                                cached_at = @cachedAt
+                                            WHERE name = @name
+                                            """;
 
-                updateCmd.Parameters.AddWithValue("@cachedAt", now);
-                await updateCmd.ExecuteNonQueryAsync();
+                    updateCmd.Parameters.AddWithValue("@name", model.Name);
+                    updateCmd.Parameters.AddWithValue("@familyName", ExtractFamilyName(model.Name));
+                    updateCmd.Parameters.AddWithValue("@parameters", model.Parameters);
+                    updateCmd.Parameters.AddWithValue("@size", model.Size);
+                    updateCmd.Parameters.AddWithValue("@format", format ?? (object)DBNull.Value);
+                    updateCmd.Parameters.AddWithValue("@quantization", quantization ?? (object)DBNull.Value);
+                    updateCmd.Parameters.AddWithValue("@architecture", architecture ?? (object)DBNull.Value);
+                    updateCmd.Parameters.AddWithValue("@blockCount", blockCount ?? (object)DBNull.Value);
+                    updateCmd.Parameters.AddWithValue("@contextLength", contextLength ?? (object)DBNull.Value);
+                    updateCmd.Parameters.AddWithValue("@embeddingLength", embeddingLength ?? (object)DBNull.Value);
+                    updateCmd.Parameters.AddWithValue("@additionalInfo", additionalInfo ?? (object)DBNull.Value);
+                    updateCmd.Parameters.AddWithValue("@downloadStatus", (int)model.DownloadStatus);
+                    updateCmd.Parameters.AddWithValue("@cachedAt", now);
+
+                    await updateCmd.ExecuteNonQueryAsync();
+                }
             }
 
             var deleteList = toDelete.ToList();

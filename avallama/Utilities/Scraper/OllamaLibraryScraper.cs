@@ -42,7 +42,7 @@ public static class OllamaLibraryScraper
         );
     }
 
-    public static async IAsyncEnumerable<OllamaModel> GetAllOllamaModelsAsync()
+    public static async Task<OllamaLibraryScraperResult> GetAllOllamaModelsAsync()
     {
         var families = await GetOllamaFamiliesAsync();
         var channel = Channel.CreateUnbounded<OllamaModel>();
@@ -63,7 +63,7 @@ public static class OllamaLibraryScraper
             }
         }).ToList();
 
-        // it's using fire and forget on purpose, if we awaited this task, streaming would not work cause it would wait for all producers to finish
+        // this uses fire and forget on purpose, if we awaited this task, streaming would not work because it would wait for all producers to finish
         _ = Task.Run(async () =>
         {
             try
@@ -76,9 +76,18 @@ public static class OllamaLibraryScraper
             }
         });
 
-        await foreach (var model in channel.Reader.ReadAllAsync())
+        return new OllamaLibraryScraperResult()
         {
-            yield return model;
+            Models = StreamModels(),
+            Families = families
+        };
+
+        async IAsyncEnumerable<OllamaModel> StreamModels()
+        {
+            await foreach (var model in channel.Reader.ReadAllAsync())
+            {
+                yield return model;
+            }
         }
     }
 
@@ -201,5 +210,11 @@ public static class OllamaLibraryScraper
 
             yield return model;
         }
+    }
+
+    public sealed class OllamaLibraryScraperResult
+    {
+        public required IAsyncEnumerable<OllamaModel> Models { get; init; }
+        public required IList<OllamaModelFamily> Families { get; init; }
     }
 }

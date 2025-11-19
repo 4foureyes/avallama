@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using avallama.Constants;
 using avallama.Models;
@@ -47,11 +46,19 @@ public partial class ScraperViewModel : PageViewModel
             await foreach (var model in _ollamaService.StreamAllScrapedModelsAsync())
             {
                 _receivedModels++;
-                ProgressText = string.Format(LocalizationService.GetString("SCRAPER_MODELS_FOUND"), _receivedModels);
+                ProgressText = string.Format(
+                    LocalizationService.GetString("SCRAPER_MODELS_FOUND"),
+                    _receivedModels
+                );
                 models.Add(model);
             }
 
             ProgressText = LocalizationService.GetString("SCRAPER_CACHING_MODELS");
+
+            // This "calls" the scraper again, but the result is cached in OllamaService
+            var families = await _ollamaService.GetScrapedFamiliesAsync();
+            await _modelCacheService.CacheModelFamilyAsync(families);
+
             await _modelCacheService.CacheModelsAsync(models);
             // TODO: befejezni, dialogot megjeleníteni és dialog actionnél esetleg usert átvinni HomeView-be
             ProgressText = "done";

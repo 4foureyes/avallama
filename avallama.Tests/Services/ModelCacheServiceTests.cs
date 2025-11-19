@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using avallama.Models;
@@ -668,6 +669,105 @@ public class ModelCacheServiceTests : IAsyncDisposable
         Assert.Equal(100, final.Count);
     }
 
+    // Stress tests
+
+    [Fact]
+    public async Task CacheOllamaModelFamilyAsync_StressTest_InsertsThousandFamilies()
+    {
+        const int familyCount = 1000;
+
+        var modelFamilies = CreateModelFamilies(familyCount);
+
+        var sw = Stopwatch.StartNew();
+        await _modelCacheService.CacheModelFamilyAsync(modelFamilies);
+        sw.Stop();
+
+        await using var cmd = _connection.CreateCommand();
+        cmd.CommandText = "SELECT COUNT(*) FROM model_families";
+        var count = (long)(await cmd.ExecuteScalarAsync() ?? 0);
+
+        Assert.Equal(familyCount, count);
+        Assert.True(sw.Elapsed < TimeSpan.FromSeconds(5), $"Stress test took too long: {sw.Elapsed}");
+    }
+
+    [Fact]
+    public async Task CacheOllamaModelFamilyAndModels_StressTest_InsertsFifteenThousandEach()
+    {
+        // trying to future-proof here
+        const int familyCount = 15000;
+        const int modelCount = 15000;
+
+        var families = CreateModelFamilies(familyCount);
+
+        var sw = Stopwatch.StartNew();
+        await _modelCacheService.CacheModelFamilyAsync(families);
+
+        var models = CreateModelsForFamilies(families, modelCount);
+        await _modelCacheService.CacheModelsAsync(models);
+        sw.Stop();
+
+        await using var cmdFamilies = _connection.CreateCommand();
+        cmdFamilies.CommandText = "SELECT COUNT(*) FROM model_families";
+        var familyRowCount = (long)(await cmdFamilies.ExecuteScalarAsync() ?? 0);
+
+        await using var cmdModels = _connection.CreateCommand();
+        cmdModels.CommandText = "SELECT COUNT(*) FROM ollama_models";
+        var modelRowCount = (long)(await cmdModels.ExecuteScalarAsync() ?? 0);
+
+        Assert.Equal(familyCount, familyRowCount);
+        Assert.Equal(modelCount, modelRowCount);
+
+        Assert.True(sw.Elapsed < TimeSpan.FromSeconds(10), $"High volume stress test took too long: {sw.Elapsed}");
+    }
+
+    private static List<OllamaModelFamily> CreateModelFamilies(int count)
+    {
+        var now = DateTime.UtcNow;
+        var list = new List<OllamaModelFamily>(count);
+
+        for (var i = 0; i < count; i++)
+        {
+            list.Add(new OllamaModelFamily
+            {
+                Name = $"stress-family-{i}",
+                Description = $"Stress Test Model Family {i}",
+                PullCount = i,
+                Labels = new List<string> { $"tag-{i}", $"tag-{i + 1}" },
+                TagCount = 2,
+                LastUpdated = now
+            });
+        }
+
+        return list;
+    }
+
+    private static List<OllamaModel> CreateModelsForFamilies(
+        IReadOnlyList<OllamaModelFamily> families,
+        int count)
+    {
+        var list = new List<OllamaModel>(count);
+        var max = Math.Min(count, families.Count);
+
+        for (var i = 0; i < max; i++)
+        {
+            var family = families[i];
+            list.Add(new OllamaModel
+            {
+                Name = $"{family.Name}:model-{i}",
+                Parameters = 1_000_000_000 + i,
+                DownloadStatus = ModelDownloadStatus.Downloaded,
+                RunsSlow = false,
+                Info = new Dictionary<string, string>
+                {
+                    { "quantization", $"Q{i % 8}" },
+                    { "format", "gguf" }
+                },
+                Size = 1024L * (i + 1)
+            });
+        }
+
+        return list;
+    }
 
     public async ValueTask DisposeAsync()
     {
