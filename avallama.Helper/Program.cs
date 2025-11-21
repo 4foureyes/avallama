@@ -3,7 +3,7 @@
 
 using System.Diagnostics;
 
-namespace avallama.helper;
+namespace avallama.Helper;
 
 /// <summary>
 ///  Avallama helper process
