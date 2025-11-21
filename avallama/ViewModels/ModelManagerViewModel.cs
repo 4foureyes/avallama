@@ -20,6 +20,7 @@ public partial class ModelManagerViewModel : PageViewModel
 {
     private readonly DialogService _dialogService;
     private readonly OllamaService _ollamaService;
+    private readonly ModelCacheService _modelCacheService;
 
     // ide lesz betöltve az összes model adat
     private IEnumerable<OllamaModel> _modelsData = [];
@@ -83,11 +84,12 @@ public partial class ModelManagerViewModel : PageViewModel
         }
     }
 
-    public ModelManagerViewModel(DialogService dialogService, OllamaService ollamaService)
+    public ModelManagerViewModel(DialogService dialogService, OllamaService ollamaService, ModelCacheService modelCacheService)
     {
         Page = ApplicationPage.ModelManager;
         _dialogService = dialogService;
         _ollamaService = ollamaService;
+        _modelCacheService = modelCacheService;
 
         _ = LoadModelsData();
 
@@ -102,7 +104,9 @@ public partial class ModelManagerViewModel : PageViewModel
 
     private async Task LoadModelsData()
     {
-        // TODO: ModelCacheServiceből lekérni a modellek adatait
+        // Get models data from cache excluding cloud models
+        _modelsData = (await _modelCacheService.GetCachedModelsAsync())
+            .Where(m => !m.Name.EndsWith("-cloud", StringComparison.OrdinalIgnoreCase));
 
         Paginate();
         IsPaginationButtonVisible = _paginationIndex < _modelsData.Count() - 1;

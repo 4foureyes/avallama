@@ -517,9 +517,15 @@ public class ModelCacheService : IModelCacheService
 
         using (DatabaseLock.Instance.AcquireReadLock())
         {
+            // Preload model families into a dictionary for quick lookup
+            var familiesByName = await GetModelFamiliesByNameAsync();
+
             await using var cmd = _connection.CreateCommand();
             cmd.CommandText =
-                "SELECT name, family_name, parameters, size, format, quantization, architecture, block_count, context_length, embedding_length, additional_info, download_status FROM ollama_models ORDER BY name NULLS LAST";
+                "SELECT name, family_name, parameters, size, format, quantization, architecture, " +
+                "block_count, context_length, embedding_length, additional_info, download_status " +
+                "FROM ollama_models ORDER BY name NULLS LAST";
+
             await using var reader = await cmd.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -534,7 +540,8 @@ public class ModelCacheService : IModelCacheService
 
                 if (!reader.IsDBNull(10))
                 {
-                    var additionalInfo = JsonSerializer.Deserialize<Dictionary<string, string>>(reader.GetString(10));
+                    var additionalInfo =
+                        JsonSerializer.Deserialize<Dictionary<string, string>>(reader.GetString(10));
                     if (additionalInfo != null)
                     {
                         foreach (var kvp in additionalInfo)
@@ -544,9 +551,15 @@ public class ModelCacheService : IModelCacheService
                     }
                 }
 
+                var name = reader.GetString(0);
+                var familyName = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+
+                familiesByName.TryGetValue(familyName, out var family);
+
                 var model = new OllamaModel
                 {
-                    Name = reader.GetString(0),
+                    Name = name,
+                    Family = family,
                     Parameters = reader.IsDBNull(2) ? 0 : reader.GetInt64(2),
                     Size = reader.GetInt64(3),
                     Info = info,
@@ -558,5 +571,40 @@ public class ModelCacheService : IModelCacheService
         }
 
         return models;
+    }
+
+    private async Task<Dictionary<string, OllamaModelFamily>> GetModelFamiliesByNameAsync()
+    {
+        var families = new Dictionary<string, OllamaModelFamily>(StringComparer.Ordinal);
+
+        // Lock held by caller
+        await using var cmd = _connection.CreateCommand();
+        cmd.CommandText =
+            "SELECT name, description, pull_count, labels, tag_count, last_updated FROM model_families";
+
+        await using var reader = await cmd.ExecuteReaderAsync();
+        while (await reader.ReadAsync())
+        {
+            var name = reader.GetString(0);
+            var description = reader.IsDBNull(1) ? string.Empty : reader.GetString(1);
+            var pullCount = reader.GetInt32(2);
+            var labels = reader.IsDBNull(3)
+                ? []
+                : JsonSerializer.Deserialize<List<string>>(reader.GetString(3)) ?? [];
+            var tagCount = reader.GetInt32(4);
+            var lastUpdated = reader.IsDBNull(5) ? DateTime.MinValue : reader.GetDateTime(5);
+
+            families[name] = new OllamaModelFamily
+            {
+                Name = name,
+                Description = description,
+                PullCount = pullCount,
+                Labels = labels,
+                TagCount = tagCount,
+                LastUpdated = lastUpdated
+            };
+        }
+
+        return families;
     }
 }
