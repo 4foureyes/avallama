@@ -28,9 +28,9 @@ log "Compiling native macOS source code"
 clang -dynamiclib -framework Cocoa -arch x86_64 -arch arm64 -o "$DYLIB_OUTPUT" "$NATIVE_SRC"
 
 log "Running dotnet publish for osx-x64"
-dotnet publish "$PROJECT" -c Release -r osx-x64 --self-contained true -o mac-dist-x64 /p:PublishSingleFile=true
+dotnet publish "$PROJECT" -v n -c Release -r osx-x64 --self-contained true -o mac-dist-x64 /p:PublishSingleFile=true
 log "Running dotnet publish for osx-arm64"
-dotnet publish "$PROJECT" -c Release -r osx-arm64 --self-contained true -o mac-dist-arm64 /p:PublishSingleFile=true
+dotnet publish "$PROJECT" -v n -c Release -r osx-arm64 --self-contained true -o mac-dist-arm64 /p:PublishSingleFile=true
 
 create_app_structure() {
   local arch_dir="$1"
