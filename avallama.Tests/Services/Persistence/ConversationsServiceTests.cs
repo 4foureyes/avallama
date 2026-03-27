@@ -65,6 +65,35 @@ public class ConversationServiceTests : IDisposable
 
                           CREATE INDEX IF NOT EXISTS idx_conversations_last_msg
                           ON conversations (last_message_sent_at);
+
+                          CREATE TABLE IF NOT EXISTS model_families (
+                          name TEXT PRIMARY KEY,
+                          description TEXT NOT NULL,
+                          pull_count INTEGER NOT NULL DEFAULT 0,
+                          labels TEXT,
+                          tag_count INTEGER NOT NULL DEFAULT 0,
+                          last_updated TEXT,
+                          cached_at TEXT NOT NULL,
+                          UNIQUE(name)
+                          );
+
+                          CREATE TABLE IF NOT EXISTS ollama_models (
+                          name TEXT PRIMARY KEY,
+                          family_name TEXT NOT NULL,
+                          parameters INTEGER,
+                          size INTEGER NOT NULL,
+                          format TEXT,
+                          quantization TEXT,
+                          architecture TEXT,
+                          block_count INTEGER,
+                          context_length INTEGER,
+                          embedding_length INTEGER,
+                          additional_info TEXT,
+                          is_downloaded INTEGER NOT NULL DEFAULT 0,
+                          avg_token_per_sec REAL,
+                          cached_at TEXT NOT NULL,
+                          FOREIGN KEY (family_name) REFERENCES model_families(name) ON DELETE CASCADE
+                          );
                           """;
         cmd.ExecuteNonQuery();
     }
@@ -287,6 +316,104 @@ public class ConversationServiceTests : IDisposable
     }
 
     [Fact]
+    public async Task InsertMessage_WithGeneratedMessages_ShouldUpdateModelAverageTokenPerSec()
+    {
+        const string familyName = "llama-family";
+        const string modelName = "llama3.2:3b";
+        await SetupModelAsync(familyName, modelName);
+
+        var conversationId = await _conversationService.CreateConversation(
+            new Conversation(Guid.Empty, "Average Test", new List<Message>()));
+
+        await _conversationService.InsertMessage(
+            conversationId,
+            new GeneratedMessage("First", 10.0),
+            modelName,
+            10.0);
+
+        Assert.Equal(10.0, await GetModelAvgTokenPerSecAsync(modelName));
+
+        await _conversationService.InsertMessage(
+            conversationId,
+            new GeneratedMessage("Second", 20.0),
+            modelName,
+            20.0);
+
+        Assert.Equal(15.0, await GetModelAvgTokenPerSecAsync(modelName));
+    }
+
+    [Fact]
+    public async Task InsertMessage_WithDifferentModels_ShouldCalculateAveragesIndependently()
+    {
+        const string familyName = "llama-family";
+        const string firstModel = "llama3.2:3b";
+        const string secondModel = "mistral:7b";
+        await SetupModelAsync(familyName, firstModel);
+        await SetupModelAsync(familyName, secondModel);
+
+        var conversationId = await _conversationService.CreateConversation(
+            new Conversation(Guid.Empty, "Per Model Average", new List<Message>()));
+
+        await _conversationService.InsertMessage(
+            conversationId,
+            new GeneratedMessage("A1", 10.0),
+            firstModel,
+            10.0);
+        await _conversationService.InsertMessage(
+            conversationId,
+            new GeneratedMessage("B1", 40.0),
+            secondModel,
+            40.0);
+        await _conversationService.InsertMessage(
+            conversationId,
+            new GeneratedMessage("A2", 20.0),
+            firstModel,
+            20.0);
+
+        Assert.Equal(15.0, await GetModelAvgTokenPerSecAsync(firstModel));
+        Assert.Equal(40.0, await GetModelAvgTokenPerSecAsync(secondModel));
+    }
+
+    [Fact]
+    public async Task InsertMessage_WithUserMessage_ShouldNotUpdateModelAverageTokenPerSec()
+    {
+        const string familyName = "llama-family";
+        const string modelName = "llama3.2:3b";
+        await SetupModelAsync(familyName, modelName, avgTokenPerSec: 12.0);
+
+        var conversationId = await _conversationService.CreateConversation(
+            new Conversation(Guid.Empty, "User Message Average", new List<Message>()));
+
+        await _conversationService.InsertMessage(
+            conversationId,
+            new Message("User prompt"),
+            null,
+            null);
+
+        Assert.Equal(12.0, await GetModelAvgTokenPerSecAsync(modelName));
+    }
+
+    [Fact]
+    public async Task InsertMessage_WithFailedMessage_ShouldNotUpdateModelAverageTokenPerSec()
+    {
+        const string familyName = "llama-family";
+        const string modelName = "llama3.2:3b";
+        await SetupModelAsync(familyName, modelName, avgTokenPerSec: 25.0);
+
+        var conversationId = await _conversationService.CreateConversation(
+            new Conversation(Guid.Empty, "Failed Message Average", new List<Message>()));
+
+        var insertedId = await _conversationService.InsertMessage(
+            conversationId,
+            new FailedMessage(),
+            modelName,
+            42.0);
+
+        Assert.Equal(-1, insertedId);
+        Assert.Equal(25.0, await GetModelAvgTokenPerSecAsync(modelName));
+    }
+
+    [Fact]
     public async Task DeleteConversation_DeletesConversation()
     {
         var id = await _conversationService.CreateConversation(
@@ -306,6 +433,43 @@ public class ConversationServiceTests : IDisposable
         var messages = await _conversationService.GetMessagesForConversation(
             new Conversation(id, "Test", new List<Message>()));
         Assert.Empty(messages);
+    }
+
+    private async Task SetupModelAsync(string familyName, string modelName, double? avgTokenPerSec = null)
+    {
+        var now = DateTime.Now;
+
+        await using var familyCmd = _connection.CreateCommand();
+        familyCmd.CommandText =
+            "INSERT OR IGNORE INTO model_families (name, description, pull_count, tag_count, cached_at) VALUES (@Name, @Description, 0, 0, @CachedAt)";
+        familyCmd.Parameters.AddWithValue("@Name", familyName);
+        familyCmd.Parameters.AddWithValue("@Description", "Test model family");
+        familyCmd.Parameters.AddWithValue("@CachedAt", now);
+        await familyCmd.ExecuteNonQueryAsync();
+
+        await using var modelCmd = _connection.CreateCommand();
+        modelCmd.CommandText =
+            "INSERT INTO ollama_models (name, family_name, size, avg_token_per_sec, cached_at) VALUES (@Name, @FamilyName, 1, @AvgTokenPerSec, @CachedAt)";
+        modelCmd.Parameters.AddWithValue("@Name", modelName);
+        modelCmd.Parameters.AddWithValue("@FamilyName", familyName);
+        modelCmd.Parameters.AddWithValue("@AvgTokenPerSec", avgTokenPerSec ?? (object)DBNull.Value);
+        modelCmd.Parameters.AddWithValue("@CachedAt", now);
+        await modelCmd.ExecuteNonQueryAsync();
+    }
+
+    private async Task<double?> GetModelAvgTokenPerSecAsync(string modelName)
+    {
+        await using var cmd = _connection.CreateCommand();
+        cmd.CommandText = "SELECT avg_token_per_sec FROM ollama_models WHERE name = @ModelName";
+        cmd.Parameters.AddWithValue("@ModelName", modelName);
+        var result = await cmd.ExecuteScalarAsync();
+
+        if (result is null || result == DBNull.Value)
+        {
+            return null;
+        }
+
+        return Convert.ToDouble(result);
     }
 
     public void Dispose()

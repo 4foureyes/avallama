@@ -70,6 +70,7 @@ public class DatabaseInitService : IDatabaseInitService
                                            embedding_length INTEGER,
                                            additional_info TEXT,
                                            is_downloaded INTEGER NOT NULL DEFAULT 0,
+                                           avg_token_per_sec REAL,
                                            cached_at TEXT NOT NULL,
                                            FOREIGN KEY (family_name) REFERENCES model_families(name) ON DELETE CASCADE
                                            );
@@ -158,15 +159,20 @@ public class DatabaseInitService : IDatabaseInitService
         return storedHash != currentHash;
     }
 
+    /// <summary>
+    /// Method that migrates legacy database schemas to the current canonical schema.
+    /// There are currently 2 migrations that this method can complete:
+    /// Migration of the pre-v0.3.0 "download_status" column to "is_downloaded", and
+    /// migration of the pre-v0.3.2 "ollama_models" table to add a new "avg_tokens_per_sec" column.
+    /// </summary>
+    /// <param name="conn">The database connection</param>
+    /// <exception cref="InvalidOperationException">Thrown when schema migration fails.</exception>
     private static async Task MigrateSchemaAsync(SqliteConnection conn)
     {
         await using var transaction = await conn.BeginTransactionAsync();
         try
         {
-            await using var checkCmd = conn.CreateCommand();
-            checkCmd.CommandText =
-                "SELECT COUNT(*) FROM pragma_table_info('ollama_models') WHERE name='download_status'";
-            var hasDownloadStatusColumn = (long)(await checkCmd.ExecuteScalarAsync() ?? 0L) > 0;
+            var hasLegacyDownloadColumn = await HasColumnAsync(conn, "ollama_models", "download_status");
 
             await using var metaCmd = conn.CreateCommand();
             metaCmd.CommandText = """
@@ -177,10 +183,8 @@ public class DatabaseInitService : IDatabaseInitService
                                   """;
             await metaCmd.ExecuteNonQueryAsync();
 
-            // if the user has the previous "download_status" column then we migrate the db to the new "is_downloaded" column
-            // keep this migration script here indefinitely (possibly removeable in a 1.0.0 release)
-            // maybe extract this if we'll have more migration codes
-            if (hasDownloadStatusColumn)
+            // Migrate legacy pre-v0.3.0 table structure (download_status -> is_downloaded)
+            if (hasLegacyDownloadColumn)
             {
                 await using var migrationCmd = conn.CreateCommand();
                 migrationCmd.CommandText = """
@@ -199,6 +203,7 @@ public class DatabaseInitService : IDatabaseInitService
                                                    embedding_length INTEGER,
                                                    additional_info TEXT,
                                                    is_downloaded INTEGER NOT NULL DEFAULT 0, -- new column from v0.3.0
+                                                   avg_token_per_sec REAL, -- new column from v0.3.2
                                                    cached_at TEXT NOT NULL,
                                                    FOREIGN KEY (family_name) REFERENCES model_families(name) ON DELETE CASCADE
                                                );
@@ -230,7 +235,17 @@ public class DatabaseInitService : IDatabaseInitService
                                            """;
                 await migrationCmd.ExecuteNonQueryAsync();
             }
-            else
+
+            // Add new avg_token_per_sec column to databases pre-v0.3.2
+            var hasAvgTokenPerSecColumn = await HasColumnAsync(conn, "ollama_models", "avg_token_per_sec");
+            if (!hasAvgTokenPerSecColumn)
+            {
+                await using var addTpsColumnCmd = conn.CreateCommand();
+                addTpsColumnCmd.CommandText = "ALTER TABLE ollama_models ADD COLUMN avg_token_per_sec REAL";
+                await addTpsColumnCmd.ExecuteNonQueryAsync();
+            }
+
+            if (!hasLegacyDownloadColumn && hasAvgTokenPerSecColumn)
             {
                 await using var schemaCmd = conn.CreateCommand();
                 schemaCmd.CommandText = CanonicalSchema;
@@ -278,5 +293,14 @@ public class DatabaseInitService : IDatabaseInitService
                           """;
         var count = (long)(await cmd.ExecuteScalarAsync() ?? 0L);
         return count == 2;
+    }
+
+    private static async Task<bool> HasColumnAsync(SqliteConnection connection, string tableName, string columnName)
+    {
+        await using var cmd = connection.CreateCommand();
+        cmd.CommandText = $"SELECT COUNT(*) FROM pragma_table_info('{tableName}') WHERE name=@ColumnName";
+        cmd.Parameters.AddWithValue("@ColumnName", columnName);
+        var count = (long)(await cmd.ExecuteScalarAsync() ?? 0L);
+        return count > 0;
     }
 }
