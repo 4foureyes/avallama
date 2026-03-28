@@ -19,7 +19,7 @@ mkdir -p src
 
 log "Running dotnet publish"
 dotnet publish "${PROJECT}" \
-  --verbosity quiet \
+  --verbosity normal \
   --nologo \
   --configuration Release \
   --self-contained true \

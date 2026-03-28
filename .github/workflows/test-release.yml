@@ -14,6 +14,7 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
   DOTNET_NOLOGO: "true"
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
+  RELEASE_VERSION: ${{ github.event.inputs.version || '0.0.0' }}
 
 permissions:
   contents: read
@@ -73,10 +74,6 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Set version var
-        run: |
-          "VERSION=${{ github.event.inputs.version }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
       - name: Restore & Publish
         run: dotnet publish avallama/avallama.csproj -c Release -r win-x64 --self-contained true -o win-dist /p:PublishSingleFile=true
 
@@ -89,7 +86,7 @@ jobs:
       - name: Build Installer
         run: |
           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" `
-            /DAppVersion="${env:VERSION}" `
+            /DAppVersion="${{ env.RELEASE_VERSION }}" `
             scripts\installer.iss
 
   build-debian:
@@ -105,13 +102,10 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Set version var
-        run: echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-
       - name: Run Debian packaging script
         run: |
           chmod +x scripts/package-debian.sh
-          ./scripts/package-debian.sh "${{ env.VERSION }}"
+          ./scripts/package-debian.sh "${{ env.RELEASE_VERSION }}"
 
   build-arch:
     name: (Release Test) Build Arch Package
@@ -130,9 +124,6 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v6
 
-      - name: Set version var
-        run: echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-
       - name: Run Arch packaging script
         run: |
           useradd -m builder
@@ -140,7 +131,7 @@ jobs:
           cp -r avallama /tmp/build/
           cp -r scripts /tmp/build/
           chown -R builder:builder /tmp/build
-          sudo -u builder bash -c "cd /tmp/build && chmod +x scripts/package-arch.sh && scripts/package-arch.sh '${{ env.VERSION }}'"
+          sudo -u builder bash -c "cd /tmp/build && chmod +x scripts/package-arch.sh && scripts/package-arch.sh '${{ env.RELEASE_VERSION }}'"
 
 
   build-macos:
@@ -159,10 +150,7 @@ jobs:
       - name: Install create-dmg tool
         run: brew install create-dmg
 
-      - name: Set version var
-        run: echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_ENV
-
       - name: Run macOS packaging script
         run: |
           chmod +x scripts/package-macos.sh
-          ./scripts/package-macos.sh "${{ env.VERSION }}"
+          ./scripts/package-macos.sh "${{ env.RELEASE_VERSION }}"

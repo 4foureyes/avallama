@@ -84,12 +84,12 @@ public class ConversationService : IConversationService, IDisposable
     public async Task<long> InsertMessage(Guid conversationId, Message message, string? modelName, double? tokenPerSec)
     {
         if (message is FailedMessage) return -1;
+        long newId = 0;
 
         using (DatabaseLock.Instance.AcquireWriteLock())
         {
             await using var transaction = await _connection.BeginTransactionAsync();
             var now = DateTime.Now;
-            long newId = 0;
 
             try
             {
@@ -131,8 +131,55 @@ public class ConversationService : IConversationService, IDisposable
                 // TODO: InterruptService
                 throw;
             }
-
+        }
+        // Update model's token/sec (this cannot be in the transaction, as it requires a query to calculate)
+        if (message is not GeneratedMessage || modelName is null)
+        {
             return newId;
+        }
+
+        var avgTokenPerSec = await CalculateModelAvgTokenPerSecAsync(modelName);
+        await UpdateModelAvgTokenPerSecAsync(avgTokenPerSec, modelName);
+        return newId;
+    }
+
+    private async Task<double> CalculateModelAvgTokenPerSecAsync(string modelName)
+    {
+        List<double> tokenPerSecValues = [];
+        using (DatabaseLock.Instance.AcquireReadLock())
+        {
+            await using var cmd = _connection.CreateCommand();
+            cmd.CommandText =
+                "SELECT tokens_per_sec FROM messages WHERE model_name IS NOT NULL AND model_name = @ModelName";
+            cmd.Parameters.AddWithValue("@ModelName", modelName);
+            await using var reader = await cmd.ExecuteReaderAsync();
+            if (!reader.HasRows) return 0;
+
+            try
+            {
+                while (await reader.ReadAsync())
+                {
+                    tokenPerSecValues.Add((double)reader["tokens_per_sec"]);
+                }
+            }
+            catch (Exception)
+            {
+                // TODO: InterruptService
+                throw;
+            }
+        }
+        return tokenPerSecValues.Average();
+    }
+
+    private async Task UpdateModelAvgTokenPerSecAsync(double avgTokenPerSec, string modelName)
+    {
+        using (DatabaseLock.Instance.AcquireWriteLock())
+        {
+            await using var cmd = _connection.CreateCommand();
+            cmd.CommandText = "UPDATE ollama_models SET avg_token_per_sec = @AverageTokenPerSec WHERE name = @ModelName";
+            cmd.Parameters.AddWithValue("@AverageTokenPerSec", avgTokenPerSec);
+            cmd.Parameters.AddWithValue("@ModelName", modelName);
+            await cmd.ExecuteNonQueryAsync();
         }
     }
 

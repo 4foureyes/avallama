@@ -3,10 +3,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading.Tasks;
-using avallama.Services;
 using avallama.Services.Persistence;
 using avallama.Tests.Extensions;
+using Microsoft.Data.Sqlite;
 using Xunit;
 
 namespace avallama.Tests.Services.Persistence;
@@ -168,5 +169,140 @@ public class DatabaseInitServiceTests
 
         var planText = string.Join(" ", queryPlan);
         Assert.Contains("idx_models_name_asc", planText, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task MigrateSchemaAsync_LegacyDownloadStatus_MigratesToIsDownloaded_AndAddsAvgTokenPerSec()
+    {
+        await using var conn = new SqliteConnection("Data Source=:memory:");
+        await conn.OpenAsync();
+
+        await using (var setupCmd = conn.CreateCommand())
+        {
+            setupCmd.CommandText = """
+                                   CREATE TABLE model_families (
+                                       name TEXT PRIMARY KEY,
+                                       description TEXT NOT NULL,
+                                       pull_count INTEGER NOT NULL DEFAULT 0,
+                                       labels TEXT,
+                                       tag_count INTEGER NOT NULL DEFAULT 0,
+                                       last_updated TEXT,
+                                       cached_at TEXT NOT NULL
+                                   );
+
+                                   CREATE TABLE ollama_models (
+                                       name TEXT PRIMARY KEY,
+                                       family_name TEXT NOT NULL,
+                                       parameters INTEGER,
+                                       size INTEGER NOT NULL,
+                                       format TEXT,
+                                       quantization TEXT,
+                                       architecture TEXT,
+                                       block_count INTEGER,
+                                       context_length INTEGER,
+                                       embedding_length INTEGER,
+                                       additional_info TEXT,
+                                       download_status INTEGER NOT NULL,
+                                       cached_at TEXT NOT NULL,
+                                       FOREIGN KEY (family_name) REFERENCES model_families(name) ON DELETE CASCADE
+                                   );
+
+                                   INSERT INTO model_families (name, description, pull_count, tag_count, cached_at)
+                                   VALUES ('family-1', 'Test Family', 1, 1, '2024-01-01T00:00:00Z');
+
+                                   INSERT INTO ollama_models (name, family_name, size, download_status, cached_at)
+                                   VALUES ('model-1', 'family-1', 100, 5, '2024-01-01T00:00:00Z');
+                                   """;
+            await setupCmd.ExecuteNonQueryAsync();
+        }
+
+        await InvokeMigrateSchemaAsync(conn);
+
+        Assert.False(await HasColumnAsync(conn, "ollama_models", "download_status"));
+        Assert.True(await HasColumnAsync(conn, "ollama_models", "is_downloaded"));
+        Assert.True(await HasColumnAsync(conn, "ollama_models", "avg_token_per_sec"));
+
+        await using var verifyCmd = conn.CreateCommand();
+        verifyCmd.CommandText = "SELECT is_downloaded FROM ollama_models WHERE name = 'model-1'";
+        var migratedFlag = (long)(await verifyCmd.ExecuteScalarAsync() ?? 0L);
+        Assert.Equal(1L, migratedFlag);
+    }
+
+    [Fact]
+    public async Task MigrateSchemaAsync_MissingAvgTokenPerSec_AddsColumnWithoutLegacyMigration()
+    {
+        await using var conn = new SqliteConnection("Data Source=:memory:");
+        await conn.OpenAsync();
+
+        await using (var setupCmd = conn.CreateCommand())
+        {
+            setupCmd.CommandText = """
+                                   CREATE TABLE model_families (
+                                       name TEXT PRIMARY KEY,
+                                       description TEXT NOT NULL,
+                                       pull_count INTEGER NOT NULL DEFAULT 0,
+                                       labels TEXT,
+                                       tag_count INTEGER NOT NULL DEFAULT 0,
+                                       last_updated TEXT,
+                                       cached_at TEXT NOT NULL
+                                   );
+
+                                   CREATE TABLE ollama_models (
+                                       name TEXT PRIMARY KEY,
+                                       family_name TEXT NOT NULL,
+                                       parameters INTEGER,
+                                       size INTEGER NOT NULL,
+                                       format TEXT,
+                                       quantization TEXT,
+                                       architecture TEXT,
+                                       block_count INTEGER,
+                                       context_length INTEGER,
+                                       embedding_length INTEGER,
+                                       additional_info TEXT,
+                                       is_downloaded INTEGER NOT NULL DEFAULT 0,
+                                       cached_at TEXT NOT NULL,
+                                       FOREIGN KEY (family_name) REFERENCES model_families(name) ON DELETE CASCADE
+                                   );
+
+                                   INSERT INTO model_families (name, description, pull_count, tag_count, cached_at)
+                                   VALUES ('family-2', 'Test Family 2', 1, 1, '2024-01-01T00:00:00Z');
+
+                                   INSERT INTO ollama_models (name, family_name, size, is_downloaded, cached_at)
+                                   VALUES ('model-2', 'family-2', 200, 0, '2024-01-01T00:00:00Z');
+                                   """;
+            await setupCmd.ExecuteNonQueryAsync();
+        }
+
+        await InvokeMigrateSchemaAsync(conn);
+
+        Assert.False(await HasColumnAsync(conn, "ollama_models", "download_status"));
+        Assert.True(await HasColumnAsync(conn, "ollama_models", "is_downloaded"));
+        Assert.True(await HasColumnAsync(conn, "ollama_models", "avg_token_per_sec"));
+
+        await using var verifyCmd = conn.CreateCommand();
+        verifyCmd.CommandText = "SELECT COUNT(*) FROM ollama_models WHERE name = 'model-2'";
+        var rowCount = (long)(await verifyCmd.ExecuteScalarAsync() ?? 0L);
+        Assert.Equal(1L, rowCount);
+    }
+
+    private static async Task InvokeMigrateSchemaAsync(SqliteConnection conn)
+    {
+        var method = typeof(DatabaseInitService).GetMethod(
+            "MigrateSchemaAsync",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        Assert.NotNull(method);
+
+        var task = method.Invoke(null, [conn]) as Task;
+        Assert.NotNull(task);
+        await task;
+    }
+
+    private static async Task<bool> HasColumnAsync(SqliteConnection conn, string tableName, string columnName)
+    {
+        await using var cmd = conn.CreateCommand();
+        cmd.CommandText = $"SELECT COUNT(*) FROM pragma_table_info('{tableName}') WHERE name = @name";
+        cmd.Parameters.AddWithValue("@name", columnName);
+        var count = (long)(await cmd.ExecuteScalarAsync() ?? 0L);
+        return count > 0;
     }
 }
