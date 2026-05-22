@@ -30,7 +30,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
     <!-- Versions -->
     <PropertyGroup>
-        <AvaloniaVersion>11.3.9</AvaloniaVersion>
+        <AvaloniaVersion>11.3.16</AvaloniaVersion>
         <DotNetLibVersion>10.0.0</DotNetLibVersion>
     </PropertyGroup>
 
