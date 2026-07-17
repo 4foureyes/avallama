@@ -12,7 +12,6 @@ Licensed under the MIT License. See LICENSE file for details.
              xmlns:vm="clr-namespace:avallama.ViewModels"
              xmlns:controls="clr-namespace:avallama.Controls"
              xmlns:services="clr-namespace:avallama.Services"
-             xmlns:templatedControls="clr-namespace:avallama.Styles.TemplatedControls"
              xmlns:models="clr-namespace:avallama.Models"
              xmlns:converters="clr-namespace:avallama.Converters"
              x:DataType="vm:ConversationViewModel">
@@ -23,18 +22,17 @@ Licensed under the MIT License. See LICENSE file for details.
 
     <Grid>
 
-        <!-- TODO: change IsVisible's value to bind to ConversationVM's IsInitializing property -->
-
         <!-- Initializing spinner -->
         <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    IsVisible="False">
+                    IsVisible="{Binding IsInitializing}">
 
             <controls:DynamicSvg Path="/Assets/Svg/spinner.svg"
                                  FillColor="{DynamicResource Primary}"
                                  Height="64" Margin="0,0,0,30"
-                                 Classes="spinnerAnimation" />
+                                 Classes="spinnerAnimation"
+                                 IsVisible="{Binding IsInitializing}" />
 
             <TextBlock Text="{services:LocalizationService Key='LOADING_MESSAGES'}"
                        FontSize="18" />
@@ -42,7 +40,7 @@ Licensed under the MIT License. See LICENSE file for details.
         </StackPanel>
 
         <!-- View after initialization -->
-        <Grid RowDefinitions="Auto,*,Auto" IsVisible="True">
+        <Grid RowDefinitions="Auto,*,Auto" IsVisible="{Binding !IsInitializing}">
 
             <!-- Top section (ComboBox + Info messages - ROW 1) -->
             <StackPanel Grid.Row="0">
@@ -89,11 +87,10 @@ Licensed under the MIT License. See LICENSE file for details.
             </StackPanel>
 
             <!-- Bottom section (Messages + Scroll to bottom button - ROW 2) -->
-            <Grid Grid.Row="0" x:Name="ConversationGrid" HorizontalAlignment="Stretch"
+            <Grid Grid.Row="1" x:Name="ConversationGrid" HorizontalAlignment="Stretch"
                   Margin="0,15,0,0">
 
-                <ScrollViewer x:Name="MessagesScrollViewer"
-                              ScrollChanged="ScrollViewer_OnScrollChanged">
+                <ScrollViewer x:Name="MessagesScrollViewer" ScrollChanged="ScrollViewer_OnScrollChanged">
 
                     <ItemsControl ItemsSource="{Binding Conversation.Messages}">
 
@@ -109,78 +106,193 @@ Licensed under the MIT License. See LICENSE file for details.
 
                             <!-- Failed message -->
                             <DataTemplate DataType="models:FailedMessage">
-                                <templatedControls:MessageItem
-                                    DeleteCommand="{Binding $parent[UserControl].((vm:ConversationViewModel)DataContext).DeleteMessageCommand}"
-                                    DeleteCommandParameter="{Binding .}" />
+
+                                <Grid ColumnDefinitions="7*, 3*">
+                                    <Border Grid.Column="0" Padding="16,12"
+                                            Background="{DynamicResource SurfaceContainerHighest}"
+                                            CornerRadius="12"
+                                            HorizontalAlignment="Left"
+                                            Classes="message">
+
+                                        <StackPanel Orientation="Vertical" Spacing="10">
+                                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4"
+                                                  HorizontalAlignment="Left">
+
+                                                <!-- Error svg -->
+                                                <controls:DynamicSvg Grid.Column="0" Path="/Assets/Svg/info.svg"
+                                                                     FillColor="{DynamicResource Error}"
+                                                                     Width="16" />
+
+                                                <!-- Error message -->
+                                                <TextBlock Grid.Column="1"
+                                                           Text="{services:LocalizationService Key='MESSAGE_GENERATION_FAILED'}"
+                                                           Foreground="{DynamicResource Error}"
+                                                           FontSize="14" TextAlignment="Left"
+                                                           TextWrapping="Wrap"
+                                                           ContextFlyout="{x:Null}" />
+                                            </Grid>
+
+                                            <TextBlock Text="{Binding Content}"
+                                                       Foreground="{DynamicResource OnSurface}"
+                                                       FontSize="14" TextAlignment="Left"
+                                                       TextWrapping="Wrap"
+                                                       Margin="0,10,0,0" />
+
+                                            <Button Content="{services:LocalizationService Key='RETRY'}"
+                                                    Command="{Binding $parent[UserControl].((vm:ConversationViewModel)DataContext).RetryMessageCommand}"
+                                                    CommandParameter="{Binding .}" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
                             </DataTemplate>
 
                             <!-- Typing indicator message -->
                             <DataTemplate DataType="models:TypingIndicatorMessage">
-                                <Border CornerRadius="20" Padding="16,8"
-                                        Background="{DynamicResource SurfaceContainerHighest}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Classes="typing-dot" Fill="{DynamicResource OnSurfaceVariant}" />
-                                        <Ellipse Classes="typing-dot" Fill="{DynamicResource OnSurfaceVariant}" />
-                                        <Ellipse Classes="typing-dot" Fill="{DynamicResource OnSurfaceVariant}" />
-                                    </StackPanel>
-                                </Border>
+                                <Grid ColumnDefinitions="7*, 3*">
+                                    <Border Grid.Column="0" CornerRadius="20" Padding="16,12"
+                                            HorizontalAlignment="Left"
+                                            Background="{DynamicResource SurfaceContainerHighest}"
+                                            Classes="message">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Classes="typing-dot" Fill="{DynamicResource OnSurfaceVariant}" />
+                                            <Ellipse Classes="typing-dot" Fill="{DynamicResource OnSurfaceVariant}" />
+                                            <Ellipse Classes="typing-dot" Fill="{DynamicResource OnSurfaceVariant}" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
                             </DataTemplate>
 
                             <!-- Generated message -->
                             <DataTemplate DataType="models:GeneratedMessage">
-                                <templatedControls:MessageItem
-                                    Classes="generatedMessage"
-                                    Text="{Binding Content}"
-                                    SubText="{Binding Path=GenerationSpeed, Converter={StaticResource GenerationSpeedConverter}}"
-                                    DeleteCommand="{Binding $parent[UserControl].((vm:ConversationViewModel)DataContext).DeleteMessageCommand}"
-                                    DeleteCommandParameter="{Binding .}" />
+                                <Grid ColumnDefinitions="7*, 3*">
+                                    <Border Grid.Column="0"
+                                            Padding="16,8"
+                                            Background="{DynamicResource SurfaceContainerHighest}"
+                                            CornerRadius="20"
+                                            HorizontalAlignment="Left"
+                                            Classes="message">
+                                        <StackPanel Orientation="Vertical" Spacing="10">
+
+                                            <!-- Message text -->
+                                            <SelectableTextBlock
+                                                Text="{Binding Content}"
+                                                ContextFlyout="{x:Null}"
+                                                FontSize="14"
+                                                TextWrapping="Wrap"
+                                                LineHeight="22"
+                                                FontFamily="{StaticResource Manrope}"
+                                                Foreground="{DynamicResource OnSurfaceVariant}" />
+
+                                            <!-- Message subtext -->
+                                            <TextBlock
+                                                Text="{Binding GenerationSpeed, Converter={StaticResource GenerationSpeedConverter}}"
+                                                TextWrapping="Wrap"
+                                                FontFamily="{StaticResource Manrope}"
+                                                Foreground="{DynamicResource OnSurfaceVariant}"
+                                                HorizontalAlignment="Right"
+                                                Opacity="0.5"
+                                                FontSize="10" />
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
                             </DataTemplate>
 
                             <!-- User message -->
                             <DataTemplate DataType="models:Message">
-                                <templatedControls:MessageItem
-                                    Classes="userMessage"
-                                    Text="{Binding Content}"
-                                    DeleteCommand="{Binding $parent[UserControl].((vm:ConversationViewModel)DataContext).DeleteMessageCommand}"
-                                    DeleteCommandParameter="{Binding .}" />
+                                <Grid ColumnDefinitions="3*, 7*">
+                                    <Border Grid.Column="1"
+                                            Padding="16,8"
+                                            Background="{DynamicResource Primary}"
+                                            CornerRadius="20"
+                                            HorizontalAlignment="Right"
+                                            Classes="message">
+
+                                        <!-- Message text -->
+                                        <SelectableTextBlock
+                                            Text="{Binding Content}"
+                                            ContextFlyout="{x:Null}"
+                                            FontSize="14"
+                                            LineHeight="22"
+                                            TextWrapping="Wrap"
+                                            FontFamily="{StaticResource Manrope}"
+                                            Foreground="{DynamicResource OnPrimary}" />
+                                    </Border>
+                                </Grid>
                             </DataTemplate>
 
                         </ItemsControl.DataTemplates>
                     </ItemsControl>
                 </ScrollViewer>
 
-                <!-- Scroll to bottom button with a shadow -->
-                <!-- TODO: add scroll to bottom button functionality via .axaml.cs -->
+                <!-- Scroll to bottom button shadow -->
                 <Border Width="40" Height="40" x:Name="ScrollToBottomBtnShadow"
                         Background="Transparent"
                         CornerRadius="24"
-                        IsVisible="False"
-                        HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-3" />
+                        HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-3"
+                        IsVisible="False" />
+
+                <!-- Scroll to bottom button -->
                 <Button x:Name="ScrollToBottomBtn" IsVisible="False" Classes="clearButton" Cursor="Hand"
                         HorizontalAlignment="Center" VerticalAlignment="Bottom"
+                        Click="ScrollToBottomBtn_OnClick"
                         Margin="0,0,0,-5">
                     <Border Padding="4" Background="{DynamicResource Primary}" CornerRadius="24">
                         <controls:DynamicSvg
                             Path="/Assets/Svg/arrow-down.svg" Width="40" FillColor="{DynamicResource OnPrimary}" />
                     </Border>
                 </Button>
+
+
             </Grid>
 
             <!-- Bottom section (Message textbox + LLM warning - ROW 3) -->
             <StackPanel Grid.Row="2" Orientation="Vertical">
 
-                <!-- Send message TextBox -->
+                <!-- Message TextBox -->
                 <TextBox x:Name="MessageTextBox"
-                         Height="64"
+                         Height="90"
                          Watermark="{services:LocalizationService Key='SEND_MESSAGE'}"
                          Margin="0,30,0,0"
                          Padding="14, 10"
                          CornerRadius="14"
-                         Text="{Binding NewMessageText, Mode=TwoWay}">
+                         Text="{Binding NewMessageText, Mode=TwoWay}"
+                         IsEnabled="{Binding IsMessageBoxEnabled}">
+
                     <TextBox.KeyBindings>
                         <KeyBinding Gesture="Enter"
                                     Command="{Binding SendMessageCommand}" />
                     </TextBox.KeyBindings>
+
+                    <TextBox.InnerRightContent>
+                        <Grid Margin="0,10,10,0" VerticalAlignment="Top">
+
+                            <!-- Send button -->
+                            <Button Command="{Binding SendMessageCommand}"
+                                    Classes="clearButton" IsVisible="{Binding !IsGenerating}"
+                                    Cursor="Hand">
+                                <Border Background="{DynamicResource Primary}"
+                                        CornerRadius="8"
+                                        Padding="6">
+                                    <controls:DynamicSvg Path="/Assets/Svg/arrow-right.svg"
+                                                         FillColor="{DynamicResource OnPrimary}"
+                                                         Height="20" />
+                                </Border>
+                            </Button>
+
+                            <!-- Stop button -->
+                            <Button Command="{Binding CancelGenerationCommand}"
+                                    Classes="clearButton" IsVisible="{Binding IsGenerating}"
+                                    Cursor="Hand">
+                                <Border Background="{DynamicResource Primary}"
+                                        CornerRadius="8"
+                                        Padding="8">
+                                    <Rectangle Height="18" Width="18" Fill="{DynamicResource OnPrimary}" />
+                                </Border>
+                            </Button>
+
+                        </Grid>
+                    </TextBox.InnerRightContent>
+
                 </TextBox>
 
                 <!-- LLM response warning text -->

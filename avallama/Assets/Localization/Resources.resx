@@ -55,9 +55,6 @@ Licensed under the MIT License. See LICENSE file for details.
     <data name="SEND_MESSAGE" xml:space="preserve">
         <value>Send a message..</value>
     </data>
-    <data name="LOW_VRAM_WARNING" xml:space="preserve">
-        <value>This model is not running optimally on your system due to low avaliable VRAM</value>
-    </data>
     <data name="OLLAMA_STARTED" xml:space="preserve">
         <value>Ollama has been successfully started</value>
     </data>
@@ -546,5 +543,8 @@ Licensed under the MIT License. See LICENSE file for details.
     </data>
     <data name="LOADING_MESSAGES" xml:space="preserve">
         <value>Loading messages..</value>
+    </data>
+    <data name="GENERATION_CANCELED" xml:space="preserve">
+        <value>Generation canceled</value>
     </data>
 </root>

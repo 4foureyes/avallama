@@ -77,12 +77,6 @@ Licensed under the MIT License. See LICENSE file for details.
         </Setter>
     </Style>
 
-    <!-- Converters -->
-    <Styles.Resources>
-        <converters:MessageItemSizeConverter x:Key="MessageItemSizeConverter" />
-        <converters:TextToVisibilityConverter x:Key="TextToVisibilityConverter" />
-    </Styles.Resources>
-
     <!-- Build of UserMessage -->
     <Style Selector="templatedControls|MessageItem.userMessage">
         <Setter Property="Template">
@@ -90,8 +84,7 @@ Licensed under the MIT License. See LICENSE file for details.
                 <Border Padding="16,8"
                         Background="{DynamicResource Primary}"
                         CornerRadius="20"
-                        HorizontalAlignment="Right"
-                        MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageItemSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}">
+                        HorizontalAlignment="Right">
 
                     <!-- Message text -->
                     <SelectableTextBlock
@@ -114,15 +107,13 @@ Licensed under the MIT License. See LICENSE file for details.
                 <Border Padding="16,8"
                         Background="{DynamicResource SurfaceContainerHighest}"
                         CornerRadius="20"
-                        HorizontalAlignment="Left"
-                        MaxWidth="{Binding Path=Bounds.Width, Converter={StaticResource MessageItemSizeConverter}, RelativeSource={RelativeSource AncestorType=Window}}">
+                        HorizontalAlignment="Left">
                     <StackPanel Orientation="Vertical" Spacing="10">
 
                         <!-- Message text -->
                         <SelectableTextBlock
                             ContextFlyout="{Binding ContextFlyout, RelativeSource={RelativeSource TemplatedParent}}"
                             Text="{TemplateBinding Text}"
-                            IsVisible="{TemplateBinding Text, Converter={StaticResource TextToVisibilityConverter}}"
                             FontSize="14"
                             TextWrapping="Wrap"
                             LineHeight="22"
@@ -133,7 +124,6 @@ Licensed under the MIT License. See LICENSE file for details.
                         <TextBlock
                             ContextFlyout="{Binding ContextFlyout, RelativeSource={RelativeSource TemplatedParent}}"
                             Text="{TemplateBinding SubText}"
-                            IsVisible="{TemplateBinding SubText, Converter={StaticResource TextToVisibilityConverter}}"
                             TextWrapping="Wrap"
                             FontFamily="{StaticResource Manrope}"
                             Foreground="{DynamicResource OnSurfaceVariant}"

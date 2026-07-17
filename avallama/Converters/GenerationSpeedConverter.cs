@@ -11,17 +11,25 @@ namespace avallama.Converters;
 
 public class GenerationSpeedConverter : IValueConverter
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is double generationSpeed and > 0.0)
+        if (value is double generationSpeed)
         {
-            return $"{generationSpeed} {LocalizationService.GetString("TOKEN_SEC")}";
+            switch (generationSpeed)
+            {
+                case < 0:
+                    return LocalizationService.GetString("GENERATION_CANCELED");
+                case > 0:
+                    return $"{generationSpeed} {LocalizationService.GetString("TOKEN_SEC")}";
+            }
         }
+
         return LocalizationService.GetString("GENERATING_MESSAGE");
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return new BindingNotification(new NotSupportedException("Generation speed size value cannot be converted back."));
+        return new BindingNotification(
+            new NotSupportedException("Generation speed size value cannot be converted back."));
     }
 }

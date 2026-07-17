@@ -47,9 +47,6 @@ Licensed under the MIT License. See LICENSE file for details.
     <data name="SEND_MESSAGE" xml:space="preserve">
         <value>Küldj üzenetet..</value>
     </data>
-    <data name="LOW_VRAM_WARNING" xml:space="preserve">
-        <value>Ez a modell nem fut optimálisan a rendszereden alacsony elérhető VRAM miatt.</value>
-    </data>
     <data name="OLLAMA_STARTED" xml:space="preserve">
         <value>Az Ollama sikeresen elindult</value>
     </data>
@@ -538,5 +535,8 @@ Licensed under the MIT License. See LICENSE file for details.
     </data>
     <data name="LOADING_MESSAGES" xml:space="preserve">
         <value>Üzenetek betöltése..</value>
+    </data>
+    <data name="GENERATION_CANCELED" xml:space="preserve">
+        <value>Generálás megszakítva</value>
     </data>
 </root>

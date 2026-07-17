@@ -1,0 +1,97 @@
+<!--
+Copyright (c) Márk Csörgő and Martin Bartos
+Licensed under the MIT License. See LICENSE file for details.
+-->
+
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:avallama.ViewModels"
+        xmlns:services="clr-namespace:avallama.Services">
+    <Design.PreviewWith>
+        <!-- To change between Dark/Light mode in the Preview, change the RequestedThemeVariant value-->
+        <ThemeVariantScope RequestedThemeVariant="Light">
+            <Border Padding="20" Background="{DynamicResource Surface}">
+
+            </Border>
+        </ThemeVariantScope>
+
+    </Design.PreviewWith>
+
+    <!-- Conversation list styling -->
+    <Style Selector="ListBox.conversation-list">
+        <Setter Property="SelectionMode" Value="AlwaysSelected,Single" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+
+        <!-- Conversation template -->
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate x:DataType="vm:ConversationViewModel">
+
+                    <StackPanel Orientation="Vertical" Spacing="12">
+
+                        <!-- Title -->
+                        <TextBlock
+                            Text="{Binding Conversation.Title}"
+                            FontFamily="{StaticResource Manrope}"
+                            Foreground="{DynamicResource OnSurface}"
+                            FontSize="16"
+                            TextWrapping="NoWrap"
+                            TextTrimming="CharacterEllipsis"
+                            HorizontalAlignment="Left"
+                            MaxLines="1" />
+
+                        <!-- SubText -->
+                        <TextBlock
+                            Text="{Binding Conversation.Model}"
+                            FontFamily="{StaticResource Manrope}"
+                            Foreground="{DynamicResource OnSurface}"
+                            FontSize="12"
+                            HorizontalAlignment="Right"
+                            MaxLines="1" />
+
+                    </StackPanel>
+
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="ItemsPanel">
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Vertical" Spacing="24" />
+            </ItemsPanelTemplate>
+        </Setter>
+    </Style>
+
+    <!-- Conversation list item styling -->
+    <Style Selector="ListBox.conversation-list ListBoxItem">
+        <Setter Property="Padding" Value="14,12" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Background" Value="{DynamicResource SurfaceContainerHighest}" />
+        <Setter Property="CornerRadius" Value="10" />
+
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu x:DataType="vm:ConversationViewModel">
+                    <MenuItem Header="{services:LocalizationService Key='DELETE'}"
+                              Command="{Binding $parent[ListBox].((vm:HomeViewModel)DataContext).DeleteConversationCommand}"
+                              CommandParameter="{Binding Conversation.Id}"/>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SurfaceContainerHigh}" />
+        </Style>
+
+        <Style Selector="^:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource PrimaryContainer}" />
+        </Style>
+
+        <Style Selector="^:selected TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource OnPrimaryContainer}" />
+        </Style>
+
+    </Style>
+
+</Styles>

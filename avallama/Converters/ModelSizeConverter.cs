@@ -12,7 +12,7 @@ namespace avallama.Converters;
 
 public class ModelSizeConverter : IValueConverter
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         if (value is long modelSize)
         {
@@ -25,7 +25,7 @@ public class ModelSizeConverter : IValueConverter
         return string.Format(LocalizationService.GetString("MODEL_SIZE"), "0 GB");
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return new BindingNotification(new NotSupportedException("Model size cannot be converted back."));
     }

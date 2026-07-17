@@ -20,7 +20,7 @@ public class GuideImageSizeConverter : IValueConverter
         return 500;
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return new BindingNotification(new NotSupportedException("Guide image size value cannot be converted back."));
     }
