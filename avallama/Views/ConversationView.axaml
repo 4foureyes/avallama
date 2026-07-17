@@ -71,19 +71,6 @@ Licensed under the MIT License. See LICENSE file for details.
                                    TextTrimming="CharacterEllipsis" />
                     </Grid>
 
-                    <!-- Running slow warning -->
-                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Center"
-                          IsVisible="{Binding IsRunningSlowTextVisible}">
-                        <controls:DynamicSvg Grid.Column="0" Path="/Assets/Svg/info.svg"
-                                             FillColor="{DynamicResource Error}"
-                                             Width="18" />
-
-                        <TextBlock Grid.Column="1" Text="{Binding RunningSlowText}"
-                                   Foreground="{DynamicResource Error}"
-                                   TextAlignment="Left"
-                                   TextTrimming="CharacterEllipsis" />
-                    </Grid>
-
                     <!-- No available models warning -->
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Center"
                           IsVisible="{Binding IsNoModelsTextVisible}">

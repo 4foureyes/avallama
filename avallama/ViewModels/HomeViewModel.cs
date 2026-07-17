@@ -228,7 +228,7 @@ public partial class HomeViewModel : PageViewModel
         NewMessageText = NewMessageText.Trim();
         var message = new Message(NewMessageText);
 
-        SelectedConversation.AddMessage(message);
+        SelectedConversation.Messages.Add(message);
         var newMessageId =
             await _conversationService.InsertMessage(SelectedConversation.Id, message, null, null);
         message.Id = newMessageId;
@@ -347,15 +347,7 @@ public partial class HomeViewModel : PageViewModel
     [RelayCommand]
     public async Task RetryOllamaConnection()
     {
-        if (OllamaApiClient.IsConnectionRemote(_configurationService.ReadSetting(ConfigurationKey.ApiHost)))
-        {
-            await _ollamaService.RetryOllamaApiConnectionAsync();
-        }
-        else
-        {
-            await _ollamaService.StartOllamaProcessAsync();
-            await _ollamaService.RetryOllamaApiConnectionAsync();
-        }
+        await _ollamaService.RetryConnectionAsync();
     }
 
     #endregion
@@ -369,7 +361,7 @@ public partial class HomeViewModel : PageViewModel
     private async Task AddGeneratedMessage(Conversation conversation)
     {
         var generatedMessage = new GeneratedMessage("", 0.0);
-        conversation.AddMessage(generatedMessage);
+        conversation.Messages.Add(generatedMessage);
 
         var messageHistory = new List<Message>(conversation.Messages.ToList());
         messageHistory.RemoveAt(messageHistory.Count - 1);

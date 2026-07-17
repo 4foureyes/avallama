@@ -37,22 +37,22 @@ public interface IOllamaService
     /// <summary>
     /// Starts the local Ollama process asynchronously.
     /// </summary>
-    Task StartOllamaProcessAsync();
+    Task StartProcessAsync();
 
     /// <summary>
     /// Stops the local Ollama process asynchronously.
     /// </summary>
-    Task StopOllamaProcessAsync();
+    Task StopProcessAsync();
 
     /// <summary>
     /// Manually triggers a check for the Ollama API connection status.
     /// </summary>
-    Task CheckOllamaApiConnectionAsync();
+    Task CheckConnectionAsync();
 
     /// <summary>
     /// Attempts to reconnect to the Ollama API.
     /// </summary>
-    Task RetryOllamaApiConnectionAsync();
+    Task RetryConnectionAsync();
 
     /// <summary>
     /// Retrieves a list of models currently downloaded via the API.
@@ -111,7 +111,9 @@ public interface IOllamaService
 /// </summary>
 internal class OllamaService : IOllamaService
 {
-    #region Fields
+    #region Fields & Properties
+
+    public const string DownloadUrl = @"https://ollama.com/download/";
 
     private IOllamaProcessManager _processManager;
     private IOllamaApiClient _apiClient;
@@ -160,15 +162,27 @@ internal class OllamaService : IOllamaService
 
     #region Process Management
 
-    public async Task StartOllamaProcessAsync() => await _processManager.StartAsync();
-    public async Task StopOllamaProcessAsync() => await _processManager.StopAsync();
+    public async Task StartProcessAsync() => await _processManager.StartAsync();
+    public async Task StopProcessAsync() => await _processManager.StopAsync();
 
     #endregion
 
     #region API
 
-    public async Task CheckOllamaApiConnectionAsync() => await _apiClient.CheckConnectionAsync();
-    public async Task RetryOllamaApiConnectionAsync() => await _apiClient.RetryConnectionAsync();
+    public async Task CheckConnectionAsync() => await _apiClient.CheckConnectionAsync();
+
+    public async Task RetryConnectionAsync()
+    {
+        var isRemote = OllamaApiClient.IsConnectionRemote(_configurationService.ReadSetting(ConfigurationKey.ApiHost));
+
+        if (!isRemote)
+        {
+            await StartProcessAsync();
+        }
+
+        await _apiClient.RetryConnectionAsync();
+    }
+
     public async Task EnrichModelAsync(OllamaModel model) => await _apiClient.EnrichModelAsync(model);
     public async Task<IList<OllamaModel>> GetDownloadedModelsAsync() => await _apiClient.GetDownloadedModelsAsync();
     public async Task<bool> DeleteModelAsync(string modelName) => await _apiClient.DeleteModelAsync(modelName);

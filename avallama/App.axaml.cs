@@ -105,8 +105,8 @@ public partial class App : Application
         {
             try
             {
-                await _ollamaService!.StartOllamaProcessAsync();
-                await _ollamaService!.CheckOllamaApiConnectionAsync();
+                await _ollamaService!.StartProcessAsync();
+                await _ollamaService!.CheckConnectionAsync();
             }
             catch (Exception)
             {
@@ -123,7 +123,7 @@ public partial class App : Application
         // previous logic might cause stuck Ollama instances in memory, however I still think there is a better solution
         try
         {
-            var shutdownTask = _ollamaService!.StopOllamaProcessAsync();
+            var shutdownTask = _ollamaService!.StopProcessAsync();
             if (!shutdownTask.Wait(TimeSpan.FromSeconds(2)))
             {
                 // TODO: proper logging

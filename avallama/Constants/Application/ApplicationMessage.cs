@@ -1,6 +1,8 @@
 // Copyright (c) Márk Csörgő and Martin Bartos
 // Licensed under the MIT License. See LICENSE file for details.
 
+using avallama.ViewModels;
+
 namespace avallama.Constants.Application;
 
 public static class ApplicationMessage
@@ -22,4 +24,7 @@ public static class ApplicationMessage
 
     // notification for ModelManagerViewModel when a Model status' changes
     public record ModelStatusChanged(string ModelName);
+
+    // Message sent when a conversation gets a new message and should be bumped to the top of the list.
+    public record ConversationBump(ConversationViewModel ViewModel);
 }
