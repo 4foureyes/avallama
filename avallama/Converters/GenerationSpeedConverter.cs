@@ -11,21 +11,12 @@ namespace avallama.Converters;
 
 public class GenerationSpeedConverter : IValueConverter
 {
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value switch
     {
-        if (value is double generationSpeed)
-        {
-            switch (generationSpeed)
-            {
-                case < 0:
-                    return LocalizationService.GetString("GENERATION_CANCELED");
-                case > 0:
-                    return $"{generationSpeed} {LocalizationService.GetString("TOKEN_SEC")}";
-            }
-        }
-
-        return LocalizationService.GetString("GENERATING_MESSAGE");
-    }
+        double and < 0 => LocalizationService.GetString("GENERATION_CANCELED"),
+        double speed and > 0 => $"{speed} {LocalizationService.GetString("TOKEN_SEC")}",
+        _ => LocalizationService.GetString("GENERATING_MESSAGE")
+    };
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

@@ -3,9 +3,9 @@
 
 using avallama.ViewModels;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.Threading;
 
 namespace avallama.Views;
 
@@ -14,44 +14,44 @@ public partial class ConversationView : UserControl
     public ConversationView()
     {
         InitializeComponent();
-
-        // we handle pointerwheel scrolls globally, if not the scrollviewer would catch it
-        // and if not handled separately, the scroll-to-bottom would appear when a new message is added as the scrollbar grows
-        AddHandler(PointerWheelChangedEvent, OnGlobalPointerWheelChanged, RoutingStrategies.Tunnel);
     }
 
-    private string _scrollSetting = string.Empty;
-    private bool _userScrolledWithWheel;
+    private const string ScrollFloatKey = "float";
+    private const string ScrollAutoKey = "auto";
 
     private void ScrollViewer_OnScrollChanged(object? sender, ScrollChangedEventArgs e)
     {
-        if (_scrollSetting is "" or null)
+        if (sender is not ScrollViewer scrollViewer) return;
+
+        var scrollSetting = (DataContext as ConversationViewModel)?.ScrollSetting ?? ScrollAutoKey;
+        var isAtBottom = scrollViewer.Offset.Y + scrollViewer.Viewport.Height >= scrollViewer.Extent.Height - 5;
+
+        // height got increased (e.g. new content is added)
+        if (e.ExtentDelta.Y > 0)
         {
-            if (DataContext is not ConversationViewModel vm || vm.ScrollSetting == "")
+            if (scrollSetting == ScrollAutoKey)
             {
-                _scrollSetting = "float";
-            }
-            else
-            {
-                _scrollSetting = vm.ScrollSetting;
+                Dispatcher.UIThread.Post(() => { scrollViewer.ScrollToEnd(); });
             }
         }
 
-        var scrollViewer = sender as ScrollViewer;
-        if (_scrollSetting == "auto")
+        if (scrollSetting == ScrollFloatKey)
         {
-            if (!(e.ExtentDelta.Y > 0)) return;
-            scrollViewer?.ScrollToEnd();
-        }
-        else if (_scrollSetting == "float")
-        {
-            // scroll to bottom button appears when scrolling down
-            if (e.OffsetDelta.Y > 10 && !ScrollToBottomBtn.IsVisible && _userScrolledWithWheel)
+            if (isAtBottom)
             {
+                if (!ScrollToBottomBtn.IsVisible) return;
+
+                ScrollToBottomBtn.IsVisible = false;
+                ScrollToBottomBtnShadow.IsVisible = false;
+            }
+            else
+            {
+                if (ScrollToBottomBtn.IsVisible) return;
+
                 ScrollToBottomBtn.IsVisible = true;
                 ScrollToBottomBtnShadow.IsVisible = true;
-                ScrollToBottomBtnShadow.BoxShadow = new BoxShadows
-                (
+
+                ScrollToBottomBtnShadow.BoxShadow = new BoxShadows(
                     new BoxShadow
                     {
                         OffsetY = 3,
@@ -61,22 +61,7 @@ public partial class ConversationView : UserControl
                     }
                 );
             }
-            // scroll up somewhat OR scroll down to the bottom AND user scrolled with wheel, so message generation didn't move the scrollbar
-            else if (e.OffsetDelta.Y < 0 || scrollViewer?.Offset.Y + scrollViewer?.Viewport.Height >=
-                     scrollViewer?.Extent.Height - 1
-                     && _userScrolledWithWheel && ScrollToBottomBtn.IsVisible)
-            {
-                ScrollToBottomBtn.IsVisible = false;
-                ScrollToBottomBtnShadow.IsVisible = false;
-            }
-
-            _userScrolledWithWheel = false;
         }
-    }
-
-    private void OnGlobalPointerWheelChanged(object? sender, PointerWheelEventArgs e)
-    {
-        _userScrolledWithWheel = true;
     }
 
     private void ScrollToBottomBtn_OnClick(object? sender, RoutedEventArgs e)
@@ -86,4 +71,3 @@ public partial class ConversationView : UserControl
         ScrollToBottomBtnShadow.IsVisible = false;
     }
 }
-
