@@ -45,7 +45,7 @@ public class Conversation : ObservableObject
     /// <summary>
     /// Gets or sets the collection of messages within the conversation.
     /// </summary>
-    public IList<Message> Messages
+    public ObservableCollection<Message> Messages
     {
         get;
         set => SetProperty(ref field, value);

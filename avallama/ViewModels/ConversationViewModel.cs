@@ -178,7 +178,7 @@ public partial class ConversationViewModel : ViewModelBase, IDisposable
             CancelGeneration();
         }
 
-        if (msg is not FailedMessage or TypingIndicatorMessage)
+        if (msg is not (FailedMessage or TypingIndicatorMessage))
         {
             await _conversationService.DeleteMessage(msg.Id);
         }
@@ -208,6 +208,8 @@ public partial class ConversationViewModel : ViewModelBase, IDisposable
 
             if (_ollamaService.CurrentServiceStatus.ServiceState != OllamaServiceState.Ready)
             {
+                HandleFailedGeneration(_ollamaService.CurrentServiceStatus.Message ??
+                                       LocalizationService.GetString("OLLAMA_CONNECTION_ERROR"));
                 return;
             }
         }
@@ -269,22 +271,24 @@ public partial class ConversationViewModel : ViewModelBase, IDisposable
             {
                 if (chunk.Message != null)
                 {
-                    generatedMessage.Content += chunk.Message.Content;
+                    var newContent = chunk.Message.Content;
 
-                    if (Status.ConversationState == ConversationState.ProcessingMessage)
+                    Dispatcher.UIThread.Post(() =>
                     {
-                        Status = new ConversationStatus(ConversationState.StreamingResponse);
+                        generatedMessage.Content += newContent;
 
-                        Dispatcher.UIThread.Post(() =>
+                        if (Status.ConversationState == ConversationState.ProcessingMessage)
                         {
+                            Status = new ConversationStatus(ConversationState.StreamingResponse);
+
                             if (Conversation.Messages.LastOrDefault() is TypingIndicatorMessage)
                             {
                                 Conversation.Messages.RemoveAt(Conversation.Messages.Count - 1);
                             }
 
                             Conversation.Messages.Add(generatedMessage);
-                        });
-                    }
+                        }
+                    });
                 }
 
                 if (chunk is { EvalCount: not null, EvalDuration: not null })
