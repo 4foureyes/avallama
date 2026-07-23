@@ -28,11 +28,11 @@ Licensed under the MIT License. See LICENSE file for details.
                     VerticalAlignment="Center"
                     IsVisible="{Binding IsInitializing}">
 
-            <controls:DynamicSvg Path="/Assets/Svg/spinner.svg"
-                                 FillColor="{DynamicResource Primary}"
-                                 Height="64" Margin="0,0,0,30"
-                                 Classes="spinnerAnimation"
-                                 IsVisible="{Binding IsInitializing}" />
+            <PathIcon Data="{DynamicResource CircleNotch}"
+                      Foreground="{DynamicResource Primary}"
+                      Height="64" Margin="0,0,0,30"
+                      Classes="spinnerAnimation"
+                      IsVisible="{Binding IsInitializing}" />
 
             <TextBlock Text="{services:LocalizationService Key='LOADING_MESSAGES'}"
                        FontSize="18" />
@@ -72,9 +72,9 @@ Licensed under the MIT License. See LICENSE file for details.
                     <!-- No available models warning -->
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Center"
                           IsVisible="{Binding IsNoModelsTextVisible}">
-                        <controls:DynamicSvg Grid.Column="0" Path="/Assets/Svg/info.svg"
-                                             FillColor="{DynamicResource Error}"
-                                             Width="18" />
+                        <PathIcon Grid.Column="0" Data="{DynamicResource WarningCircle}"
+                                  Foreground="{DynamicResource Error}"
+                                  Width="18" />
 
                         <TextBlock Grid.Column="1" Text="{Binding NoModelsText}"
                                    Foreground="{DynamicResource Error}"
@@ -119,9 +119,9 @@ Licensed under the MIT License. See LICENSE file for details.
                                                   HorizontalAlignment="Left">
 
                                                 <!-- Error svg -->
-                                                <controls:DynamicSvg Grid.Column="0" Path="/Assets/Svg/info.svg"
-                                                                     FillColor="{DynamicResource Error}"
-                                                                     Width="16" />
+                                                <PathIcon Grid.Column="0" Data="{DynamicResource WarningCircle}"
+                                                          Foreground="{DynamicResource Error}"
+                                                          Width="16" />
 
                                                 <!-- Error message -->
                                                 <TextBlock Grid.Column="1"
@@ -237,8 +237,8 @@ Licensed under the MIT License. See LICENSE file for details.
                         Click="ScrollToBottomBtn_OnClick"
                         Margin="0,0,0,-5">
                     <Border Padding="4" Background="{DynamicResource Primary}" CornerRadius="24">
-                        <controls:DynamicSvg
-                            Path="/Assets/Svg/arrow-down.svg" Width="40" FillColor="{DynamicResource OnPrimary}" />
+                        <PathIcon
+                            Data="{DynamicResource CaretDown}" Width="40" Foreground="{DynamicResource OnPrimary}" />
                     </Border>
                 </Button>
 
@@ -273,8 +273,8 @@ Licensed under the MIT License. See LICENSE file for details.
                                 <Border Background="{DynamicResource Primary}"
                                         CornerRadius="8"
                                         Padding="6">
-                                    <controls:DynamicSvg Path="/Assets/Svg/arrow-right.svg"
-                                                         FillColor="{DynamicResource OnPrimary}"
+                                    <PathIcon Data="{DynamicResource PaperPlaneRightFill}"
+                                                         Foreground="{DynamicResource OnPrimary}"
                                                          Height="20" />
                                 </Border>
                             </Button>

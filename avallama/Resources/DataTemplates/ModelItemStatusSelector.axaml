@@ -8,8 +8,7 @@ Licensed under the MIT License. See LICENSE file for details.
                     xmlns:dataTemplates="clr-namespace:avallama.DataTemplates"
                     xmlns:download="clr-namespace:avallama.Models.Download"
                     xmlns:services="clr-namespace:avallama.Services"
-                    xmlns:templatedControls="clr-namespace:avallama.Styles.TemplatedControls"
-                    xmlns:controls="clr-namespace:avallama.Controls">
+                    xmlns:templatedControls="clr-namespace:avallama.Styles.TemplatedControls">
 
     <!-- Download status template selection for ModelItem -->
     <dataTemplates:StatefulTemplateSelector x:Key="ModelItemStatusSelector">
@@ -26,8 +25,8 @@ Licensed under the MIT License. See LICENSE file for details.
                 <Button Grid.Column="2" Cursor="Hand"
                         Padding="10"
                         Command="{Binding $parent[templatedControls:ModelItem].CancelCommand}">
-                    <controls:DynamicSvg Path="/Assets/Svg/close.svg" Height="12"
-                                         StrokeColor="{DynamicResource OnPrimary}" />
+                    <PathIcon Data="{DynamicResource X}" Height="12"
+                              Foreground="{DynamicResource OnPrimary}"/>
                 </Button>
 
             </Grid>
@@ -44,8 +43,8 @@ Licensed under the MIT License. See LICENSE file for details.
                 <Button Grid.Column="1" Cursor="Hand"
                         Padding="8"
                         Command="{Binding $parent[templatedControls:ModelItem].RetryCommand}">
-                    <controls:DynamicSvg Path="/Assets/Svg/resume.svg" Height="16"
-                                         FillColor="{DynamicResource OnPrimary}" />
+                    <PathIcon Data="{DynamicResource ArrowClockwise}" Height="16"
+                                         Foreground="{DynamicResource OnPrimary}" />
                 </Button>
 
             </Grid>
@@ -80,16 +79,16 @@ Licensed under the MIT License. See LICENSE file for details.
                 <Button Grid.Column="1" Cursor="Hand"
                         Padding="10"
                         Command="{Binding $parent[templatedControls:ModelItem].PauseCommand}">
-                    <controls:DynamicSvg Path="/Assets/Svg/pause.svg" Height="12"
-                                         FillColor="{DynamicResource OnPrimary}" />
+                    <PathIcon Data="{DynamicResource PauseFill}" Height="12"
+                                         Foreground="{DynamicResource OnPrimary}" />
                 </Button>
 
                 <!-- Cancel button -->
                 <Button Grid.Column="2" Cursor="Hand"
                         Padding="10"
                         Command="{Binding $parent[templatedControls:ModelItem].CancelCommand}">
-                    <controls:DynamicSvg Path="/Assets/Svg/close.svg" Height="12"
-                                         StrokeColor="{DynamicResource OnPrimary}" />
+                    <PathIcon Data="{DynamicResource X}" Height="12"
+                                         Foreground="{DynamicResource OnPrimary}" />
                 </Button>
 
             </Grid>
@@ -107,16 +106,16 @@ Licensed under the MIT License. See LICENSE file for details.
                 <Button Grid.Column="1" Cursor="Hand"
                         Padding="8"
                         Command="{Binding $parent[templatedControls:ModelItem].ResumeCommand}">
-                    <controls:DynamicSvg Path="/Assets/Svg/resume.svg" Height="16"
-                                         FillColor="{DynamicResource OnPrimary}" />
+                    <PathIcon Data="{DynamicResource ArrowClockwise}" Height="16"
+                              Foreground="{DynamicResource OnPrimary}" />
                 </Button>
 
                 <!-- Cancel button -->
                 <Button Grid.Column="2" Cursor="Hand"
                         Padding="10"
                         Command="{Binding $parent[templatedControls:ModelItem].CancelCommand}">
-                    <controls:DynamicSvg Path="/Assets/Svg/close.svg" Height="12"
-                                         StrokeColor="{DynamicResource OnPrimary}" />
+                    <PathIcon Data="{DynamicResource X}" Height="12"
+                              Foreground="{DynamicResource OnPrimary}" />
                 </Button>
 
             </Grid>

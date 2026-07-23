@@ -39,7 +39,7 @@ Licensed under the MIT License. See LICENSE file for details.
                 Text="{services:LocalizationService Key='MODEL_MANAGER'}" Classes="H1"
                 Foreground="{DynamicResource OnSurface}" VerticalAlignment="Center" />
             <Button Command="{Binding ShowInfo}" Classes="clearButton" Cursor="Hand">
-                <controls:DynamicSvg Path="/Assets/Svg/info.svg" FillColor="{DynamicResource OnSurfaceVariant}"
+                <PathIcon Data="{DynamicResource InfoFill}" Foreground="{DynamicResource OnSurfaceVariant}"
                                      Width="20" VerticalAlignment="Center" />
             </Button>
         </StackPanel>
@@ -53,8 +53,8 @@ Licensed under the MIT License. See LICENSE file for details.
                      HorizontalAlignment="Stretch" Text="{Binding SearchBoxText}"
                      VerticalAlignment="Stretch">
                 <TextBox.InnerRightContent>
-                    <controls:DynamicSvg Path="/Assets/Svg/search.svg" Width="16"
-                                         Margin="0,0,12,1" StrokeColor="{DynamicResource OnSurfaceVariant}" />
+                    <PathIcon Data="{DynamicResource MagnifyingGlass}" Width="16"
+                                         Margin="0,0,12,1" Foreground="{DynamicResource OnSurfaceVariant}" />
                 </TextBox.InnerRightContent>
             </TextBox>
 
@@ -116,8 +116,8 @@ Licensed under the MIT License. See LICENSE file for details.
                             Cursor="Hand" HorizontalAlignment="Center"
                             VerticalAlignment="Bottom"
                             Command="{Binding Paginate}">
-                        <controls:DynamicSvg Path="/Assets/Svg/dots.svg"
-                                             FillColor="{DynamicResource OnSecondaryContainer}"
+                        <PathIcon Data="{DynamicResource DotsThreeOutline}"
+                                             Foreground="{DynamicResource OnSecondaryContainer}"
                                              Height="26" />
                     </Button>
                 </StackPanel>

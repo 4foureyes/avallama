@@ -9,7 +9,6 @@ Licensed under the MIT License. See LICENSE file for details.
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:avallama.ViewModels"
              xmlns:services="clr-namespace:avallama.Services"
-             xmlns:controls="clr-namespace:avallama.Controls"
              xmlns:utilities="clr-namespace:avallama.Utilities"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="avallama.Views.ScraperView"
@@ -20,8 +19,8 @@ Licensed under the MIT License. See LICENSE file for details.
         <StackPanel Grid.Row="1" Orientation="Vertical" Spacing="6" VerticalAlignment="Center">
 
             <!-- Progress svg -->
-            <controls:DynamicSvg Path="/Assets/Svg/spinner.svg"
-                                 FillColor="{DynamicResource Primary}"
+            <PathIcon Data="{DynamicResource CircleNotch}"
+                                 Foreground="{DynamicResource Primary}"
                                  Height="64" Margin="0,0,0,30"
                                  Classes="spinnerAnimation" />
 

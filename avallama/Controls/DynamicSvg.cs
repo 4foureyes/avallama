@@ -11,8 +11,6 @@ namespace avallama.Controls;
 /// <summary>
 /// Can be used to display an SVG. The FillColor and StrokeColor properties can be used to set the SVG colors.
 /// </summary>
-
-// TODO: replace this with StreamGeometry, Path attributes and ViewBox elements
 public class DynamicSvg : Avalonia.Svg.Svg
 {
     /* An SVG can be colored properly with this class by:
@@ -29,7 +27,10 @@ public class DynamicSvg : Avalonia.Svg.Svg
 
     public static readonly StyledProperty<IBrush?> StrokeColorProperty =
         AvaloniaProperty.Register<DynamicSvg, IBrush?>("StrokeColor");
-    public DynamicSvg(IServiceProvider provider) : base(provider) { }
+
+    public DynamicSvg(IServiceProvider provider) : base(provider)
+    {
+    }
 
     public IBrush? FillColor
     {

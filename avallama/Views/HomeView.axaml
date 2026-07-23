@@ -50,8 +50,8 @@ Licensed under the MIT License. See LICENSE file for details.
                          Background="{DynamicResource SurfaceContainerHighest}"
                          Text="{Binding SearchBoxText}">
                     <TextBox.InnerRightContent>
-                        <controls:DynamicSvg Path="/Assets/Svg/search.svg" Width="16"
-                                             Margin="0,0,10,0" StrokeColor="{DynamicResource Primary}" />
+                        <PathIcon Data="{DynamicResource MagnifyingGlass}" Width="16"
+                                             Margin="0,0,10,0" Foreground="{DynamicResource Primary}" />
                     </TextBox.InnerRightContent>
                 </TextBox>
 
@@ -81,17 +81,17 @@ Licensed under the MIT License. See LICENSE file for details.
                 <!-- Settings button -->
                 <Button Classes="clearButton" Cursor="Hand"
                         Command="{Binding Path=((vm:MainViewModel)DataContext).OpenSettings, RelativeSource={RelativeSource AncestorType=Window}}">
-                    <controls:DynamicSvg
-                        Path="/Assets/Svg/settings.svg" Width="24" FillColor="{DynamicResource Primary}" />
+                    <PathIcon
+                        Data="{DynamicResource GearFill}" Width="24" Foreground="{DynamicResource Primary}" />
                 </Button>
 
                 <!-- ModelManager button -->
                 <Button Classes="clearButton"
                         Command="{Binding Path=((vm:MainViewModel)DataContext).OpenModelManager, RelativeSource={RelativeSource AncestorType=Window}}"
                         Cursor="Hand">
-                    <controls:DynamicSvg
-                        Path="/Assets/Svg/model-manager.svg" Width="28"
-                        FillColor="{DynamicResource Primary}" />
+                    <PathIcon
+                        Data="{DynamicResource StackFill}" Width="28"
+                        Foreground="{DynamicResource Primary}" />
                 </Button>
 
             </StackPanel>
@@ -104,8 +104,8 @@ Licensed under the MIT License. See LICENSE file for details.
         <!-- SideBar expand/hide button -->
         <Button Grid.Row="0" Grid.Column="2" x:Name="SideBarButton" Classes="clearButton"
                 Click="SideBarBtn_OnClick" Cursor="Hand">
-            <controls:DynamicSvg
-                Path="/Assets/Svg/sidebar.svg" Width="20" FillColor="{DynamicResource Primary}" />
+            <PathIcon
+                Data="{DynamicResource SidebarFill}" Width="20" Foreground="{DynamicResource Primary}" />
         </Button>
 
         <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal"
@@ -142,8 +142,8 @@ Licensed under the MIT License. See LICENSE file for details.
             <!-- Low VRAM text -->
             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Center"
                   IsVisible="{Binding IsResourceWarningVisible}">
-                <controls:DynamicSvg Grid.Column="0" Path="/Assets/Svg/info.svg"
-                                     FillColor="{DynamicResource Error}"
+                <PathIcon Grid.Column="0" Data="{DynamicResource Info}"
+                                     Foreground="{DynamicResource Error}"
                                      Width="18" />
 
                 <TextBlock Grid.Column="1" Text="{Binding ResourceLimitWarning}"
@@ -155,8 +155,8 @@ Licensed under the MIT License. See LICENSE file for details.
             <!-- Model is not downloaded text -->
             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Center"
                   IsVisible="{Binding IsNoModelsWarningVisible}">
-                <controls:DynamicSvg Grid.Column="0" Path="/Assets/Svg/info.svg"
-                                     FillColor="{DynamicResource Error}"
+                <PathIcon Grid.Column="0" Data="{DynamicResource Info}"
+                                     Foreground="{DynamicResource Error}"
                                      Width="18" />
 
                 <TextBlock Grid.Column="1" Text="{Binding NoModelsDownloadedWarning}"
@@ -242,8 +242,8 @@ Licensed under the MIT License. See LICENSE file for details.
                         Click="ScrollToBottomBtn_OnClick" HorizontalAlignment="Center" VerticalAlignment="Bottom"
                         Margin="0,0,0,-5">
                     <Border Padding="4" Background="{DynamicResource Primary}" CornerRadius="24">
-                        <controls:DynamicSvg
-                            Path="/Assets/Svg/arrow-down.svg" Width="40" FillColor="{DynamicResource OnPrimary}" />
+                        <PathIcon
+                            Data="{DynamicResource CaretDown}" Width="40" Foreground="{DynamicResource OnPrimary}" />
                     </Border>
                 </Button>
 

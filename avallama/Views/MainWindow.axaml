@@ -23,13 +23,13 @@ Licensed under the MIT License. See LICENSE file for details.
         <StackPanel ZIndex="100" Canvas.Right="0" Canvas.Top="0" Margin="10" Orientation="Horizontal"
                     HorizontalAlignment="Right" Spacing="5">
             <Button Classes="windowManager hide" Click="HideButton_OnClick">
-                <controls:DynamicSvg Path="/Assets/Svg/hide.svg" Width="12" />
+                <PathIcon Data="{DynamicResource Minus}" Width="12" />
             </Button>
             <Button Classes="windowManager minmax" Click="MinMaxButton_OnClick">
-                <controls:DynamicSvg x:Name="MinMaxSvg" Path="/Assets/Svg/maximize.svg" Width="12" />
+                <PathIcon x:Name="MinMaxSvg" Data="{DynamicResource Copy}" Width="12" />
             </Button>
             <Button Classes="windowManager close" Click="CloseButton_OnClick">
-                <controls:DynamicSvg Path="/Assets/Svg/close.svg" Width="12" />
+                <PathIcon Data="{DynamicResource X}" Width="12" />
             </Button>
         </StackPanel>
         <ContentControl

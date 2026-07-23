@@ -5,7 +5,6 @@ Licensed under the MIT License. See LICENSE file for details.
 
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:avallama.Controls"
         xmlns:services="clr-namespace:avallama.Services"
         xmlns:vm="clr-namespace:avallama.ViewModels"
         xmlns:models="clr-namespace:avallama.Models">
@@ -23,7 +22,7 @@ Licensed under the MIT License. See LICENSE file for details.
     </Style>
 
     <!-- Spinner animation -->
-    <Style Selector="controls|DynamicSvg.spinnerAnimation[IsVisible=True]">
+    <Style Selector="PathIcon.spinnerAnimation[IsVisible=True]">
         <Style.Animations>
             <Animation Duration="0:0:1"
                        IterationCount="Infinite"

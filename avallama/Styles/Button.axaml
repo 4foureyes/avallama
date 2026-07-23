@@ -20,21 +20,21 @@ Licensed under the MIT License. See LICENSE file for details.
                     <Button Classes="lessSecondaryButton" Content="Less Secondary Button" />
                     <Button Content="Disabled Button" IsEnabled="False" />
                     <Button Classes="windowManager hide">
-                        <controls:DynamicSvg Path="/Assets/Svg/hide.svg"
+                        <PathIcon Data="{DynamicResource Minus}"
                                              Width="12" />
                     </Button>
                     <Button Classes="windowManager minmax">
-                        <controls:DynamicSvg Path="/Assets/Svg/maximize.svg"
+                        <PathIcon Data="{DynamicResource Copy}"
                                              Width="12" />
                     </Button>
                     <Button Classes="windowManager close">
-                        <controls:DynamicSvg Path="/Assets/Svg/close.svg"
+                        <PathIcon Data="{DynamicResource X}"
                                              Width="12" />
                     </Button>
                     <Button Classes="avallamaWhite" Content="Icon Button" />
                     <Button Classes="clearButton">
-                        <controls:DynamicSvg Path="/Assets/Svg/sidebar.svg" Width="20"
-                                             FillColor="{DynamicResource Primary}" />
+                        <PathIcon Data="{DynamicResource SidebarFill}" Width="20"
+                                             Foreground="{DynamicResource Primary}" />
                     </Button>
                     <Button Classes="errorButton" Content="Close" />
                 </StackPanel>
@@ -52,16 +52,6 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="FontFamily" Value="{StaticResource Manrope}" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
-
-    <!-- button háttér animációja, ezt egyelőre kivettem mert lehet hogy inkább csak ront a megjelenésen
-    <Style Selector="Button /template/ ContentPresenter">
-        <Setter Property="Transitions">
-            <Transitions>
-                <BrushTransition Property="Background" Duration="0:0:0.12"/>
-            </Transitions>
-        </Setter>
-    </Style>
-    -->
 
     <Style Selector="Button:pointerover /template/ ContentPresenter">
         <Setter Property="Background" Value="{DynamicResource PrimaryContainer}" />
@@ -89,7 +79,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="Padding" Value="12" />
     </Style>
 
-    <!-- DynamicSvg beállítás
+    <!-- PathIcon beállítás
     Hide, Maximize, Minimize: FillColor
     Close: StrokeColor
      -->
@@ -100,28 +90,28 @@ Licensed under the MIT License. See LICENSE file for details.
         </Setter>
     </Style>
 
-    <Style Selector="Button.windowManager.hide controls|DynamicSvg">
-        <Setter Property="FillColor" Value="{DynamicResource Primary}" />
+    <Style Selector="Button.windowManager.hide PathIcon">
+        <Setter Property="Foreground" Value="{DynamicResource Primary}" />
     </Style>
 
-    <Style Selector="Button.windowManager.minmax controls|DynamicSvg">
-        <Setter Property="FillColor" Value="{DynamicResource Primary}" />
+    <Style Selector="Button.windowManager.minmax PathIcon">
+        <Setter Property="Foreground" Value="{DynamicResource Primary}" />
     </Style>
 
-    <Style Selector="Button.windowManager.close controls|DynamicSvg">
-        <Setter Property="StrokeColor" Value="{DynamicResource Primary}" />
+    <Style Selector="Button.windowManager.close PathIcon">
+        <Setter Property="Foreground" Value="{DynamicResource Primary}" />
     </Style>
 
-    <Style Selector="Button.windowManager.hide:pointerover controls|DynamicSvg">
-        <Setter Property="FillColor" Value="{DynamicResource OnPrimary}" />
+    <Style Selector="Button.windowManager.hide:pointerover PathIcon">
+        <Setter Property="Foreground" Value="{DynamicResource OnPrimary}" />
     </Style>
 
-    <Style Selector="Button.windowManager.minmax:pointerover controls|DynamicSvg">
-        <Setter Property="FillColor" Value="{DynamicResource OnPrimary}" />
+    <Style Selector="Button.windowManager.minmax:pointerover PathIcon">
+        <Setter Property="Foreground" Value="{DynamicResource OnPrimary}" />
     </Style>
 
-    <Style Selector="Button.windowManager.close:pointerover controls|DynamicSvg">
-        <Setter Property="StrokeColor" Value="{DynamicResource OnPrimary}" />
+    <Style Selector="Button.windowManager.close:pointerover PathIcon">
+        <Setter Property="Foreground" Value="{DynamicResource OnPrimary}" />
     </Style>
 
     <Style Selector="Button.windowManager:pointerover /template/ ContentPresenter">
@@ -166,9 +156,9 @@ Licensed under the MIT License. See LICENSE file for details.
                         <StackPanel Orientation="Horizontal"
                                     Spacing="10"
                                     HorizontalAlignment="Center">
-                            <controls:DynamicSvg Path="/Assets/Svg/avallama-logo-white.svg"
+                            <PathIcon Data="{DynamicResource AvallamaWhite}"
                                                   Width="10"
-                                                  FillColor="{TemplateBinding Foreground}"
+                                                  Foreground="{TemplateBinding Foreground}"
                                                   HorizontalAlignment="Center" />
                             <TextBlock x:Name="ButtonTextContent"
                                        Text="{TemplateBinding Content}"

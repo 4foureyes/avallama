@@ -19,6 +19,9 @@ Licensed under the MIT License. See LICENSE file for details.
                 <MergeResourceInclude Source="/Resources/Themes/LightTheme.axaml" />
                 <MergeResourceInclude Source="/Resources/Themes/DarkTheme.axaml" />
 
+                <!-- Icons -->
+                <MergeResourceInclude Source="/Resources/Icons.axaml" />
+
                 <!-- Template selectors -->
                 <MergeResourceInclude Source="/Resources/DataTemplates/ModelItemStatusSelector.axaml" />
                 <MergeResourceInclude Source="/Resources/DataTemplates/ModelListItemSelector.axaml" />

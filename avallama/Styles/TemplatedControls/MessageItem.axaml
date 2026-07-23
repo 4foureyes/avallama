@@ -147,8 +147,8 @@ Licensed under the MIT License. See LICENSE file for details.
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Left">
 
                         <!-- Error svg -->
-                        <controls:DynamicSvg Grid.Column="0" Path="/Assets/Svg/info.svg"
-                                             FillColor="{DynamicResource Error}"
+                        <PathIcon Grid.Column="0" Data="{DynamicResource Info}"
+                                             Foreground="{DynamicResource Error}"
                                              Width="16" />
 
                         <!-- Error message -->

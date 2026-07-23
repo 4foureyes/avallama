@@ -129,11 +129,11 @@ Licensed under the MIT License. See LICENSE file for details.
         </Style>
 
         <!-- Model download status svg style (separated for downloaded svg and other due to need of StrokeColor and FillColor styles) -->
-        <Style Selector="^ controls|DynamicSvg.downloadedSvg">
-            <Setter Property="StrokeColor" Value="{DynamicResource OnPrimary}" />
+        <Style Selector="^ PathIcon.downloadedSvg">
+            <Setter Property="Foreground" Value="{DynamicResource OnPrimary}" />
         </Style>
-        <Style Selector="^ controls|DynamicSvg:not(.downloadedSvg)">
-            <Setter Property="FillColor" Value="{DynamicResource OnPrimary}" />
+        <Style Selector="^ PathIcon:not(.downloadedSvg)">
+            <Setter Property="Foreground" Value="{DynamicResource OnPrimary}" />
         </Style>
 
     </Style>

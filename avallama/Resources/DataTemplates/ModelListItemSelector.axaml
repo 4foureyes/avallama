@@ -16,11 +16,11 @@ Licensed under the MIT License. See LICENSE file for details.
 
         <!-- Downloaded template -->
         <DataTemplate x:Key="Downloaded" DataType="download:ModelDownloadStatus">
-            <controls:DynamicSvg
-                Path="/Assets/Svg/download.svg"
+            <PathIcon
+                Data="{DynamicResource DownloadSimple}"
                 Height="16"
                 Classes="downloadedSvg"
-                StrokeColor="{DynamicResource OnSurface}" />
+                Foreground="{DynamicResource OnSurface}" />
         </DataTemplate>
 
         <!-- Downloading template -->
@@ -30,24 +30,24 @@ Licensed under the MIT License. See LICENSE file for details.
                            Text="{Binding $parent[templatedControls:ModelListItem].StatusText}"
                            FontSize="12"
                            Classes="downloadStatusText" />
-                <controls:DynamicSvg Grid.Column="1" Path="/Assets/Svg/spinner.svg"
+                <PathIcon Grid.Column="1" Data="{DynamicResource CircleNotch}"
                                      Height="16"
-                                     FillColor="{DynamicResource OnSurface}"
+                                     Foreground="{DynamicResource OnSurface}"
                                      Classes="spinnerAnimation">
-                    <controls:DynamicSvg.RenderTransform>
+                    <PathIcon.RenderTransform>
                         <RotateTransform Angle="0" />
-                    </controls:DynamicSvg.RenderTransform>
-                </controls:DynamicSvg>
+                    </PathIcon.RenderTransform>
+                </PathIcon>
             </Grid>
         </DataTemplate>
 
         <!-- Paused template -->
         <DataTemplate x:Key="Paused" DataType="download:ModelDownloadStatus">
-            <controls:DynamicSvg
-                Path="/Assets/Svg/pause.svg"
+            <PathIcon
+                Data="{DynamicResource PauseFill}"
                 Height="12"
                 Margin="4,0"
-                FillColor="{DynamicResource OnSurface}" />
+                Foreground="{DynamicResource OnSurface}" />
         </DataTemplate>
 
         <!-- Downloadable and Failed templates (empty for now) -->
