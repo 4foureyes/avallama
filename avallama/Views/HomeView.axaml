@@ -8,33 +8,27 @@ Licensed under the MIT License. See LICENSE file for details.
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:avallama.ViewModels"
-             xmlns:models="clr-namespace:avallama.Models"
              xmlns:services="clr-namespace:avallama.Services"
              xmlns:controls="clr-namespace:avallama.Controls"
-             xmlns:converters="clr-namespace:avallama.Converters"
-             xmlns:templatedControls="clr-namespace:avallama.Styles.TemplatedControls"
              xmlns:utilities="clr-namespace:avallama.Utilities"
+             xmlns:views="clr-namespace:avallama.Views"
              Background="{DynamicResource Surface}"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="avallama.Views.HomeView"
              x:DataType="vm:HomeViewModel"
              utilities:ViewInitialization.Command="{Binding InitializeAsync}">
 
-    <UserControl.Resources>
-        <converters:GenerationSpeedConverter x:Key="GenerationSpeedConverter" />
-    </UserControl.Resources>
-
-    <Grid RowDefinitions="Auto,Auto,*,Auto" x:Name="MainGrid">
+    <Grid x:Name="MainGrid">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300" MinWidth="250" MaxWidth="425" />
             <ColumnDefinition Width="8" />
-            <ColumnDefinition Width="50" />
-            <ColumnDefinition Width="7*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <!-- SideBar -->
-        <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" x:Name="SideBar" SizeChanged="SideBar_OnSizeChanged"
+        <Grid Grid.Column="0" x:Name="SideBar" SizeChanged="SideBar_OnSizeChanged"
               RowDefinitions="Auto,*,Auto"
               Background="{DynamicResource SurfaceContainer}">
             <Grid Grid.Row="0" ColumnDefinitions="2.5*, 6*" x:Name="SideBarTopGrid">
@@ -51,29 +45,17 @@ Licensed under the MIT License. See LICENSE file for details.
                          Text="{Binding SearchBoxText}">
                     <TextBox.InnerRightContent>
                         <PathIcon Data="{DynamicResource MagnifyingGlass}" Width="16"
-                                             Margin="0,0,10,0" Foreground="{DynamicResource Primary}" />
+                                  Margin="0,0,10,0" Foreground="{DynamicResource Primary}" />
                     </TextBox.InnerRightContent>
                 </TextBox>
 
             </Grid>
 
             <!-- Conversation elements -->
-            <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="14">
-                <ItemsControl ItemsSource="{Binding Conversations}" VerticalAlignment="Stretch">
-                    <ItemsControl.DataTemplates>
-                        <DataTemplate DataType="models:Conversation">
-                            <templatedControls:ConversationItem
-                                Id="{Binding Id}"
-                                SelectedId="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=((vm:HomeViewModel)DataContext).SelectedConversation.Id}"
-                                SelectCommand="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=((vm:HomeViewModel)DataContext).SelectConversation}"
-                                Text="{Binding Title}"
-                                SubText="{Binding Model}"
-                                DeleteCommand="{Binding $parent[UserControl].((vm:HomeViewModel)DataContext).DeleteConversation}"
-                                DeleteCommandParameter="{Binding Id}"
-                                Margin="0,0,0,14"/>
-                        </DataTemplate>
-                    </ItemsControl.DataTemplates>
-                </ItemsControl>
+            <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="14,32,14,14">
+                <ListBox Classes="conversation-list"
+                         ItemsSource="{Binding ConversationViewModels}"
+                         SelectedItem="{Binding SelectedConversationViewModel}" />
             </ScrollViewer>
 
             <StackPanel Grid.Row="2" Margin="10" Orientation="Horizontal" Spacing="16" HorizontalAlignment="Left">
@@ -98,181 +80,20 @@ Licensed under the MIT License. See LICENSE file for details.
         </Grid>
 
         <!-- GridSplitter that can resize columns -->
-        <GridSplitter Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" x:Name="GridSplitter" Opacity="0"
+        <GridSplitter Grid.Column="1" x:Name="GridSplitter" Opacity="0"
                       ResizeDirection="Columns" />
 
         <!-- SideBar expand/hide button -->
-        <Button Grid.Row="0" Grid.Column="2" x:Name="SideBarButton" Classes="clearButton"
-                Click="SideBarBtn_OnClick" Cursor="Hand">
+        <Button Grid.Column="2" x:Name="SideBarButton" Classes="clearButton"
+                Click="SideBarBtn_OnClick" Cursor="Hand" VerticalAlignment="Top">
             <PathIcon
                 Data="{DynamicResource SidebarFill}" Width="20" Foreground="{DynamicResource Primary}" />
         </Button>
 
-        <StackPanel Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal"
-                    HorizontalAlignment="Center" Margin="0,20,0,0" Spacing="14">
+        <!-- Selected conversation view -->
+        <views:ConversationView Grid.Column="1" Grid.ColumnSpan="3"
+                                DataContext="{Binding ActiveConversationViewModel}"
+                                Padding="24,10" />
 
-            <!-- Model chooser ComboBox -->
-            <ComboBox Width="175"
-                      VerticalAlignment="Center"
-                      ItemsSource="{Binding AvailableModels}"
-                      SelectedItem="{Binding SelectedModelName, Mode=TwoWay}"
-                      IsEnabled="{Binding IsModelsDropdownEnabled}" x:Name="ModelsComboBox" />
-        </StackPanel>
-
-        <!-- Informational messages -->
-        <StackPanel Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Orientation="Vertical" Margin="18,10,18,0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Center" Spacing="6"
-                    IsVisible="{Binding ShowInformationalMessages}">
-
-            <!-- There are many Grids because this is the way to ensure that the TextBlock inside them
-            is not cut off, but instead trims its end with an ellipsis (CharacterEllipsis). More precisely,
-            by specifying the column width with *, the TextBlock is able to trim its text properly. -->
-
-            <!-- Remote ollama connection text -->
-            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6" HorizontalAlignment="Center"
-                  IsVisible="{Binding IsRemoteConnectionTextVisible}">
-                <Ellipse Grid.Column="0" Width="12" Height="12" Fill="{DynamicResource Success}" />
-
-                <TextBlock Grid.Column="1" Text="{Binding RemoteConnectionText}"
-                           Foreground="{DynamicResource Success}"
-                           TextAlignment="Left"
-                           TextTrimming="CharacterEllipsis" />
-            </Grid>
-
-            <!-- Low VRAM text -->
-            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Center"
-                  IsVisible="{Binding IsResourceWarningVisible}">
-                <PathIcon Grid.Column="0" Data="{DynamicResource Info}"
-                                     Foreground="{DynamicResource Error}"
-                                     Width="18" />
-
-                <TextBlock Grid.Column="1" Text="{Binding ResourceLimitWarning}"
-                           Foreground="{DynamicResource Error}"
-                           TextAlignment="Left"
-                           TextTrimming="CharacterEllipsis" />
-            </Grid>
-
-            <!-- Model is not downloaded text -->
-            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" HorizontalAlignment="Center"
-                  IsVisible="{Binding IsNoModelsWarningVisible}">
-                <PathIcon Grid.Column="0" Data="{DynamicResource Info}"
-                                     Foreground="{DynamicResource Error}"
-                                     Width="18" />
-
-                <TextBlock Grid.Column="1" Text="{Binding NoModelsDownloadedWarning}"
-                           Foreground="{DynamicResource Error}"
-                           TextAlignment="Left"
-                           TextWrapping="Wrap"
-                           x:Name="NoModelsWarningTextBlock" />
-            </Grid>
-        </StackPanel>
-
-        <Grid Grid.Column="1" Grid.Row="2" ColumnSpan="3" RowDefinitions="*,Auto,Auto" Margin="18,0">
-
-            <!-- Restart Ollama (if it's unable to connect)  -->
-            <StackPanel x:Name="RetryPanel" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Spacing="12" ZIndex="10" Margin="40, 0" IsVisible="{Binding IsRetryPanelVisible}">
-
-                <!-- Error message -->
-                <TextBlock
-                    x:Name="RetryInfoText"
-                    Text="{Binding RetryInfoText}"
-                    TextAlignment="Center"
-                    FontSize="14" Foreground="{DynamicResource OnSurface}" TextWrapping="Wrap" />
-
-                <!-- Retry button -->
-                <Button x:Name="RetryButton"
-                        Content="{services:LocalizationService Key='RETRY'}"
-                        Padding="14, 4" CornerRadius="6"
-                        Command="{Binding RetryOllamaConnectionCommand}"
-                        Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Center"
-                        IsVisible="{Binding IsRetryButtonVisible}" />
-            </StackPanel>
-
-            <!-- Messages of the selected conversation -->
-            <Grid x:Name="ConversationGrid" Grid.Row="0" HorizontalAlignment="Stretch" Margin="0, 15, 0, 0"
-                  IsVisible="{Binding !IsRetryPanelVisible}">
-                <ScrollViewer ScrollChanged="ScrollViewer_OnScrollChanged" x:Name="ConversationScrollViewer">
-                    <ItemsControl ItemsSource="{Binding SelectedConversation.Messages}">
-
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Vertical" Spacing="20" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-
-                        <ItemsControl.DataTemplates>
-
-                            <!-- Specific message types need to be defined first, so the base Message type won't catch all -->
-                            <DataTemplate DataType="models:FailedMessage">
-                                <templatedControls:MessageItem
-                                    DeleteCommand="{Binding $parent[UserControl].((vm:HomeViewModel)DataContext).DeleteMessageCommand}"
-                                    DeleteCommandParameter="{Binding .}"/>
-                            </DataTemplate>
-
-                            <DataTemplate DataType="models:GeneratedMessage">
-                                <templatedControls:MessageItem
-                                    Classes="generatedMessage"
-                                    Text="{Binding Content}"
-                                    SubText="{Binding Path=GenerationSpeed, Converter={StaticResource GenerationSpeedConverter}}"
-                                    DeleteCommand="{Binding $parent[UserControl].((vm:HomeViewModel)DataContext).DeleteMessageCommand}"
-                                    DeleteCommandParameter="{Binding .}"/>
-                            </DataTemplate>
-
-                            <DataTemplate DataType="models:Message">
-                                <templatedControls:MessageItem
-                                    Classes="userMessage"
-                                    Text="{Binding Content}"
-                                    DeleteCommand="{Binding $parent[UserControl].((vm:HomeViewModel)DataContext).DeleteMessageCommand}"
-                                    DeleteCommandParameter="{Binding .}"/>
-                            </DataTemplate>
-
-                        </ItemsControl.DataTemplates>
-                    </ItemsControl>
-                </ScrollViewer>
-
-                <!-- Scroll to bottom button with a shadow -->
-                <Border Width="40" Height="40" x:Name="ScrollToBottomBtnShadow"
-                        Background="Transparent"
-                        CornerRadius="24"
-                        IsVisible="False"
-                        HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-3" />
-                <Button x:Name="ScrollToBottomBtn" IsVisible="False" Classes="clearButton" Cursor="Hand"
-                        Click="ScrollToBottomBtn_OnClick" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                        Margin="0,0,0,-5">
-                    <Border Padding="4" Background="{DynamicResource Primary}" CornerRadius="24">
-                        <PathIcon
-                            Data="{DynamicResource CaretDown}" Width="40" Foreground="{DynamicResource OnPrimary}" />
-                    </Border>
-                </Button>
-
-            </Grid>
-
-            <!-- Send message text box -->
-            <TextBox Grid.Row="1"
-                     x:Name="MessageTextBox"
-                     Height="64"
-                     Watermark="{services:LocalizationService Key='SEND_MESSAGE'}"
-                     Margin="0,30,0,0"
-                     Padding="14, 10"
-                     CornerRadius="14"
-                     IsEnabled="{Binding IsMessageBoxEnabled}"
-                     Text="{Binding NewMessageText, Mode=TwoWay}">
-                <TextBox.KeyBindings>
-                    <KeyBinding Gesture="Enter"
-                                Command="{Binding SendMessageCommand}" />
-                </TextBox.KeyBindings>
-            </TextBox>
-
-            <TextBlock Grid.Row="2"
-                       Text="{services:LocalizationService Key='LLM_RESPONSE_WARNING'}"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Margin="0,8"
-                       Opacity="0.7"
-                       Foreground="{DynamicResource OnSurface}"
-                       FontSize="11"/>
-        </Grid>
     </Grid>
 </UserControl>

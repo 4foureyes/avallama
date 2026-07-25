@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using avallama.Constants.Keys;
 using avallama.Constants.States;
+using avallama.Exceptions;
 using avallama.Models.Dtos;
 using avallama.Services.Ollama;
 using avallama.Tests.Fixtures;
@@ -278,7 +279,7 @@ public class OllamaApiClientTests : IClassFixture<TestServicesFixture>
         await oac.CheckConnectionAsync();
 
         var results = new List<OllamaResponse>();
-        await foreach (var r in oac.GenerateMessageAsync([], "test-model"))
+        await foreach (var r in oac.GenerateMessageAsync([], "test-model", CancellationToken.None))
         {
             results.Add(r);
         }
@@ -328,7 +329,7 @@ public class OllamaApiClientTests : IClassFixture<TestServicesFixture>
         var oac = CreateOllamaApiClient(mockHttpClientFactory.Object, timeMock, delayerMock);
 
         var results = new List<OllamaResponse>();
-        await foreach (var r in oac.GenerateMessageAsync([], "llama3.2"))
+        await foreach (var r in oac.GenerateMessageAsync([], "llama3.2", CancellationToken.None))
         {
             results.Add(r);
         }
@@ -372,9 +373,12 @@ public class OllamaApiClientTests : IClassFixture<TestServicesFixture>
         var stateEvents = new List<OllamaApiState?>();
         oac.StatusChanged += status => { stateEvents.Add(status.ApiState); };
 
-        await foreach (var _ in oac.GenerateMessageAsync([], "model"))
+        await Assert.ThrowsAsync<OllamaLocalServerUnreachableException>(async () =>
         {
-        }
+            await foreach (var _ in oac.GenerateMessageAsync([], "model", CancellationToken.None))
+            {
+            }
+        });
 
         Assert.Equal(OllamaApiState.Failed, oac.Status.ApiState);
         Assert.Contains(OllamaApiState.Failed, stateEvents);
@@ -439,7 +443,7 @@ public class OllamaApiClientTests : IClassFixture<TestServicesFixture>
 
         try
         {
-            await foreach (var r in oac.GenerateMessageAsync([], "heavy-model"))
+            await foreach (var r in oac.GenerateMessageAsync([], "heavy-model", CancellationToken.None))
             {
                 results.Add(r);
             }

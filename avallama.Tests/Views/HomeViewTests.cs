@@ -70,7 +70,7 @@ public class HomeViewTests : IClassFixture<TestServicesFixture>
         );
     }
 
-    private (Window Window, HomeView View, HomeViewModel ViewModel) CreateAndShowHomeView()
+    private (HomeView View, HomeViewModel ViewModel) CreateAndShowHomeView()
     {
         var viewModel = CreateHomeViewModel();
         var view = new HomeView
@@ -80,36 +80,13 @@ public class HomeViewTests : IClassFixture<TestServicesFixture>
         };
         var window = new Window { Content = view };
         window.Show();
-        return (window, view, viewModel);
-    }
-
-    private async Task<(Window Window, HomeView View, HomeViewModel ViewModel)> SetupInitializedHomeViewAsync(
-        string selectedModelName)
-    {
-        var mockModels = new List<OllamaModel>
-        {
-            new() { Name = "test-model-1:8b", Size = 8_030_000_000 },
-            new() { Name = "test-model-2:20b", Size = 20_100_000_000 }
-        };
-
-        _fixture.OllamaMock.Setup(x => x.GetDownloadedModelsAsync()).ReturnsAsync(mockModels);
-
-        var (window, view, viewModel) = CreateAndShowHomeView();
-
-        _fixture.OllamaMock.Raise(x =>
-            x.StatusChanged += null, new OllamaServiceStatus(OllamaServiceState.Ready));
-
-        await viewModel.InitializeAsync();
-
-        viewModel.SelectedModelName = !string.IsNullOrEmpty(selectedModelName) ? selectedModelName : string.Empty;
-
-        return (window, view, viewModel);
+        return (view, viewModel);
     }
 
     [AvaloniaFact]
     public void SideBar_ClickingSideBarButton_TogglesSideBarCorrectly()
     {
-        var (_, view, _) = CreateAndShowHomeView();
+        var (view, _) = CreateAndShowHomeView();
 
         var sideBarButton = view.FindControl<Button>("SideBarButton");
         var sideBar = view.FindControl<Grid>("SideBar");
@@ -139,142 +116,24 @@ public class HomeViewTests : IClassFixture<TestServicesFixture>
     }
 
     [AvaloniaFact]
-    public void RetryPanel_WhenOllamaApiIsFaulted_ItAppearsCorrectly()
+    public async Task NewConversationButton_AddsConversationCorrectly()
     {
-        var (_, view, viewModel) = CreateAndShowHomeView();
+        var (view, viewModel) = CreateAndShowHomeView();
 
-        var conversationGrid = view.FindControl<Grid>("ConversationGrid");
-        var retryButton = view.FindControl<Button>("RetryButton");
-        var retryPanel = view.FindControl<StackPanel>("RetryPanel");
-        var retryInfoText = view.FindControl<TextBlock>("RetryInfoText");
+        var newConversationBtn = view.FindControl<Button>("NewConversationBtn");
+        Assert.NotNull(newConversationBtn);
 
-        Assert.NotNull(conversationGrid);
-        Assert.NotNull(retryButton);
-        Assert.NotNull(retryPanel);
-        Assert.NotNull(retryInfoText);
+        var initialCount = viewModel.ConversationViewModels.Count;
 
-        _fixture.OllamaMock.Raise(x =>
-            x.StatusChanged += null, new OllamaServiceStatus(OllamaServiceState.Ready));
+        newConversationBtn.Command?.Execute(null);
 
-        _fixture.OllamaMock.Raise(x =>
-            x.StatusChanged += null, new OllamaServiceStatus(OllamaServiceState.Failed));
+        Assert.Equal(initialCount + 1, viewModel.ConversationViewModels.Count);
+        Assert.NotNull(viewModel.SelectedConversationViewModel);
 
-        Assert.True(viewModel.IsRetryPanelVisible);
-        Assert.True(viewModel.IsRetryButtonVisible);
-        Assert.True(retryButton.IsEnabled);
-        Assert.True(retryButton.IsVisible);
-        Assert.True(retryPanel.IsVisible);
-        Assert.True(retryInfoText.IsVisible);
-        Assert.False(string.IsNullOrEmpty(retryInfoText.Text));
-        Assert.False(conversationGrid.IsVisible);
+        // ensure the newly created conversation becomes the selected one
+        Assert.Equal(viewModel.ConversationViewModels[0], viewModel.SelectedConversationViewModel);
     }
 
-    [AvaloniaFact]
-    public void RetryPanel_WhenOllamaApiIsConnected_ItDisappearsCorrectly()
-    {
-        var (_, view, viewModel) = CreateAndShowHomeView();
-
-        var conversationGrid = view.FindControl<Grid>("ConversationGrid");
-        var retryButton = view.FindControl<Button>("RetryButton");
-        var retryPanel = view.FindControl<StackPanel>("RetryPanel");
-        var retryInfoText = view.FindControl<TextBlock>("RetryInfoText");
-
-        Assert.NotNull(conversationGrid);
-        Assert.NotNull(retryButton);
-        Assert.NotNull(retryPanel);
-        Assert.NotNull(retryInfoText);
-
-        Assert.False(viewModel.IsRetryPanelVisible);
-        Assert.False(viewModel.IsRetryButtonVisible);
-        Assert.False(retryPanel.IsVisible);
-        Assert.True(conversationGrid.IsVisible);
-    }
-
-    [AvaloniaFact]
-    public void MessageTextBox_WhenOllamaServiceIsStoppedOrFailed_ItsDisabledCorrectly()
-    {
-        var (_, view, viewModel) = CreateAndShowHomeView();
-
-        var messageTextBox = view.FindControl<TextBox>("MessageTextBox");
-
-        Assert.NotNull(messageTextBox);
-
-        _fixture.OllamaMock.Raise(x =>
-            x.StatusChanged += null, new OllamaServiceStatus(OllamaServiceState.Stopped));
-        Assert.False(viewModel.IsMessageBoxEnabled);
-        Assert.False(messageTextBox.IsEnabled);
-
-        _fixture.OllamaMock.Raise(x =>
-            x.StatusChanged += null, new OllamaServiceStatus(OllamaServiceState.Ready));
-
-        _fixture.OllamaMock.Raise(x =>
-            x.StatusChanged += null, new OllamaServiceStatus(OllamaServiceState.Failed));
-        Assert.False(viewModel.IsMessageBoxEnabled);
-        Assert.False(messageTextBox.IsEnabled);
-    }
-
-    [AvaloniaFact]
-    public async Task MessageTextBox_WhenNoDownloadedModelIsSelected_ItsDisabledCorrectly()
-    {
-        var (_, view, viewModel) = await SetupInitializedHomeViewAsync(string.Empty);
-
-        var messageTextBox = view.FindControl<TextBox>("MessageTextBox");
-        Assert.NotNull(messageTextBox);
-
-        Assert.False(viewModel.IsMessageBoxEnabled);
-        Assert.False(messageTextBox.IsEnabled);
-    }
-
-    [AvaloniaFact]
-    public async Task MessageTextBox_WhenDownloadedModelIsSelected_ItsEnabledCorrectly()
-    {
-        var (_, view, viewModel) = await SetupInitializedHomeViewAsync("test-model-2:20b");
-
-        var messageTextBox = view.FindControl<TextBox>("MessageTextBox");
-        Assert.NotNull(messageTextBox);
-
-        Assert.True(viewModel.IsMessageBoxEnabled);
-        Assert.True(messageTextBox.IsEnabled);
-        Assert.True(messageTextBox.IsVisible);
-    }
-
-    [AvaloniaFact]
-    public async Task MessageTextBox_WhenDownloadedModelIsSelected_MessageEntered_ClearsTextBoxAndAddsMessages()
-    {
-        var (window, view, viewModel) = await SetupInitializedHomeViewAsync("test-model-1:8b");
-
-        var messageTextBox = view.FindControl<TextBox>("MessageTextBox");
-        Assert.NotNull(messageTextBox);
-        Assert.NotNull(viewModel.SelectedConversation);
-
-        const string testMessage = "This is a test message";
-
-        messageTextBox.Focus();
-        messageTextBox.Text = testMessage;
-        window.KeyPress(Key.Enter, RawInputModifiers.None, PhysicalKey.Enter, null);
-
-        var userMessageIndex = viewModel.SelectedConversation.Messages.Count - 2;
-        var generatedMessageIndex = viewModel.SelectedConversation.Messages.Count - 1;
-        Assert.Empty(messageTextBox.Text);
-        Assert.Equal(testMessage, viewModel.SelectedConversation.Messages[userMessageIndex].Content);
-        Assert.True(viewModel.SelectedConversation.Messages[generatedMessageIndex] is GeneratedMessage);
-    }
-
-    [AvaloniaFact]
-    public void ModelsComboBox_WithEmptyModelsList_ItsDisabledCorrectly()
-    {
-        _fixture.OllamaMock
-            .Setup(x => x.GetDownloadedModelsAsync())
-            .ReturnsAsync([]);
-
-        var (_, view, _) = CreateAndShowHomeView();
-
-        var modelsComboBox = view.FindControl<ComboBox>("ModelsComboBox");
-
-        Assert.NotNull(modelsComboBox);
-        Assert.False(modelsComboBox.IsEnabled);
-        Assert.False(modelsComboBox.IsDropDownOpen);
-    }
 
     // TODO: implement missing testcases such as
     // (ConversationScrollViewer) 'Scroll to bottom' button appears when scrolling down and configuration set to 'Floating button'

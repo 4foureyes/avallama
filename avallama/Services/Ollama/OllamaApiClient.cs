@@ -323,15 +323,13 @@ internal class OllamaApiClient(
     public async IAsyncEnumerable<OllamaResponse> GenerateMessageAsync(
         List<Message> messageHistory,
         string modelName,
-        [EnumeratorCancellation] CancellationToken ct = default)
+        [EnumeratorCancellation] CancellationToken ct)
     {
-        // TODO: Pass cancellation token properly when supporting stopping message generation.
-        // The default token currently is not cancellable.
 
         if (!await IsOllamaReachable())
         {
             SetUnreachableStatus();
-            yield break;
+            throw NewServiceUnreachableException();
         }
 
         var chatRequest = new ChatRequest(messageHistory, modelName);
@@ -345,35 +343,70 @@ internal class OllamaApiClient(
         try
         {
             response = await _heavyHttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                Status = new OllamaApiStatus(OllamaApiState.Connected);
-            }
+            response.EnsureSuccessStatusCode();
+            Status = new OllamaApiStatus(OllamaApiState.Connected);
         }
-        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
+        catch (OperationCanceledException)
+        {
+            if (!ct.IsCancellationRequested) SetUnreachableStatus();
+            throw;
+        }
+        catch (HttpRequestException ex)
         {
             SetUnreachableStatus();
-            yield break;
+            throw NewServiceUnreachableException(ex);
         }
 
-        await using var stream = await response.Content.ReadAsStreamAsync(ct);
-        using var reader = new StreamReader(stream);
-        while (await reader.ReadLineAsync(ct) is { } line)
+        Stream stream;
+        try
         {
-            if (string.IsNullOrWhiteSpace(line)) continue;
-            OllamaResponse? json = null;
-            try
-            {
-                json = JsonSerializer.Deserialize(
-                    line,
-                    AvallamaJsonSerializerContext.Default.OllamaResponse);
-            }
-            catch (JsonException)
-            {
-                // TODO: Proper logging
-            }
+            stream = await response.Content.ReadAsStreamAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            SetUnreachableStatus();
+            throw NewServiceUnreachableException(ex);
+        }
 
-            if (json != null) yield return json;
+        await using (stream)
+        using (var reader = new StreamReader(stream))
+        {
+            while (!ct.IsCancellationRequested)
+            {
+                string? line = null;
+
+                try
+                {
+                    line = await reader.ReadLineAsync(ct);
+                }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
+                catch (Exception ex)
+                {
+                    SetUnreachableStatus();
+                    throw NewServiceUnreachableException(ex);
+                }
+
+                if (line == null)
+                {
+                    break;
+                }
+
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    OllamaResponse? json = null;
+
+                    try
+                    {
+                        json = JsonSerializer.Deserialize(line, AvallamaJsonSerializerContext.Default.OllamaResponse);
+                    }
+                    catch (JsonException) { /* TODO: proper logging */ }
+
+                    if (json != null) yield return json;
+                }
+            }
         }
     }
 

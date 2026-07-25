@@ -42,15 +42,12 @@ Licensed under the MIT License. See LICENSE file for details.
         <StyleInclude Source="Styles/TextBlock.axaml" />
         <StyleInclude Source="Styles/ComboBox.axaml" />
         <StyleInclude Source="Styles/ToggleSwitch.axaml" />
-        <StyleInclude Source="Styles/DeletePopup.axaml" />
         <StyleInclude Source="Styles/Ellipse.axaml" />
         <StyleInclude Source="Styles/ListBox.axaml" />
 
         <!-- Templated controls -->
         <StyleInclude Source="Styles/TemplatedControls/ModelItem.axaml" />
         <StyleInclude Source="Styles/TemplatedControls/ModelListItem.axaml" />
-        <StyleInclude Source="Styles/TemplatedControls/MessageItem.axaml" />
-        <StyleInclude Source="Styles/TemplatedControls/ConversationItem.axaml" />
 
         <!-- Avalonia Fluent theme -->
         <FluentTheme />
