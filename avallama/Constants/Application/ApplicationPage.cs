@@ -5,7 +5,7 @@ namespace avallama.Constants.Application;
 
 public enum ApplicationPage
 {
-    Greeting,
+    Welcome,
     Home,
     Guide,
     Settings,

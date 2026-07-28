@@ -8,7 +8,6 @@ Licensed under the MIT License. See LICENSE file for details.
         xmlns:vm="using:avallama.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:avallama.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="avallama.Views.MainWindow"
         x:DataType="vm:MainViewModel"
@@ -18,6 +17,7 @@ Licensed under the MIT License. See LICENSE file for details.
         MinWidth="800"
         MinHeight="600"
         Title="avallama">
+
     <!-- The Canvas is swapped for Grid elements on Linux and macOS, which has only one ContentControl child -->
     <Canvas x:Name="MainCanvas">
         <StackPanel ZIndex="100" Canvas.Right="0" Canvas.Top="0" Margin="10" Orientation="Horizontal"
@@ -32,6 +32,7 @@ Licensed under the MIT License. See LICENSE file for details.
                 <PathIcon Data="{DynamicResource X}" Width="12" />
             </Button>
         </StackPanel>
+
         <ContentControl
             x:Name="PageContent"
             Canvas.Left="0"
@@ -39,5 +40,6 @@ Licensed under the MIT License. See LICENSE file for details.
             Content="{Binding CurrentPageViewModel}"
             Width="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Height="{Binding Height, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
+
     </Canvas>
 </Window>

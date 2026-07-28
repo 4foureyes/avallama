@@ -100,7 +100,7 @@ public static class ServiceCollectionExtensions
 
             collection.AddSingleton<MainViewModel>();
             collection.AddSingleton<HomeViewModel>();
-            collection.AddTransient<GreetingViewModel>();
+            collection.AddTransient<WelcomeViewModel>();
             collection.AddTransient<SettingsViewModel>();
             collection.AddSingleton<ModelManagerViewModel>();
             collection.AddTransient<GuideViewModel>();
@@ -113,7 +113,7 @@ public static class ServiceCollectionExtensions
             // Func<ApplicationPage, PageViewModel> - returns a PageViewModel for a given ApplicationPage
             collection.AddSingleton<Func<ApplicationPage, PageViewModel>>(serviceProvider => page => page switch
             {
-                ApplicationPage.Greeting => serviceProvider.GetRequiredService<GreetingViewModel>(),
+                ApplicationPage.Welcome => serviceProvider.GetRequiredService<WelcomeViewModel>(),
                 ApplicationPage.Home => serviceProvider.GetRequiredService<HomeViewModel>(),
                 ApplicationPage.Guide => serviceProvider.GetRequiredService<GuideViewModel>(),
                 ApplicationPage.Settings => serviceProvider.GetRequiredService<SettingsViewModel>(),

@@ -14,7 +14,7 @@ public class ViewLocator : IDataTemplate
     {
         return param switch
         {
-            GreetingViewModel viewModel => CreateView(new GreetingView(), viewModel),
+            WelcomeViewModel viewModel => CreateView(new WelcomeView(), viewModel),
             HomeViewModel viewModel => CreateView(new HomeView(), viewModel),
             GuideViewModel viewModel => CreateView(new GuideView(), viewModel),
             SettingsViewModel viewModel => CreateView(new SettingsView(), viewModel),

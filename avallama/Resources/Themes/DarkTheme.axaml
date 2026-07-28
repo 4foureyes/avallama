@@ -7,31 +7,66 @@ Licensed under the MIT License. See LICENSE file for details.
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- Color codes can be specified in the SolidColorBrush and Color tags. The Color tag also supports transparency. (#AA000000) -->
     <ResourceDictionary.ThemeDictionaries>
-        <!-- Seed: #623079 -->
 
-        <!-- Dark theme colors -->
+        <!-- Dark Theme -->
+        <ResourceDictionary x:Key="Dark">
+
+            <SolidColorBrush x:Key="Background" Color="{StaticResource Neutral800}" />
+            <SolidColorBrush x:Key="SidebarBackground" Color="{StaticResource Neutral700}" />
+            <SolidColorBrush x:Key="SubCardBackground" Color="{StaticResource Neutral700}" />
+            <SolidColorBrush x:Key="MainCardBackground" Color="{StaticResource Neutral600}" />
+
+            <SolidColorBrush x:Key="OnboardingBackground" Color="{StaticResource Neutral800}" />
+
+            <SolidColorBrush x:Key="Border" Color="{StaticResource Neutral600}" />
+
+            <SolidColorBrush x:Key="Disabled" Color="{StaticResource Primary300}" Opacity="0.175"/>
+            <SolidColorBrush x:Key="OnDisabled" Color="{StaticResource Primary400}" Opacity="0.6" />
+
+            <SolidColorBrush x:Key="Primary" Color="{StaticResource Primary300}" />
+            <SolidColorBrush x:Key="PrimaryHover" Color="{StaticResource Primary300}" Opacity="0.75" />
+            <SolidColorBrush x:Key="PrimaryBorder" Color="Transparent" />
+            <SolidColorBrush x:Key="OnPrimary" Color="{StaticResource Primary700}" />
+
+            <SolidColorBrush x:Key="Secondary" Color="{StaticResource Primary100}" />
+            <SolidColorBrush x:Key="SecondaryHover" Color="{StaticResource Primary100}" Opacity="0.75" />
+            <SolidColorBrush x:Key="SecondaryBorder" Color="Transparent" />
+            <SolidColorBrush x:Key="OnSecondary" Color="{StaticResource Primary700}" />
+
+            <SolidColorBrush x:Key="Tertiary" Color="{StaticResource Primary50}" />
+            <SolidColorBrush x:Key="TertiaryHover" Color="{StaticResource Primary50}" Opacity="0.75" />
+            <SolidColorBrush x:Key="TertiaryBorder" Color="Transparent" />
+            <SolidColorBrush x:Key="OnTertiary" Color="{StaticResource Primary700}" />
+
+            <SolidColorBrush x:Key="TextForeground" Color="{StaticResource Neutral50}" />
+            <SolidColorBrush x:Key="TextOnBackground" Color="{StaticResource Neutral100}" />
+            <SolidColorBrush x:Key="SubTextForeground" Color="{StaticResource Neutral200}" />
+
+            <SolidColorBrush x:Key="InfoLabelBackground" Color="{StaticResource Info200}" />
+            <SolidColorBrush x:Key="InfoLabelBorder" Color="Transparent" />
+            <SolidColorBrush x:Key="OnInfoLabel" Color="{StaticResource Info700}" />
+
+            <SolidColorBrush x:Key="Error" Color="{StaticResource Danger700}" />
+            <SolidColorBrush x:Key="ErrorBackground" Color="{StaticResource Danger200}" />
+            <SolidColorBrush x:Key="ErrorBorder" Color="Transparent" />
+            <SolidColorBrush x:Key="OnError" Color="{StaticResource Danger700}" />
+
+            <SolidColorBrush x:Key="NeutralIconFill" Color="{StaticResource Neutral300}" />
+
+        </ResourceDictionary>
+
+        <!-- Legacy dark theme colors (seed: #623079) -->
         <ResourceDictionary x:Key="Dark">
             <Color x:Key="Selection">#80755085</Color> <!-- 50% opacity -->
-            <SolidColorBrush x:Key="Primary">#E4B7F3</SolidColorBrush>
             <SolidColorBrush x:Key="SurfaceTint">#E4B7F3</SolidColorBrush>
-            <SolidColorBrush x:Key="OnPrimary">#442253</SolidColorBrush>
             <SolidColorBrush x:Key="PrimaryContainer">#5C396C</SolidColorBrush>
             <SolidColorBrush x:Key="OnPrimaryContainer">#F7D8FF</SolidColorBrush>
-            <SolidColorBrush x:Key="Secondary">#D4C0D7</SolidColorBrush>
-            <SolidColorBrush x:Key="OnSecondary">#392C3E</SolidColorBrush>
             <SolidColorBrush x:Key="SecondaryContainer">#504255</SolidColorBrush>
             <SolidColorBrush x:Key="OnSecondaryContainer">#F1DCF4</SolidColorBrush>
-            <SolidColorBrush x:Key="Tertiary">#F5B7B5</SolidColorBrush>
-            <SolidColorBrush x:Key="OnTertiary">#4C2525</SolidColorBrush>
-            <SolidColorBrush x:Key="TertiaryContainer">#663B3A</SolidColorBrush>
-            <SolidColorBrush x:Key="OnTertiaryContainer">#FFDAD8</SolidColorBrush>
-            <SolidColorBrush x:Key="Error">#FFB4AB</SolidColorBrush>
-            <SolidColorBrush x:Key="OnError">#690005</SolidColorBrush>
             <SolidColorBrush x:Key="ErrorContainer">#93000A</SolidColorBrush>
             <SolidColorBrush x:Key="OnErrorContainer">#FFDAD6</SolidColorBrush>
             <SolidColorBrush x:Key="Success">#1FA13D</SolidColorBrush>
             <SolidColorBrush x:Key="OnSuccess">#FFFFFF</SolidColorBrush>
-            <SolidColorBrush x:Key="Background">#161217</SolidColorBrush>
             <SolidColorBrush x:Key="OnBackground">#E9E0E7</SolidColorBrush>
             <SolidColorBrush x:Key="Surface">#161217</SolidColorBrush>
             <SolidColorBrush x:Key="OnSurface">#E9E0E7</SolidColorBrush>
@@ -39,23 +74,6 @@ Licensed under the MIT License. See LICENSE file for details.
             <SolidColorBrush x:Key="OnSurfaceVariant">#CEC3CD</SolidColorBrush>
             <SolidColorBrush x:Key="Outline">#978E97</SolidColorBrush>
             <SolidColorBrush x:Key="OutlineVariant">#4C444D</SolidColorBrush>
-            <SolidColorBrush x:Key="Shadow">#000000</SolidColorBrush>
-            <SolidColorBrush x:Key="Scrim">#000000</SolidColorBrush>
-            <SolidColorBrush x:Key="InverseSurface">#E9E0E7</SolidColorBrush>
-            <SolidColorBrush x:Key="InverseOnSurface">#342F34</SolidColorBrush>
-            <SolidColorBrush x:Key="InversePrimary">#755085</SolidColorBrush>
-            <SolidColorBrush x:Key="PrimaryFixed">#F7D8FF</SolidColorBrush>
-            <SolidColorBrush x:Key="OnPrimaryFixed">#2D0B3D</SolidColorBrush>
-            <SolidColorBrush x:Key="PrimaryFixedDim">#E4B7F3</SolidColorBrush>
-            <SolidColorBrush x:Key="OnPrimaryFixedVariant">#5C396C</SolidColorBrush>
-            <SolidColorBrush x:Key="SecondaryFixed">#F1DCF4</SolidColorBrush>
-            <SolidColorBrush x:Key="OnSecondaryFixed">#231728</SolidColorBrush>
-            <SolidColorBrush x:Key="SecondaryFixedDim">#D4C0D7</SolidColorBrush>
-            <SolidColorBrush x:Key="OnSecondaryFixedVariant">#504255</SolidColorBrush>
-            <SolidColorBrush x:Key="TertiaryFixed">#FFDAD8</SolidColorBrush>
-            <SolidColorBrush x:Key="OnTertiaryFixed">#331111</SolidColorBrush>
-            <SolidColorBrush x:Key="TertiaryFixedDim">#F5B7B5</SolidColorBrush>
-            <SolidColorBrush x:Key="OnTertiaryFixedVariant">#663B3A</SolidColorBrush>
             <SolidColorBrush x:Key="SurfaceDim">#161217</SolidColorBrush>
             <SolidColorBrush x:Key="SurfaceBright">#3D373D</SolidColorBrush>
             <SolidColorBrush x:Key="SurfaceContainerLowest">#110D12</SolidColorBrush>

@@ -1,0 +1,80 @@
+<!--
+Copyright (c) Márk Csörgő and Martin Bartos
+Licensed under the MIT License. See LICENSE file for details.
+-->
+
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Primary -->
+    <Color x:Key="Primary50">#FBF6FE</Color>
+    <Color x:Key="Primary100">#F2E4FA</Color>
+    <Color x:Key="Primary150">#EAD2F8</Color>
+    <Color x:Key="Primary200">#E3C0F8</Color>
+    <Color x:Key="Primary300">#D9A5F7</Color>
+    <Color x:Key="Primary400">#C065F4</Color>
+    <Color x:Key="Primary500">#9928DB</Color>
+    <Color x:Key="Primary600">#7311AC</Color>
+    <Color x:Key="Primary700">#480470</Color>
+    <Color x:Key="Primary800">#350252</Color>
+    <Color x:Key="Primary900">#27023D</Color>
+
+    <!-- Neutral -->
+    <Color x:Key="Neutral50">#F7F7F8</Color>
+    <Color x:Key="Neutral100">#EEECEF</Color>
+    <Color x:Key="Neutral150">#DDD8E1</Color>
+    <Color x:Key="Neutral200">#D1CCD6</Color>
+    <Color x:Key="Neutral300">#B2A9B9</Color>
+    <Color x:Key="Neutral400">#94859E</Color>
+    <Color x:Key="Neutral500">#6E5E78</Color>
+    <Color x:Key="Neutral600">#52405C</Color>
+    <Color x:Key="Neutral700">#33233C</Color>
+    <Color x:Key="Neutral800">#211428</Color>
+    <Color x:Key="Neutral900">#0C0412</Color>
+
+    <!-- Info -->
+    <Color x:Key="Info100">#E6EAFA</Color>
+    <Color x:Key="Info200">#C6D1F7</Color>
+    <Color x:Key="Info300">#A6B8F5</Color>
+    <Color x:Key="Info400">#6887F2</Color>
+    <Color x:Key="Info500">#2F54D4</Color>
+    <Color x:Key="Info600">#1336AD</Color>
+    <Color x:Key="Info700">#06227D</Color>
+    <Color x:Key="Info800">#021552</Color>
+    <Color x:Key="Info900">#020F3D</Color>
+
+    <!-- Success -->
+    <Color x:Key="Success100">#E5F7E4</Color>
+    <Color x:Key="Success200">#CBF6C8</Color>
+    <Color x:Key="Success300">#A7F3A1</Color>
+    <Color x:Key="Success400">#70E966</Color>
+    <Color x:Key="Success500">#3FCE34</Color>
+    <Color x:Key="Success600">#20AB15</Color>
+    <Color x:Key="Success700">#117D08</Color>
+    <Color x:Key="Success800">#074F02</Color>
+    <Color x:Key="Success900">#043D00</Color>
+
+    <!-- Warning -->
+    <Color x:Key="Warning100">#FAFAE6</Color>
+    <Color x:Key="Warning200">#F7F7C6</Color>
+    <Color x:Key="Warning300">#F5F59D</Color>
+    <Color x:Key="Warning400">#F2F268</Color>
+    <Color x:Key="Warning500">#D8D830</Color>
+    <Color x:Key="Warning600">#ADAD13</Color>
+    <Color x:Key="Warning700">#908507</Color>
+    <Color x:Key="Warning800">#5F5003</Color>
+    <Color x:Key="Warning900">#3D2E02</Color>
+
+    <!-- Danger -->
+    <Color x:Key="Danger100">#FAE6E6</Color>
+    <Color x:Key="Danger200">#F7C6C6</Color>
+    <Color x:Key="Danger300">#F5A6A6</Color>
+    <Color x:Key="Danger400">#F26868</Color>
+    <Color x:Key="Danger500">#D42F2F</Color>
+    <Color x:Key="Danger600">#B31414</Color>
+    <Color x:Key="Danger700">#7D0606</Color>
+    <Color x:Key="Danger800">#520303</Color>
+    <Color x:Key="Danger900">#3D0000</Color>
+
+</ResourceDictionary>
+

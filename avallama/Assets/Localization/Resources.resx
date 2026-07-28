@@ -28,14 +28,8 @@ Licensed under the MIT License. See LICENSE file for details.
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="GREETING_TEXT" xml:space="preserve">
-        <value>Avallama</value>
-    </data>
-    <data name="GREETING_SUBTEXT" xml:space="preserve">
-        <value>Run open source LLMs locally</value>
-    </data>
     <data name="GET_STARTED" xml:space="preserve">
-        <value>Get started</value>
+        <value>Get Started</value>
     </data>
     <data name="SETTINGS" xml:space="preserve">
         <value>Settings</value>
@@ -546,5 +540,11 @@ Licensed under the MIT License. See LICENSE file for details.
     </data>
     <data name="GENERATION_CANCELED" xml:space="preserve">
         <value>Generation canceled</value>
+    </data>
+    <data name="WELCOME_TEXT" xml:space="preserve">
+        <value>Welcome to Avallama!</value>
+    </data>
+    <data name="WELCOME_SUBTEXT" xml:space="preserve">
+        <value>Your free, open-source, private desktop client for Ollama.</value>
     </data>
 </root>

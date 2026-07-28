@@ -1,0 +1,57 @@
+<!--
+Copyright (c) Márk Csörgő and Martin Bartos
+Licensed under the MIT License. See LICENSE file for details.
+-->
+
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:avallama.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:services="clr-namespace:avallama.Services"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Background="{DynamicResource OnboardingBackground}"
+             x:Class="avallama.Views.WelcomeView"
+             x:DataType="vm:WelcomeViewModel">
+
+    <Grid RowDefinitions="*,Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+          Margin="{DynamicResource PageMarginM}">
+
+        <StackPanel Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Spacing="{DynamicResource WelcomeSpacing}">
+
+            <!-- Avallama logo -->
+            <Viewbox Height="{DynamicResource AvallamaWelcomeLogoHeight}">
+                <Path Data="{DynamicResource AvallamaLogo}"
+                      Fill="{DynamicResource Primary}" />
+            </Viewbox>
+
+            <!-- Welcome texts -->
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
+                        Spacing="{DynamicResource WelcomeTextSpacing}">
+
+                <TextBlock Text="{services:LocalizationService Key='WELCOME_TEXT'}"
+                           Classes="page-title"
+                           TextAlignment="Center" />
+
+                <TextBlock Text="{services:LocalizationService Key='WELCOME_SUBTEXT'}"
+                           Classes="page-subtitle"
+                           TextAlignment="Center" />
+
+            </StackPanel>
+
+            <!-- Get Started (button) -->
+            <Button Content="{services:LocalizationService Key='GET_STARTED'}"
+                    Classes="primary"
+                    HorizontalAlignment="Center"
+                    Command="{Binding Path=((vm:MainViewModel)DataContext).OpenGuideCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+
+        </StackPanel>
+
+        <!-- App Version -->
+        <TextBlock Grid.Row="1" Text="{Binding AppVersion}" TextAlignment="End"
+                   Classes="subtext" />
+
+    </Grid>
+
+</UserControl>

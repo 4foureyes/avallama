@@ -92,8 +92,4 @@ Licensed under the MIT License. See LICENSE file for details.
         </Compile>
     </ItemGroup>
 
-    <ItemGroup>
-        <Folder Include="Assets\Images\" />
-    </ItemGroup>
-
 </Project>

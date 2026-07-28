@@ -4,21 +4,23 @@ Licensed under the MIT License. See LICENSE file for details.
 -->
 
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="clr-namespace:avallama.Controls">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- Preview -->
     <Design.PreviewWith>
         <!-- To change between Dark/Light mode in the Preview, change the RequestedThemeVariant value-->
         <ThemeVariantScope RequestedThemeVariant="Light">
             <Border Padding="20" Background="{DynamicResource Surface}">
                 <StackPanel Orientation="Vertical" Spacing="15" Background="{DynamicResource Surface}">
-                    <Button Classes="small" Content="Small Button"/>
-                    <Button Content="Default Button" />
+
+                    <Button Content="Button" />
+                    <Button Content="Disabled Button" IsEnabled="False" />
+                    <Button Classes="primary" Content="Primary Button"/>
+                    <Button Classes="secondary" Content="Secondary Button"/>
+
+                    <!-- Legacy items -->
                     <Button Classes="large" Content="Large Button" />
                     <Button Classes="secondaryButton" Content="Secondary Button" />
-                    <!-- lessSecondaryButton: buttons that are like secondary, but are even more hidden from the primary -->
                     <Button Classes="lessSecondaryButton" Content="Less Secondary Button" />
-                    <Button Content="Disabled Button" IsEnabled="False" />
                     <Button Classes="windowManager hide">
                         <PathIcon Data="{DynamicResource Minus}"
                                              Width="12" />
@@ -42,21 +44,60 @@ Licensed under the MIT License. See LICENSE file for details.
         </ThemeVariantScope>
     </Design.PreviewWith>
 
-    <!-- Default buttons -->
     <Style Selector="Button">
-        <Setter Property="Background" Value="{DynamicResource Primary}" />
-        <Setter Property="Foreground" Value="{DynamicResource OnPrimary}" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="CornerRadius" Value="8" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Padding" Value="20, 8" />
+        <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
         <Setter Property="FontFamily" Value="{StaticResource Manrope}" />
-        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="{DynamicResource ButtonFontSize}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+
+        <Style Selector="^:disabled /template/ ContentPresenter">
+            <Setter Property="Cursor" Value="No" />
+        </Style>
     </Style>
 
-    <Style Selector="Button:pointerover /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource PrimaryContainer}" />
-        <Setter Property="Foreground" Value="{DynamicResource OnPrimaryContainer}" />
+    <Style Selector="Button:disabled /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Disabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource OnDisabled}" />
     </Style>
+
+    <Style Selector="Button.primary">
+        <Setter Property="Background" Value="{DynamicResource Primary}" />
+        <Setter Property="Foreground" Value="{DynamicResource OnPrimary}" />
+
+        <Style Selector="^:pointerover /template/ ContentPresenter, ^:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource PrimaryHover}" />
+            <Setter Property="Foreground" Value="{DynamicResource OnPrimary}" />
+        </Style>
+    </Style>
+
+    <Style Selector="Button.secondary">
+        <Setter Property="Background" Value="{DynamicResource Secondary}" />
+        <Setter Property="Foreground" Value="{DynamicResource OnSecondary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+
+        <Style Selector="^:pointerover /template/ ContentPresenter, ^:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SecondaryHover}" />
+            <Setter Property="Foreground" Value="{DynamicResource OnSecondary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+    </Style>
+
+    <Style Selector="Button.icon-only">
+        <Setter Property="Background" Value="Transparent" />
+
+        <Style Selector="^ Path">
+            <Setter Property="Fill" Value="{DynamicResource Primary}" />
+        </Style>
+
+    </Style>
+
+
+
+    <!-- Legacy styles - TODO: remove before 0.4.0 -->
 
     <!-- Small button -->
     <Style Selector="Button.small">

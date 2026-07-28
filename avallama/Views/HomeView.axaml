@@ -9,7 +9,6 @@ Licensed under the MIT License. See LICENSE file for details.
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:avallama.ViewModels"
              xmlns:services="clr-namespace:avallama.Services"
-             xmlns:controls="clr-namespace:avallama.Controls"
              xmlns:utilities="clr-namespace:avallama.Utilities"
              xmlns:views="clr-namespace:avallama.Views"
              Background="{DynamicResource Surface}"

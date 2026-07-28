@@ -10,49 +10,85 @@ Licensed under the MIT License. See LICENSE file for details.
         <ThemeVariantScope RequestedThemeVariant="Light">
             <Border Padding="20" Background="{DynamicResource Surface}">
                 <StackPanel Orientation="Vertical" Spacing="13">
+
+                    <TextBlock
+                        Text="Page Title"
+                        Classes="page-title"
+                        TextAlignment="Center" />
+
+                    <TextBlock
+                        Text="Page SubTitle"
+                        Classes="page-subtitle"
+                        TextAlignment="Center" />
+
+                    <TextBlock
+                        Text="SubText"
+                        Classes="subtext"
+                        TextAlignment="Center" />
+
+                    <!-- Legacy items -->
                     <TextBlock
                         Text="avallama"
                         Classes="mainText"
-                        TextAlignment="Center"/>
+                        TextAlignment="Center" />
                     <TextBlock
                         Text="Run any open source LLM locally"
-                        Classes="subText"/>
+                        Classes="subText" />
                     <TextBlock
                         Text="Heading1"
-                        Classes="H1"/>
+                        Classes="H1" />
                     <TextBlock
                         Text="Heading2"
-                        Classes="H2"/>
+                        Classes="H2" />
                     <TextBlock
                         Text="Heading3"
-                        Classes="H3"/>
+                        Classes="H3" />
                 </StackPanel>
             </Border>
         </ThemeVariantScope>
     </Design.PreviewWith>
 
     <Style Selector="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource Manrope}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Manrope}" />
     </Style>
 
+    <Style Selector="TextBlock.page-title">
+        <Setter Property="FontSize" Value="{DynamicResource PageTitleFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <Style Selector="TextBlock.page-subtitle">
+        <Setter Property="FontSize" Value="{DynamicResource PageSubTitleFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource SubTextForeground}" />
+        <Setter Property="FontWeight" Value="Regular" />
+    </Style>
+
+    <Style Selector="TextBlock.subtext">
+        <Setter Property="FontSize" Value="{DynamicResource SubTextFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource SubTextForeground}" />
+        <Setter Property="FontWeight" Value="Regular" />
+    </Style>
+
+    <!-- Legacy styles - TODO: remove before 0.4.0 -->
     <Style Selector="TextBlock.mainText">
-        <Setter Property="FontSize" Value="40"/>
-        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="40" />
+        <Setter Property="FontWeight" Value="Medium" />
     </Style>
 
     <Style Selector="TextBlock.subText">
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="16" />
     </Style>
 
     <Style Selector="TextBlock.H1">
-        <Setter Property="FontSize" Value="26"/>
+        <Setter Property="FontSize" Value="26" />
     </Style>
 
     <Style Selector="TextBlock.H2">
-        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="FontSize" Value="20" />
     </Style>
 
     <Style Selector="TextBlock.H3">
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontSize" Value="14" />
     </Style>
 </Styles>

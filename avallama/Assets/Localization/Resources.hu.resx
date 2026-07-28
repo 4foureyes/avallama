@@ -1,4 +1,6 @@
-﻿<!--
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
 Copyright (c) Márk Csörgő and Martin Bartos
 Licensed under the MIT License. See LICENSE file for details.
 -->
@@ -25,12 +27,6 @@ Licensed under the MIT License. See LICENSE file for details.
     </data>
     <data name="GET_STARTED" xml:space="preserve">
         <value>Vágjunk bele</value>
-    </data>
-    <data name="GREETING_SUBTEXT" xml:space="preserve">
-        <value>Futtass nyílt forráskódú LLMeket lokálisan</value>
-    </data>
-    <data name="GREETING_TEXT" xml:space="preserve">
-        <value>Avallama</value>
     </data>
     <data name="SAVE" xml:space="preserve">
         <value>Mentés</value>
@@ -538,5 +534,11 @@ Licensed under the MIT License. See LICENSE file for details.
     </data>
     <data name="GENERATION_CANCELED" xml:space="preserve">
         <value>Generálás megszakítva</value>
+    </data>
+    <data name="WELCOME_SUBTEXT" xml:space="preserve">
+        <value>Az ingyenes, nyílt forráskódú és privát asztali kliensed az Ollamához.</value>
+    </data>
+    <data name="WELCOME_TEXT" xml:space="preserve">
+        <value>Üdvözöl az Avallama!</value>
     </data>
 </root>

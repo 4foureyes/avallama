@@ -15,6 +15,9 @@ Licensed under the MIT License. See LICENSE file for details.
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
 
+                <!-- Color palette -->
+                <MergeResourceInclude Source="/Resources/Themes/Colors.axaml" />
+
                 <!-- Themes -->
                 <MergeResourceInclude Source="/Resources/Themes/LightTheme.axaml" />
                 <MergeResourceInclude Source="/Resources/Themes/DarkTheme.axaml" />
@@ -26,12 +29,24 @@ Licensed under the MIT License. See LICENSE file for details.
                 <MergeResourceInclude Source="/Resources/DataTemplates/ModelItemStatusSelector.axaml" />
                 <MergeResourceInclude Source="/Resources/DataTemplates/ModelListItemSelector.axaml" />
 
+                <!-- Tokens -->
+                <MergeResourceInclude Source="/Resources/Tokens/CornerRadius.axaml" />
+                <MergeResourceInclude Source="/Resources/Tokens/FontSize.axaml" />
+                <MergeResourceInclude Source="/Resources/Tokens/Margin.axaml" />
+                <MergeResourceInclude Source="/Resources/Tokens/Padding.axaml" />
+                <MergeResourceInclude Source="/Resources/Tokens/Size.axaml" />
+                <MergeResourceInclude Source="/Resources/Tokens/Spacing.axaml" />
+                <MergeResourceInclude Source="/Resources/Tokens/Thickness.axaml" />
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         <FontFamily x:Key="Manrope">avares://avallama/Assets/Fonts#Manrope</FontFamily>
     </Application.Resources>
 
     <Application.Styles>
+
+        <!-- Avalonia Fluent theme -->
+        <FluentTheme />
 
         <!-- Shared styles -->
         <StyleInclude Source="Styles/Shared.axaml" />
@@ -48,9 +63,6 @@ Licensed under the MIT License. See LICENSE file for details.
         <!-- Templated controls -->
         <StyleInclude Source="Styles/TemplatedControls/ModelItem.axaml" />
         <StyleInclude Source="Styles/TemplatedControls/ModelListItem.axaml" />
-
-        <!-- Avalonia Fluent theme -->
-        <FluentTheme />
 
     </Application.Styles>
 

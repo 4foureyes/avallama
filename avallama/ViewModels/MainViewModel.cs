@@ -48,7 +48,7 @@ public partial class MainViewModel : ViewModelBase
         _firstTime = _configurationService.ReadSetting(ConfigurationKey.FirstTime);
         if (string.IsNullOrEmpty(_firstTime))
         {
-            CurrentPageViewModel = _pageFactory.GetPageViewModel(ApplicationPage.Greeting);
+            CurrentPageViewModel = _pageFactory.GetPageViewModel(ApplicationPage.Welcome);
         }
         else if (_firstTime == "false")
         {
