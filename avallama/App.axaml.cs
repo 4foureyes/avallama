@@ -91,6 +91,10 @@ public partial class App : Application
             appService.InitializeMainWindow();
         }
 
+        // Remove unused (legacy) configuration keys
+        configurationService.RemoveSetting(ConfigurationKey.FirstTime);
+        configurationService.RemoveSetting(ConfigurationKey.InitialScrapeAskDialogHandled);
+
         base.OnFrameworkInitializationCompleted();
     }
 

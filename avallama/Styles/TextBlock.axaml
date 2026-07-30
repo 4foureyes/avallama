@@ -26,6 +26,21 @@ Licensed under the MIT License. See LICENSE file for details.
                         Classes="subtext"
                         TextAlignment="Center" />
 
+                    <TextBlock
+                        Text="Text"
+                        Classes="text"
+                        TextAlignment="Center" />
+
+                    <TextBlock
+                        Text="Error Text"
+                        Classes="text error"
+                        TextAlignment="Center" />
+
+                    <TextBlock
+                        Text="Success Text"
+                        Classes="text success"
+                        TextAlignment="Center" />
+
                     <!-- Legacy items -->
                     <TextBlock
                         Text="avallama"
@@ -48,10 +63,6 @@ Licensed under the MIT License. See LICENSE file for details.
         </ThemeVariantScope>
     </Design.PreviewWith>
 
-    <Style Selector="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource Manrope}" />
-    </Style>
-
     <Style Selector="TextBlock.page-title">
         <Setter Property="FontSize" Value="{DynamicResource PageTitleFontSize}" />
         <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
@@ -68,6 +79,24 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="FontSize" Value="{DynamicResource SubTextFontSize}" />
         <Setter Property="Foreground" Value="{DynamicResource SubTextForeground}" />
         <Setter Property="FontWeight" Value="Regular" />
+    </Style>
+
+    <Style Selector="TextBlock.text">
+        <Setter Property="FontSize" Value="{DynamicResource TextFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <Style Selector="TextBlock.error">
+        <Setter Property="Foreground" Value="{DynamicResource Error}" />
+    </Style>
+
+    <Style Selector="TextBlock.success">
+        <Setter Property="Foreground" Value="{DynamicResource Success}" />
+    </Style>
+
+    <Style Selector="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource Manrope}" />
     </Style>
 
     <!-- Legacy styles - TODO: remove before 0.4.0 -->

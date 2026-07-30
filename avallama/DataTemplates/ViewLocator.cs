@@ -16,7 +16,7 @@ public class ViewLocator : IDataTemplate
         {
             WelcomeViewModel viewModel => CreateView(new WelcomeView(), viewModel),
             HomeViewModel viewModel => CreateView(new HomeView(), viewModel),
-            GuideViewModel viewModel => CreateView(new GuideView(), viewModel),
+            OnboardingViewModel viewModel => CreateView(new OnboardingView(), viewModel),
             SettingsViewModel viewModel => CreateView(new SettingsView(), viewModel),
             ModelManagerViewModel viewModel => CreateView(new ModelManagerView(), viewModel),
             ScraperViewModel viewModel => CreateView(new ScraperView(), viewModel),

@@ -7,47 +7,39 @@ Licensed under the MIT License. See LICENSE file for details.
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Design.PreviewWith>
         <!-- To change between Dark/Light mode in the Preview, change the RequestedThemeVariant value-->
-        <ThemeVariantScope RequestedThemeVariant="Light">
+        <ThemeVariantScope RequestedThemeVariant="Dark">
             <Border Padding="20" Background="{DynamicResource Surface}">
-                <StackPanel Orientation="Vertical" Spacing="16">
-                    <TextBox Watermark="TextBox Watermark"/>
-                    <TextBox Classes="settingTextBox"
-                        Watermark="Setting TextBox"
-                        Text="Setting TextBox"/>
+                <StackPanel Orientation="Vertical" Spacing="16" Width="200">
+                    <TextBox Text="input field"/>
+                    <TextBox Watermark="watermark"/>
                 </StackPanel>
             </Border>
         </ThemeVariantScope>
     </Design.PreviewWith>
 
     <Style Selector="TextBox">
-        <Setter Property="Background" Value="{DynamicResource SurfaceContainerHigh}"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="CornerRadius" Value="25"/>
-        <Setter Property="Padding" Value="16,8"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="MaxLines" Value="8"/>
-        <Setter Property="AcceptsReturn" Value="True"/>
         <Setter Property="FontFamily" Value="{StaticResource Manrope}"/>
-        <Setter Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
-    </Style>
+        <Setter Property="Background" Value="{DynamicResource MainCardBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextForeground}"/>
+        <Setter Property="Padding" Value="{DynamicResource TextBoxPadding}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource TextBoxCornerRadius}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource CardBorderThicknessM}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MainCardBorder}" />
+        <Setter Property="AcceptsReturn" Value="True"/>
+        <Setter Property="SelectionBrush" Value="{DynamicResource Secondary}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
 
-    <Style Selector="TextBox:focus, TextBox:pointerover">
-        <Style Selector="^ /template/ TextBlock#PART_Watermark">
-            <Setter Property="Foreground" Value="{DynamicResource OnSurfaceVariant}" />
-            <Setter Property="FontFamily" Value="{StaticResource Manrope}"/>
+        <Style Selector="^:focus, ^:pointerover">
+            <Style Selector="^ /template/ TextBlock#PART_Watermark">
+                <Setter Property="Foreground" Value="{DynamicResource TextForeground}" />
+            </Style>
+            <Style Selector="^ /template/ Border#PART_BorderElement">
+                <Setter Property="Background" Value="{DynamicResource MainCardBackground}"/>
+                <Setter Property="BorderThickness" Value="{DynamicResource CardBorderThicknessL}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource Primary}"/>
+            </Style>
         </Style>
-        <Style Selector="^ /template/ Border#PART_BorderElement">
-            <Setter Property="Background" Value="{DynamicResource SurfaceContainerHigh}"/>
-            <Setter Property="BorderThickness" Value="0" />
-        </Style>
+
     </Style>
 
-    <Style Selector="TextBox:not(:focus)">
-        <Setter Property="CaretBrush" Value="Transparent"/>
-    </Style>
-
-    <!-- For separate textbox settings, so the corner radius is more unified -->
-    <Style Selector="TextBox.settingTextBox">
-        <Setter Property="CornerRadius" Value="6"/>
-    </Style>
 </Styles>

@@ -47,12 +47,12 @@ public interface IOllamaService
     /// <summary>
     /// Manually triggers a check for the Ollama API connection status.
     /// </summary>
-    Task CheckConnectionAsync();
+    Task CheckConnectionAsync(CancellationToken ct = default);
 
     /// <summary>
     /// Attempts to reconnect to the Ollama API.
     /// </summary>
-    Task RetryConnectionAsync();
+    Task RetryConnectionAsync(CancellationToken ct = default);
 
     /// <summary>
     /// Retrieves a list of models currently downloaded via the API.
@@ -169,9 +169,9 @@ internal class OllamaService : IOllamaService
 
     #region API
 
-    public async Task CheckConnectionAsync() => await _apiClient.CheckConnectionAsync();
+    public async Task CheckConnectionAsync(CancellationToken ct = default) => await _apiClient.CheckConnectionAsync(ct);
 
-    public async Task RetryConnectionAsync()
+    public async Task RetryConnectionAsync(CancellationToken ct = default)
     {
         var isRemote = OllamaApiClient.IsConnectionRemote(_configurationService.ReadSetting(ConfigurationKey.ApiHost));
 

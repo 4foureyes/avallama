@@ -1,0 +1,229 @@
+<!--
+Copyright (c) Márk Csörgő and Martin Bartos
+Licensed under the MIT License. See LICENSE file for details.
+-->
+
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:services="clr-namespace:avallama.Services"
+             xmlns:vm="clr-namespace:avallama.ViewModels"
+             xmlns:dataTemplates="clr-namespace:avallama.DataTemplates"
+             xmlns:constants="clr-namespace:avallama.Constants"
+             xmlns:app="clr-namespace:avallama.Constants.Application"
+             xmlns:models="clr-namespace:avallama.Models.Ollama"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
+             x:Class="avallama.Views.OnboardingView"
+             x:DataType="vm:OnboardingViewModel"
+             Background="{DynamicResource OnboardingBackground}">
+
+    <UserControl.Resources>
+
+        <!-- Ollama Connection Test Templates -->
+        <dataTemplates:StatefulTemplateSelector x:Key="ConnectionStatusSelector">
+
+            <!-- Disconnected -->
+            <DataTemplate x:Key="Stopped" x:DataType="models:OllamaServiceStatus">
+                <TextBlock Classes="text" TextAlignment="Center" HorizontalAlignment="Center"
+                           Text="{services:LocalizationService Key='OLLAMA_DISCONNECTED_TEST'}" />
+            </DataTemplate>
+
+            <!-- Connecting -->
+            <DataTemplate x:Key="Starting" x:DataType="models:OllamaServiceStatus">
+                <TextBlock Classes="text" TextAlignment="Center" HorizontalAlignment="Center"
+                           Text="{services:LocalizationService Key='CONNECTING'}" />
+            </DataTemplate>
+
+            <!-- Connected -->
+            <DataTemplate x:Key="Ready" x:DataType="models:OllamaServiceStatus">
+                <StackPanel Orientation="Horizontal" Spacing="{DynamicResource InfoIconSpacing}">
+
+                    <!-- Online icon -->
+                    <Viewbox Classes="info">
+                        <Path Data="{DynamicResource BroadcastFill}" Fill="{DynamicResource Success}" />
+                    </Viewbox>
+
+                    <!-- Text -->
+                    <TextBlock Classes="text success" TextAlignment="Center" HorizontalAlignment="Center"
+                               Text="{services:LocalizationService Key='OLLAMA_CONNECTED_TEST'}" />
+
+                </StackPanel>
+            </DataTemplate>
+
+            <!-- Failed -->
+            <DataTemplate x:Key="Failed" x:DataType="models:OllamaServiceStatus">
+                <StackPanel Orientation="Horizontal" Spacing="{DynamicResource InfoIconSpacing}">
+
+                    <!-- Error icon -->
+                    <Viewbox Classes="info">
+                        <Path Data="{DynamicResource WarningCircleFill}" Fill="{DynamicResource Error}" />
+                    </Viewbox>
+
+                    <!-- Text -->
+                    <TextBlock Classes="text error" TextAlignment="Center" HorizontalAlignment="Center"
+                               Text="{services:LocalizationService Key='OLLAMA_FAILED_TEST'}" />
+
+                </StackPanel>
+            </DataTemplate>
+
+        </dataTemplates:StatefulTemplateSelector>
+
+        <!-- Onboarding Content Templates -->
+        <dataTemplates:TemplateSelector x:Key="OnboardingContentSelector">
+
+            <!-- Connect to Ollama -->
+            <DataTemplate x:Key="Connection" x:DataType="constants:OnboardingContent">
+
+                <!-- Card -->
+                <Border
+                    Classes="card sub"
+                    Padding="{DynamicResource CardPadding}">
+                    <Grid RowDefinitions="Auto,Auto,Auto"
+                          RowSpacing="{DynamicResource SpacingXXL}">
+
+                        <!-- Texts-->
+                        <StackPanel Grid.Row="0" Orientation="Vertical">
+                            <TextBlock Text="{services:LocalizationService Key='CONNECT_OLLAMA'}"
+                                       Classes="page-title" />
+                            <TextBlock Text="{services:LocalizationService Key='CONNECT_OLLAMA_DESC'}"
+                                       Classes="page-subtitle" />
+                        </StackPanel>
+
+                        <!-- Connection settings -->
+                        <Grid Grid.Row="1" RowDefinitions="*,*,*" ColumnDefinitions="*,Auto"
+                              RowSpacing="{DynamicResource SpacingL}"
+                              ColumnSpacing="{DynamicResource SpacingL}">
+
+                            <!-- Host input field -->
+                            <TextBlock Classes="text" Grid.Row="0" Grid.Column="0"
+                                       Text="{services:LocalizationService Key='API_HOST'}"
+                                       VerticalAlignment="Center" />
+                            <TextBox Grid.Row="0" Grid.Column="1"
+                                     Width="260"
+                                     Text="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).ApiHostText}" />
+
+                            <!-- Port input field -->
+                            <TextBlock Classes="text" Grid.Row="1" Grid.Column="0"
+                                       Text="{services:LocalizationService Key='API_PORT'}"
+                                       VerticalAlignment="Center" />
+                            <TextBox Grid.Row="1" Grid.Column="1"
+                                     Text="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).ApiPortText}" />
+
+                            <!-- Test Connection button -->
+                            <Button Grid.Row="2" Grid.Column="0" DockPanel.Dock="Left"
+                                    Classes="tertiary"
+                                    Content="{services:LocalizationService Key='TEST_CONNECTION'}"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).TestConnectionCommand}" />
+
+                            <!-- Connection status content-->
+                            <ContentControl Grid.Row="2" Grid.Column="1"
+                                            DockPanel.Dock="Right"
+                                            Content="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).OllamaStatus}"
+                                            ContentTemplate="{StaticResource ConnectionStatusSelector}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center" />
+
+
+                        </Grid>
+
+                        <!-- Skip For Now / Continue - buttons -->
+                        <DockPanel Grid.Row="2" LastChildFill="False">
+
+                            <!-- Skip For Now -->
+                            <Button DockPanel.Dock="Left"
+                                    Classes="tertiary clear"
+                                    Content="{services:LocalizationService Key='SKIP_FOR_NOW'}"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.6"
+                                    Command="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).SkipConnectionTestCommand}" />
+
+                            <!-- Continue -->
+                            <Button DockPanel.Dock="Right"
+                                    Classes="primary"
+                                    HorizontalAlignment="Center"
+                                    Content="{services:LocalizationService Key='CONTINUE'}"
+                                    IsEnabled="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).IsOllamaConnected}"
+                                    Command="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).NavigateToCommand}"
+                                    CommandParameter="{x:Static constants:OnboardingContent.Scraper}" />
+
+                        </DockPanel>
+
+                    </Grid>
+
+                </Border>
+
+            </DataTemplate>
+
+            <!-- Scraper -->
+            <DataTemplate x:Key="Scraper" x:DataType="constants:OnboardingContent">
+                <Border
+                    Classes="card sub"
+                    Padding="{DynamicResource CardPadding}"
+                    MaxWidth="640">
+                    <Grid RowDefinitions="Auto,Auto"
+                          RowSpacing="{DynamicResource SpacingXXL}">
+
+                        <!-- Texts -->
+                        <StackPanel Grid.Row="0" Orientation="Vertical" Spacing="{DynamicResource SpacingM}">
+                            <TextBlock Text="{services:LocalizationService Key='SCRAPER_ASK_TITLE'}"
+                                       Classes="page-title" />
+                            <TextBlock Text="{services:LocalizationService Key='SCRAPER_ASK_DESC'}"
+                                       Classes="page-subtitle"
+                                       TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <!-- Set Up Library / Skip For Now - buttons -->
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="{DynamicResource SpacingXL}"
+                                    HorizontalAlignment="Center">
+
+                            <!-- Set Up Library -->
+                            <Button Classes="primary" Content="{services:LocalizationService Key='SET_UP_LIBRARY'}"
+                                    Command="{Binding $parent[Window].((vm:MainViewModel)DataContext).NavigateToCommand}"
+                                    CommandParameter="{x:Static app:ApplicationPage.Scraper}" />
+
+                            <!-- Skip For Now -->
+                            <Button Classes="tertiary clear"
+                                    Content="{services:LocalizationService Key='SKIP_FOR_NOW'}"
+                                    Command="{Binding $parent[Window].((vm:MainViewModel)DataContext).NavigateToCommand}"
+                                    CommandParameter="{x:Static app:ApplicationPage.Home}"
+                                    Opacity="0.75" />
+
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+            </DataTemplate>
+
+        </dataTemplates:TemplateSelector>
+
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="Auto,*" Margin="{DynamicResource PageMarginL}">
+
+        <!-- Back button -->
+        <Button Grid.Row="0" Classes="tertiary icon"
+                Classes.hidden-with-size="{Binding !IsBackEnabled}"
+                Command="{Binding NavigateBackCommand}">
+            <StackPanel Orientation="Horizontal" Spacing="6">
+                <Viewbox>
+                    <Path Data="{DynamicResource CaretLeftBold}" />
+                </Viewbox>
+                <TextBlock Text="{services:LocalizationService Key='BACK'}" />
+            </StackPanel>
+        </Button>
+
+        <!-- Content -->
+        <TransitioningContentControl Grid.Row="1"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     Content="{Binding Content}"
+                                     ContentTemplate="{StaticResource OnboardingContentSelector}">
+            <TransitioningContentControl.PageTransition>
+                <CrossFade Duration="0:0:0.25" />
+            </TransitioningContentControl.PageTransition>
+        </TransitioningContentControl>
+
+    </Grid>
+
+</UserControl>

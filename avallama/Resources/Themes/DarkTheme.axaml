@@ -13,43 +13,51 @@ Licensed under the MIT License. See LICENSE file for details.
 
             <SolidColorBrush x:Key="Background" Color="{StaticResource Neutral800}" />
             <SolidColorBrush x:Key="SidebarBackground" Color="{StaticResource Neutral700}" />
+
             <SolidColorBrush x:Key="SubCardBackground" Color="{StaticResource Neutral700}" />
             <SolidColorBrush x:Key="MainCardBackground" Color="{StaticResource Neutral600}" />
+            <SolidColorBrush x:Key="SubCardBorder" Color="{DynamicResource Neutral600}" />
+            <SolidColorBrush x:Key="MainCardBorder" Color="{DynamicResource Neutral500}" />
 
             <SolidColorBrush x:Key="OnboardingBackground" Color="{StaticResource Neutral800}" />
 
             <SolidColorBrush x:Key="Border" Color="{StaticResource Neutral600}" />
 
-            <SolidColorBrush x:Key="Disabled" Color="{StaticResource Primary300}" Opacity="0.175"/>
-            <SolidColorBrush x:Key="OnDisabled" Color="{StaticResource Primary400}" Opacity="0.6" />
+            <SolidColorBrush x:Key="Disabled" Color="{StaticResource Primary300}" Opacity="0.175" />
+            <SolidColorBrush x:Key="OnDisabled" Color="{StaticResource Primary300}" Opacity="0.6" />
 
             <SolidColorBrush x:Key="Primary" Color="{StaticResource Primary300}" />
-            <SolidColorBrush x:Key="PrimaryHover" Color="{StaticResource Primary300}" Opacity="0.75" />
+            <SolidColorBrush x:Key="PrimaryHover" Color="{StaticResource Primary300}" Opacity="0.85" />
             <SolidColorBrush x:Key="PrimaryBorder" Color="Transparent" />
-            <SolidColorBrush x:Key="OnPrimary" Color="{StaticResource Primary700}" />
+            <SolidColorBrush x:Key="OnPrimary" Color="{StaticResource Primary800}" />
 
-            <SolidColorBrush x:Key="Secondary" Color="{StaticResource Primary100}" />
-            <SolidColorBrush x:Key="SecondaryHover" Color="{StaticResource Primary100}" Opacity="0.75" />
+            <SolidColorBrush x:Key="Secondary" Color="{StaticResource Primary200}" />
+            <SolidColorBrush x:Key="SecondaryHover" Color="{StaticResource Primary200}" Opacity="0.85" />
             <SolidColorBrush x:Key="SecondaryBorder" Color="Transparent" />
             <SolidColorBrush x:Key="OnSecondary" Color="{StaticResource Primary700}" />
 
-            <SolidColorBrush x:Key="Tertiary" Color="{StaticResource Primary50}" />
-            <SolidColorBrush x:Key="TertiaryHover" Color="{StaticResource Primary50}" Opacity="0.75" />
-            <SolidColorBrush x:Key="TertiaryBorder" Color="Transparent" />
-            <SolidColorBrush x:Key="OnTertiary" Color="{StaticResource Primary700}" />
+            <SolidColorBrush x:Key="Tertiary" Color="{StaticResource Primary100}" Opacity="0.1" />
+            <SolidColorBrush x:Key="TertiaryHover" Color="{StaticResource Primary100}" Opacity="0.05" />
+            <SolidColorBrush x:Key="TertiaryBorder" Color="{StaticResource Primary300}" />
+            <SolidColorBrush x:Key="OnTertiary" Color="{StaticResource Primary300}" />
 
             <SolidColorBrush x:Key="TextForeground" Color="{StaticResource Neutral50}" />
             <SolidColorBrush x:Key="TextOnBackground" Color="{StaticResource Neutral100}" />
-            <SolidColorBrush x:Key="SubTextForeground" Color="{StaticResource Neutral200}" />
+            <SolidColorBrush x:Key="SubTextForeground" Color="{StaticResource Neutral300}" />
 
             <SolidColorBrush x:Key="InfoLabelBackground" Color="{StaticResource Info200}" />
             <SolidColorBrush x:Key="InfoLabelBorder" Color="Transparent" />
             <SolidColorBrush x:Key="OnInfoLabel" Color="{StaticResource Info700}" />
 
-            <SolidColorBrush x:Key="Error" Color="{StaticResource Danger700}" />
+            <SolidColorBrush x:Key="Error" Color="{StaticResource Danger400}" />
             <SolidColorBrush x:Key="ErrorBackground" Color="{StaticResource Danger200}" />
             <SolidColorBrush x:Key="ErrorBorder" Color="Transparent" />
             <SolidColorBrush x:Key="OnError" Color="{StaticResource Danger700}" />
+
+            <SolidColorBrush x:Key="Success" Color="{StaticResource Success400}" />
+            <SolidColorBrush x:Key="SuccessBackground" Color="{StaticResource Success200}" />
+            <SolidColorBrush x:Key="SuccessBorder" Color="Transparent" />
+            <SolidColorBrush x:Key="OnSuccess" Color="{DynamicResource Success700}" />
 
             <SolidColorBrush x:Key="NeutralIconFill" Color="{StaticResource Neutral300}" />
 
@@ -63,8 +71,6 @@ Licensed under the MIT License. See LICENSE file for details.
             <SolidColorBrush x:Key="OnSecondaryContainer">#F1DCF4</SolidColorBrush>
             <SolidColorBrush x:Key="ErrorContainer">#93000A</SolidColorBrush>
             <SolidColorBrush x:Key="OnErrorContainer">#FFDAD6</SolidColorBrush>
-            <SolidColorBrush x:Key="Success">#1FA13D</SolidColorBrush>
-            <SolidColorBrush x:Key="OnSuccess">#FFFFFF</SolidColorBrush>
             <SolidColorBrush x:Key="OnBackground">#E9E0E7</SolidColorBrush>
             <SolidColorBrush x:Key="Surface">#161217</SolidColorBrush>
             <SolidColorBrush x:Key="OnSurface">#E9E0E7</SolidColorBrush>

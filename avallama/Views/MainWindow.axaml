@@ -6,6 +6,7 @@ Licensed under the MIT License. See LICENSE file for details.
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:avallama.ViewModels"
+        xmlns:utilities="using:avallama.Utilities"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -33,13 +34,19 @@ Licensed under the MIT License. See LICENSE file for details.
             </Button>
         </StackPanel>
 
-        <ContentControl
+        <TransitioningContentControl
             x:Name="PageContent"
             Canvas.Left="0"
             Canvas.Top="0"
             Content="{Binding CurrentPageViewModel}"
             Width="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-            Height="{Binding Height, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
+            Height="{Binding Height, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}">
+
+            <TransitioningContentControl.PageTransition>
+                <utilities:SmartPageTransition />
+            </TransitioningContentControl.PageTransition>
+
+        </TransitioningContentControl>
 
     </Canvas>
 </Window>

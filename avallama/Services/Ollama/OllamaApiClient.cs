@@ -52,12 +52,12 @@ internal interface IOllamaApiClient
     /// <summary>
     /// Checks the connection to the Ollama API and updates the status accordingly.
     /// </summary>
-    Task CheckConnectionAsync();
+    Task CheckConnectionAsync(CancellationToken ct = default);
 
     /// <summary>
     /// Attempts to reconnect to the Ollama API within a configured timeout period.
     /// </summary>
-    Task RetryConnectionAsync();
+    Task RetryConnectionAsync(CancellationToken ct = default);
 
     /// <summary>
     /// Enriches the specified model with detailed information from the API using the /api/tags and /api/show endpoints.
@@ -151,21 +151,21 @@ internal class OllamaApiClient(
     #region Public Methods
 
     /// <inheritdoc/>
-    public async Task CheckConnectionAsync()
+    public async Task CheckConnectionAsync(CancellationToken ct = default)
     {
         Status = new OllamaApiStatus(OllamaApiState.Connecting);
-        if (await IsOllamaReachable())
+        if (await IsOllamaReachable(ct))
         {
             Status = new OllamaApiStatus(OllamaApiState.Connected);
         }
         else
         {
-            await RetryConnectionAsync();
+            await RetryConnectionAsync(ct);
         }
     }
 
     /// <inheritdoc/>
-    public async Task RetryConnectionAsync()
+    public async Task RetryConnectionAsync(CancellationToken ct = default)
     {
         Status = new OllamaApiStatus(OllamaApiState.Reconnecting);
         _timeProvider.Start();
@@ -173,13 +173,15 @@ internal class OllamaApiClient(
         var loopStartTime = _timeProvider.Elapsed;
         while (_timeProvider.Elapsed - loopStartTime < MaxRetryingTime)
         {
-            if (await IsOllamaReachable())
+            ct.ThrowIfCancellationRequested();
+
+            if (await IsOllamaReachable(ct))
             {
                 Status = new OllamaApiStatus(OllamaApiState.Connected);
                 return;
             }
 
-            await _taskDelayer.Delay(ConnectionCheckInterval);
+            await _taskDelayer.Delay(ConnectionCheckInterval, ct);
         }
 
         SetUnreachableStatus();
@@ -326,7 +328,7 @@ internal class OllamaApiClient(
         [EnumeratorCancellation] CancellationToken ct)
     {
 
-        if (!await IsOllamaReachable())
+        if (!await IsOllamaReachable(ct))
         {
             SetUnreachableStatus();
             throw NewServiceUnreachableException();
@@ -560,15 +562,19 @@ internal class OllamaApiClient(
     /// Checks if the Ollama API is reachable by attempting a request to the /api/version endpoint.
     /// </summary>
     /// <returns>True if the server responds with a success status code; otherwise, false.</returns>
-    private async Task<bool> IsOllamaReachable()
+    private async Task<bool> IsOllamaReachable(CancellationToken ct = default)
     {
         try
         {
             using var request = CreateRequest(HttpMethod.Get, "/api/version");
             using var response =
-                await _checkHttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+                await _checkHttpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
 
             return response.StatusCode == HttpStatusCode.OK;
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            throw;
         }
         catch
         {

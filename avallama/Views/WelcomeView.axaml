@@ -9,6 +9,7 @@ Licensed under the MIT License. See LICENSE file for details.
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:services="clr-namespace:avallama.Services"
+             xmlns:app="clr-namespace:avallama.Constants.Application"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              Background="{DynamicResource OnboardingBackground}"
              x:Class="avallama.Views.WelcomeView"
@@ -44,7 +45,8 @@ Licensed under the MIT License. See LICENSE file for details.
             <Button Content="{services:LocalizationService Key='GET_STARTED'}"
                     Classes="primary"
                     HorizontalAlignment="Center"
-                    Command="{Binding Path=((vm:MainViewModel)DataContext).OpenGuideCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
+                    Command="{Binding Path=((vm:MainViewModel)DataContext).NavigateToCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                    CommandParameter="{x:Static app:ApplicationPage.Onboarding}"/>
 
         </StackPanel>
 

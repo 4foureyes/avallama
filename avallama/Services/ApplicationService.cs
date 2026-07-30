@@ -2,15 +2,9 @@
 // Licensed under the MIT License. See LICENSE file for details.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using avallama.Constants.Application;
-using avallama.Constants.Keys;
-using avallama.Services.Ollama;
 using avallama.Services.Persistence;
 using avallama.ViewModels;
 using avallama.Views;
@@ -23,7 +17,6 @@ namespace avallama.Services;
 
 public interface IApplicationService
 {
-    Task AskOllamaStart();
     void InitializeMainWindow();
     void Shutdown();
     void Restart();
@@ -49,66 +42,6 @@ public class ApplicationService : IApplicationService
         _configurationService = configurationService;
         messenger.Register<ApplicationMessage.Shutdown>(this, (_, _) => { Shutdown(); });
         messenger.Register<ApplicationMessage.Restart>(this, (_, _) => { Restart(); });
-
-        messenger.Register<ApplicationMessage.AskOllamaStart>(this, (_, _) =>
-        {
-            Task.Run(async () =>
-            {
-                await Dispatcher.UIThread.InvokeAsync(async () =>
-                {
-                    await AskOllamaStart();
-                });
-            });
-        });
-    }
-
-    public async Task AskOllamaStart()
-    {
-        // show ollama start confirmation dialog
-        var result = await _dialogService.ShowConfirmationDialogAsync(
-            title: LocalizationService.GetString("OLLAMA_RUN_FROM_DIALOG_TITLE"),
-            positiveButtonText: LocalizationService.GetString("OLLAMA_RUN_FROM_DIALOG_LOCAL"),
-            negativeButtonText: LocalizationService.GetString("OLLAMA_RUN_FROM_DIALOG_REMOTE"),
-            description: LocalizationService.GetString("OLLAMA_RUN_FROM_DIALOG_DESC")
-        );
-
-        // if remote was selected
-        if (result is ConfirmationResult { Confirmation: ConfirmationType.Negative })
-        {
-            // show input dialog with input fields specified
-            var dialogResult = await _dialogService.ShowInputDialogAsync(
-                title: LocalizationService.GetString("OLLAMA_REMOTE_DIALOG_TITLE"),
-                description: LocalizationService.GetString("OLLAMA_REMOTE_DIALOG_DESC"),
-                inputFields: new List<InputField>
-                {
-                    new (
-                        placeholder: LocalizationService.GetString("API_HOST_SETTING"),
-                        validator: host => host == "localhost" || IPAddress.TryParse(host, out _),
-                        validationErrorMessage: LocalizationService.GetString("INVALID_HOST_ERR")
-                    ),
-                    new (
-                        placeholder: LocalizationService.GetString("API_PORT_SETTING"),
-                        inputValue: OllamaApiClient.DefaultApiPort.ToString(),
-                        validator: port => int.TryParse(port, out var parsed) && parsed is > 0 and < 65536,
-                        validationErrorMessage: LocalizationService.GetString("INVALID_PORT_ERR")
-                    )
-                }
-            );
-
-            // if an inputresult arrives, we extract the data from it
-            if (dialogResult is InputResult inputResult)
-            {
-                var remoteServerInfo = inputResult.Results.ToList();
-                _configurationService.SaveSetting(ConfigurationKey.ApiHost, remoteServerInfo[0]!);
-                _configurationService.SaveSetting(ConfigurationKey.ApiPort, remoteServerInfo[1]!);
-            }
-        }
-        // if local was selected
-        else
-        {
-            _configurationService.SaveSetting(ConfigurationKey.ApiHost, "localhost");
-            _configurationService.SaveSetting(ConfigurationKey.ApiPort, OllamaApiClient.DefaultApiPort.ToString());
-        }
     }
 
     public void Shutdown()

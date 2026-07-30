@@ -5,9 +5,9 @@ using Avalonia.Controls;
 
 namespace avallama.Views;
 
-public partial class GuideView : UserControl
+public partial class OnboardingView : UserControl
 {
-    public GuideView()
+    public OnboardingView()
     {
         InitializeComponent();
     }

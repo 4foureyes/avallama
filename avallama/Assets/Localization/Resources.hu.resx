@@ -145,12 +145,6 @@ Licensed under the MIT License. See LICENSE file for details.
     <data name="DOWNLOAD_OLLAMA" xml:space="preserve">
         <value>Ollama letöltése ({0})</value>
     </data>
-    <data name="SKIP_GUIDE" xml:space="preserve">
-        <value>Útmutató kihagyása</value>
-    </data>
-    <data name="NEXT" xml:space="preserve">
-        <value>Tovább</value>
-    </data>
     <data name="SKIP" xml:space="preserve">
         <value>Kihagyás</value>
     </data>
@@ -246,12 +240,6 @@ Licensed under the MIT License. See LICENSE file for details.
     </data>
     <data name="OLLAMA_RUN_FROM_DIALOG_TITLE" xml:space="preserve">
         <value>Honnan szeretnéd indítani az Ollamát?</value>
-    </data>
-    <data name="OLLAMA_RUN_FROM_DIALOG_DESC" xml:space="preserve">
-        <value>Az Ollama futhat lokálisan a gépeden, vagy csatlakozhatsz egy szerverhez is.</value>
-    </data>
-    <data name="OLLAMA_RUN_FROM_DIALOG_LOCAL" xml:space="preserve">
-        <value>Indítás lokálisan</value>
     </data>
     <data name="OLLAMA_RUN_FROM_DIALOG_REMOTE" xml:space="preserve">
         <value>Csatlakozás szerverhez</value>
@@ -359,7 +347,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <value>Újra</value>
     </data>
     <data name="CONNECTING" xml:space="preserve">
-        <value>Csatlakozás..</value>
+        <value>Csatlakozás...</value>
     </data>
     <data name="SHOW_INFORMATIONAL_SETTING" xml:space="preserve">
         <value>Tájékoztató információk megjelenítése</value>
@@ -484,20 +472,8 @@ Licensed under the MIT License. See LICENSE file for details.
     <data name="DOWNLOAD_FAILED" xml:space="preserve">
         <value>Letöltés sikertelen: {0}</value>
     </data>
-    <data name="SCRAPE_ASK_DIALOG_TITLE" xml:space="preserve">
-        <value>Szeretnéd lekérni az összes Ollama modellt?</value>
-    </data>
-    <data name="SCRAPE_ASK_DIALOG_DESCRIPTION" xml:space="preserve">
-        <value>A Modellkezelő használatához az Avallamának le kell töltenie a modellek metaadatait az Ollamáról. Ez a művelet több percet is igénybe vehet. Szeretnéd most elindítani?</value>
-    </data>
-    <data name="SCRAPE_ASK_DIALOG_POSITIVE" xml:space="preserve">
-        <value>Szinkronizálás</value>
-    </data>
     <data name="NOT_NOW" xml:space="preserve">
         <value>Most nem</value>
-    </data>
-    <data name="SCRAPE_ASK_DIALOG_INFO" xml:space="preserve">
-        <value>A modellkönyvtárat később bármikor frissítheted a Beállításokban.</value>
     </data>
     <data name="UPDATE_CHECK_SETTING" xml:space="preserve">
         <value>Frissítés észlelés</value>
@@ -540,5 +516,56 @@ Licensed under the MIT License. See LICENSE file for details.
     </data>
     <data name="WELCOME_TEXT" xml:space="preserve">
         <value>Üdvözöl az Avallama!</value>
+    </data>
+    <data name="CONNECT_OLLAMA" xml:space="preserve">
+        <value>Csatlakozás az Ollamához</value>
+    </data>
+    <data name="TEST_CONNECTION" xml:space="preserve">
+        <value>Kapcsolat tesztelése</value>
+    </data>
+    <data name="SKIP_FOR_NOW" xml:space="preserve">
+        <value>Kihagyás</value>
+    </data>
+    <data name="CONTINUE" xml:space="preserve">
+        <value>Tovább</value>
+    </data>
+    <data name="OLLAMA_CONNECTED" xml:space="preserve">
+        <value>Csatlakozva az Ollamához: {0}</value>
+    </data>
+    <data name="OLLAMA_UNREACHABLE" xml:space="preserve">
+        <value>Az Ollama nem elérhető</value>
+    </data>
+    <data name="LOCAL" xml:space="preserve">
+        <value>Helyi</value>
+    </data>
+    <data name="REMOTE" xml:space="preserve">
+        <value>Távoli</value>
+    </data>
+    <data name="SCRAPER_ASK_TITLE" xml:space="preserve">
+        <value>Készen állsz új modellek felfedezésére?</value>
+    </data>
+    <data name="API_HOST" xml:space="preserve">
+        <value>API Host:</value>
+    </data>
+    <data name="API_PORT" xml:space="preserve">
+        <value>API Port:</value>
+    </data>
+    <data name="OLLAMA_DISCONNECTED_TEST" xml:space="preserve">
+        <value>Az Ollama nincs csatlakozva</value>
+    </data>
+    <data name="OLLAMA_CONNECTED_TEST" xml:space="preserve">
+        <value>Csatlakozva az Ollamához</value>
+    </data>
+    <data name="OLLAMA_FAILED_TEST" xml:space="preserve">
+        <value>Az Ollama nem elérhető</value>
+    </data>
+    <data name="SCRAPER_ASK_DESC" xml:space="preserve">
+        <value>Töltsd le az összes elérhető Ollama modell adatait az Avallamába! Így még a letöltésük előtt kényelmesen böngészhetsz a paramétereik, rendszerkövetelményeik és funkcióik között.\n\nEz a szinkronizáció nagyjából 2-3 percet vesz igénybe. Később a beállításokból is bármikor elindíthatod.</value>
+    </data>
+    <data name="SET_UP_LIBRARY" xml:space="preserve">
+        <value>Könyvtár beállítása</value>
+    </data>
+    <data name="CONNECT_OLLAMA_DESC" xml:space="preserve">
+        <value>Add meg az Ollama kapcsolat beállításait.</value>
     </data>
 </root>

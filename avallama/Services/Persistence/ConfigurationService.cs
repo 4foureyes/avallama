@@ -16,6 +16,7 @@ public interface IConfigurationService
 {
     string ReadSetting(string key);
     void SaveSetting(string key, string value);
+    void RemoveSetting(string key);
 }
 
 public class ConfigurationService : IConfigurationService
@@ -74,6 +75,20 @@ public class ConfigurationService : IConfigurationService
                     "dark" => ThemeVariant.Dark,
                     _ => ThemeVariant.Default
                 };
+            }
+        }
+    }
+
+    public void RemoveSetting(string key)
+    {
+        lock (_lock)
+        {
+            if (_settings.Remove(key))
+            {
+                var json = JsonSerializer.Serialize(
+                    _settings,
+                    AvallamaIndentedJsonSerializerContext.Default.StringDictionary);
+                File.WriteAllText(_configPath, json);
             }
         }
     }

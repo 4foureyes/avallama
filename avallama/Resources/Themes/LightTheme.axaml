@@ -12,8 +12,11 @@ Licensed under the MIT License. See LICENSE file for details.
 
             <SolidColorBrush x:Key="Background" Color="{StaticResource Neutral100}" />
             <SolidColorBrush x:Key="SidebarBackground" Color="{StaticResource Neutral150}" />
+
             <SolidColorBrush x:Key="SubCardBackground" Color="{StaticResource Neutral50}" />
             <SolidColorBrush x:Key="MainCardBackground" Color="White" />
+            <SolidColorBrush x:Key="SubCardBorder" Color="{DynamicResource Neutral200}" />
+            <SolidColorBrush x:Key="MainCardBorder" Color="{DynamicResource Neutral200}" />
 
             <LinearGradientBrush x:Key="OnboardingBackground" StartPoint="0%,0%" EndPoint="0%,100%">
                 <GradientStop Offset="0.0" Color="{StaticResource Neutral100}" />
@@ -22,7 +25,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
             <SolidColorBrush x:Key="Border" Color="{StaticResource Neutral200}" />
 
-            <SolidColorBrush x:Key="Disabled" Color="{StaticResource Primary600}" Opacity="0.175"/>
+            <SolidColorBrush x:Key="Disabled" Color="{StaticResource Primary600}" Opacity="0.175" />
             <SolidColorBrush x:Key="OnDisabled" Color="{StaticResource Primary700}" Opacity="0.6" />
 
             <SolidColorBrush x:Key="Primary" Color="{StaticResource Primary600}" />
@@ -30,14 +33,14 @@ Licensed under the MIT License. See LICENSE file for details.
             <SolidColorBrush x:Key="PrimaryBorder" Color="Transparent" />
             <SolidColorBrush x:Key="OnPrimary" Color="White" />
 
-            <SolidColorBrush x:Key="Secondary" Color="{StaticResource Primary200}" />
-            <SolidColorBrush x:Key="SecondaryHover" Color="{StaticResource Primary200}" Opacity="0.75" />
-            <SolidColorBrush x:Key="SecondaryBorder" Color="{StaticResource Primary600}" />
+            <SolidColorBrush x:Key="Secondary" Color="{StaticResource Primary150}" />
+            <SolidColorBrush x:Key="SecondaryHover" Color="{StaticResource Primary150}" Opacity="0.75" />
+            <SolidColorBrush x:Key="SecondaryBorder" Color="{StaticResource Primary300}" />
             <SolidColorBrush x:Key="OnSecondary" Color="{StaticResource Primary700}" />
 
-            <SolidColorBrush x:Key="Tertiary" Color="{StaticResource Primary100}" />
-            <SolidColorBrush x:Key="TertiaryHover" Color="{StaticResource Primary100}" Opacity="0.75" />
-            <SolidColorBrush x:Key="TertiaryBorder" Color="{StaticResource Primary600}" />
+            <SolidColorBrush x:Key="Tertiary" Color="{StaticResource Primary50}" />
+            <SolidColorBrush x:Key="TertiaryHover" Color="{StaticResource Primary100}" Opacity="0.5" />
+            <SolidColorBrush x:Key="TertiaryBorder" Color="{StaticResource Primary200}" />
             <SolidColorBrush x:Key="OnTertiary" Color="{StaticResource Primary600}" />
 
             <SolidColorBrush x:Key="TextForeground" Color="{StaticResource Neutral700}" />
@@ -53,6 +56,11 @@ Licensed under the MIT License. See LICENSE file for details.
             <SolidColorBrush x:Key="ErrorBorder" Color="{StaticResource Danger600}" />
             <SolidColorBrush x:Key="OnError" Color="White" />
 
+            <SolidColorBrush x:Key="Success" Color="{StaticResource Success600}" />
+            <SolidColorBrush x:Key="SuccessBackground" Color="{StaticResource Success100}" />
+            <SolidColorBrush x:Key="SuccessBorder" Color="{StaticResource Success600}" />
+            <SolidColorBrush x:Key="OnSuccess" Color="White" />
+
             <SolidColorBrush x:Key="NeutralIconFill" Color="{StaticResource Neutral400}" />
 
             <!-- TODO: remove before 0.4.0 -->
@@ -65,8 +73,6 @@ Licensed under the MIT License. See LICENSE file for details.
             <SolidColorBrush x:Key="OnSecondaryContainer">#504255</SolidColorBrush>
             <SolidColorBrush x:Key="ErrorContainer">#FFDAD6</SolidColorBrush>
             <SolidColorBrush x:Key="OnErrorContainer">#93000A</SolidColorBrush>
-            <SolidColorBrush x:Key="Success">#1FA13D</SolidColorBrush>
-            <SolidColorBrush x:Key="OnSuccess">#FFFFFF</SolidColorBrush>
             <SolidColorBrush x:Key="OnBackground">#1E1A1F</SolidColorBrush>
             <SolidColorBrush x:Key="Surface">#FFF7FB</SolidColorBrush>
             <SolidColorBrush x:Key="OnSurface">#1E1A1F</SolidColorBrush>

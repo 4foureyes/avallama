@@ -1,0 +1,30 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <!-- To change between Dark/Light mode in the Preview, change the RequestedThemeVariant value-->
+        <ThemeVariantScope RequestedThemeVariant="Light">
+            <Border Padding="20">
+                <Border Classes="card sub" Height="120" Width="120">
+                    <Border Classes="card main" Height="60" Width="60" />
+                </Border>
+            </Border>
+        </ThemeVariantScope>
+    </Design.PreviewWith>
+
+    <Style Selector="Border.card">
+        <Setter Property="CornerRadius" Value="{DynamicResource CardCornerRadius}" />
+        <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="Border.card.sub">
+        <Setter Property="Background" Value="{DynamicResource SubCardBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SubCardBorder}" />
+    </Style>
+
+    <Style Selector="Border.card.main">
+        <Setter Property="Background" Value="{DynamicResource MainCardBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource MainCardBorder}" />
+    </Style>
+
+
+</Styles>

@@ -151,12 +151,6 @@ Licensed under the MIT License. See LICENSE file for details.
     <data name="DOWNLOAD_OLLAMA" xml:space="preserve">
         <value>Download Ollama ({0})</value>
     </data>
-    <data name="SKIP_GUIDE" xml:space="preserve">
-        <value>Skip guide</value>
-    </data>
-    <data name="NEXT" xml:space="preserve">
-        <value>Next</value>
-    </data>
     <data name="SKIP" xml:space="preserve">
         <value>Skip</value>
     </data>
@@ -252,12 +246,6 @@ Licensed under the MIT License. See LICENSE file for details.
     </data>
     <data name="OLLAMA_RUN_FROM_DIALOG_TITLE" xml:space="preserve">
         <value>Where would you like to start Ollama from?</value>
-    </data>
-    <data name="OLLAMA_RUN_FROM_DIALOG_DESC" xml:space="preserve">
-        <value>You can run Ollama locally on your device or connect to a remote server.</value>
-    </data>
-    <data name="OLLAMA_RUN_FROM_DIALOG_LOCAL" xml:space="preserve">
-        <value>Run locally</value>
     </data>
     <data name="OLLAMA_RUN_FROM_DIALOG_REMOTE" xml:space="preserve">
         <value>Connect to a server</value>
@@ -365,7 +353,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <value>Retry</value>
     </data>
     <data name="CONNECTING" xml:space="preserve">
-        <value>Connecting..</value>
+        <value>Connecting...</value>
     </data>
     <data name="SHOW_INFORMATIONAL_SETTING" xml:space="preserve">
         <value>Show informational messages</value>
@@ -490,20 +478,8 @@ Licensed under the MIT License. See LICENSE file for details.
     <data name="DOWNLOAD_FAILED" xml:space="preserve">
         <value>Download failed: {0}</value>
     </data>
-    <data name="SCRAPE_ASK_DIALOG_TITLE" xml:space="preserve">
-        <value>Would you like to fetch all models from Ollama?</value>
-    </data>
-    <data name="SCRAPE_ASK_DIALOG_DESCRIPTION" xml:space="preserve">
-        <value>To use Model Manager, Avallama needs to download model metadata from Ollama. This process can take several minutes. Would you like to start it now?</value>
-    </data>
-    <data name="SCRAPE_ASK_DIALOG_POSITIVE" xml:space="preserve">
-        <value>Sync library</value>
-    </data>
     <data name="NOT_NOW" xml:space="preserve">
         <value>Not now</value>
-    </data>
-    <data name="SCRAPE_ASK_DIALOG_INFO" xml:space="preserve">
-        <value>You can update the model library at any time in the Settings.</value>
     </data>
     <data name="UPDATE_CHECK_SETTING" xml:space="preserve">
         <value>Update checking</value>
@@ -546,5 +522,56 @@ Licensed under the MIT License. See LICENSE file for details.
     </data>
     <data name="WELCOME_SUBTEXT" xml:space="preserve">
         <value>Your free, open-source, private desktop client for Ollama.</value>
+    </data>
+    <data name="CONNECT_OLLAMA" xml:space="preserve">
+        <value>Connect to Ollama</value>
+    </data>
+    <data name="CONNECT_OLLAMA_DESC" xml:space="preserve">
+        <value>Configure your connection to Ollama.</value>
+    </data>
+    <data name="TEST_CONNECTION" xml:space="preserve">
+        <value>Test Connection</value>
+    </data>
+    <data name="SKIP_FOR_NOW" xml:space="preserve">
+        <value>Skip For Now</value>
+    </data>
+    <data name="CONTINUE" xml:space="preserve">
+        <value>Continue</value>
+    </data>
+    <data name="OLLAMA_CONNECTED" xml:space="preserve">
+        <value>Ollama is connected: {0}</value>
+    </data>
+    <data name="OLLAMA_DISCONNECTED_TEST" xml:space="preserve">
+        <value>Ollama is disconnected</value>
+    </data>
+    <data name="OLLAMA_UNREACHABLE" xml:space="preserve">
+        <value>Ollama is unreachable</value>
+    </data>
+    <data name="LOCAL" xml:space="preserve">
+        <value>Local</value>
+    </data>
+    <data name="REMOTE" xml:space="preserve">
+        <value>Remote</value>
+    </data>
+    <data name="SCRAPER_ASK_TITLE" xml:space="preserve">
+        <value>Ready to discover new models?</value>
+    </data>
+    <data name="SCRAPER_ASK_DESC" xml:space="preserve">
+        <value>Avallama can fetch the complete list of available Ollama models. This allows you to browse parameters, hardware requirements, and features before pulling any model to your computer.\n\nTakes about 2-3 minutes. You can always do it later in Settings.</value>
+    </data>
+    <data name="SET_UP_LIBRARY" xml:space="preserve">
+        <value>Set Up Library</value>
+    </data>
+    <data name="API_HOST" xml:space="preserve">
+        <value>API Host:</value>
+    </data>
+    <data name="API_PORT" xml:space="preserve">
+        <value>API Port:</value>
+    </data>
+    <data name="OLLAMA_CONNECTED_TEST" xml:space="preserve">
+        <value>Ollama is connected</value>
+    </data>
+    <data name="OLLAMA_FAILED_TEST" xml:space="preserve">
+        <value>Ollama is not available</value>
     </data>
 </root>

@@ -159,7 +159,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <Button Grid.Column="3" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                 Margin="0,22,0,0"
                 Content="{services:LocalizationService Key='BACK'}"
-                Command="{Binding Path=((vm:MainViewModel)DataContext).OpenHome, RelativeSource={RelativeSource AncestorType=Window}}"
+                Command="{Binding Path=((vm:MainViewModel)DataContext).NavigateBackCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                 Cursor="Hand" />
     </Grid>
 </UserControl>

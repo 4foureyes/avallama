@@ -11,6 +11,7 @@ Licensed under the MIT License. See LICENSE file for details.
              xmlns:services="clr-namespace:avallama.Services"
              xmlns:utilities="clr-namespace:avallama.Utilities"
              xmlns:views="clr-namespace:avallama.Views"
+             xmlns:app="clr-namespace:avallama.Constants.Application"
              Background="{DynamicResource Surface}"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="avallama.Views.HomeView"
@@ -61,14 +62,16 @@ Licensed under the MIT License. See LICENSE file for details.
 
                 <!-- Settings button -->
                 <Button Classes="clearButton" Cursor="Hand"
-                        Command="{Binding Path=((vm:MainViewModel)DataContext).OpenSettings, RelativeSource={RelativeSource AncestorType=Window}}">
+                        Command="{Binding Path=((vm:MainViewModel)DataContext).NavigateToCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        CommandParameter="{x:Static app:ApplicationPage.Settings}">
                     <PathIcon
                         Data="{DynamicResource GearFill}" Width="24" Foreground="{DynamicResource Primary}" />
                 </Button>
 
                 <!-- ModelManager button -->
                 <Button Classes="clearButton"
-                        Command="{Binding Path=((vm:MainViewModel)DataContext).OpenModelManager, RelativeSource={RelativeSource AncestorType=Window}}"
+                        Command="{Binding Path=((vm:MainViewModel)DataContext).NavigateToCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                        CommandParameter="{x:Static app:ApplicationPage.ModelManager}"
                         Cursor="Hand">
                     <PathIcon
                         Data="{DynamicResource StackFill}" Width="28"

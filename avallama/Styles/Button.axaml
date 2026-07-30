@@ -16,6 +16,13 @@ Licensed under the MIT License. See LICENSE file for details.
                     <Button Content="Disabled Button" IsEnabled="False" />
                     <Button Classes="primary" Content="Primary Button"/>
                     <Button Classes="secondary" Content="Secondary Button"/>
+                    <Button Classes="tertiary" Content="Tertiary Button"/>
+                    <Button Classes="clear" Content="Clear Button"/>
+                    <Button Classes="primary icon">
+                        <Viewbox>
+                            <Path Data="{DynamicResource CaretLeftBold}" />
+                        </Viewbox>
+                    </Button>
 
                     <!-- Legacy items -->
                     <Button Classes="large" Content="Large Button" />
@@ -44,22 +51,31 @@ Licensed under the MIT License. See LICENSE file for details.
         </ThemeVariantScope>
     </Design.PreviewWith>
 
-    <Style Selector="Button">
-        <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="CornerRadius" Value="{DynamicResource ButtonCornerRadius}" />
-        <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
-        <Setter Property="FontFamily" Value="{StaticResource Manrope}" />
-        <Setter Property="FontSize" Value="{DynamicResource ButtonFontSize}" />
-        <Setter Property="FontWeight" Value="SemiBold" />
+    <Style Selector="Button.hidden-with-size">
+        <Setter Property="Opacity" Value="0" />
+        <Setter Property="IsHitTestVisible" Value="False" />
+    </Style>
 
-        <Style Selector="^:disabled /template/ ContentPresenter">
-            <Setter Property="Cursor" Value="No" />
+    <Style Selector="Button.icon">
+        <Setter Property="Padding" Value="{DynamicResource IconButtonPadding}" />
+
+        <Style Selector="^ Viewbox">
+            <Setter Property="Height" Value="{DynamicResource IconInButtonSize}" />
+            <Setter Property="Width" Value="{DynamicResource IconInButtonSize}" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <Style Selector="^ Path">
+            <Setter Property="Fill" Value="{DynamicResource OnPrimary}" />
         </Style>
     </Style>
 
-    <Style Selector="Button:disabled /template/ ContentPresenter">
-        <Setter Property="Background" Value="{DynamicResource Disabled}" />
-        <Setter Property="Foreground" Value="{DynamicResource OnDisabled}" />
+    <Style Selector="Button.icon-only">
+        <Setter Property="Background" Value="Transparent" />
+
+        <Style Selector="^ Path">
+            <Setter Property="Fill" Value="{DynamicResource Primary}" />
+        </Style>
     </Style>
 
     <Style Selector="Button.primary">
@@ -69,6 +85,10 @@ Licensed under the MIT License. See LICENSE file for details.
         <Style Selector="^:pointerover /template/ ContentPresenter, ^:pressed /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource PrimaryHover}" />
             <Setter Property="Foreground" Value="{DynamicResource OnPrimary}" />
+        </Style>
+
+        <Style Selector="^ Path">
+            <Setter Property="Fill" Value="{DynamicResource OnPrimary}" />
         </Style>
     </Style>
 
@@ -84,16 +104,63 @@ Licensed under the MIT License. See LICENSE file for details.
             <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorder}" />
             <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThickness}" />
         </Style>
-    </Style>
-
-    <Style Selector="Button.icon-only">
-        <Setter Property="Background" Value="Transparent" />
 
         <Style Selector="^ Path">
-            <Setter Property="Fill" Value="{DynamicResource Primary}" />
+            <Setter Property="Fill" Value="{DynamicResource OnSecondary}" />
+        </Style>
+    </Style>
+
+    <Style Selector="Button.tertiary">
+        <Setter Property="Background" Value="{DynamicResource Tertiary}" />
+        <Setter Property="Foreground" Value="{DynamicResource OnTertiary}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource TertiaryBorder}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThickness}" />
+
+        <Style Selector="^:pointerover /template/ ContentPresenter, ^:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource TertiaryHover}" />
+            <Setter Property="Foreground" Value="{DynamicResource OnTertiary}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource TertiaryBorder}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThickness}" />
         </Style>
 
+        <Style Selector="^ Path">
+            <Setter Property="Fill" Value="{DynamicResource OnTertiary}" />
+        </Style>
     </Style>
+
+    <Style Selector="Button.clear">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+
+        <Style Selector="^:pointerover /template/ ContentPresenter, ^:pressed /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+        </Style>
+    </Style>
+
+    <Style Selector="Button:disabled /template/ ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Disabled}" />
+        <Setter Property="Foreground" Value="{DynamicResource OnDisabled}" />
+    </Style>
+
+    <Style Selector="Button">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ButtonCornerRadius}" />
+        <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
+        <Setter Property="FontFamily" Value="{StaticResource Manrope}" />
+        <Setter Property="FontSize" Value="{DynamicResource ButtonFontSize}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+
+        <Style Selector="^:disabled /template/ ContentPresenter">
+            <Setter Property="Cursor" Value="No" />
+        </Style>
+    </Style>
+
+
+
 
     <!-- Legacy styles - TODO: remove before 0.4.0 -->
 

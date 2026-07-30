@@ -7,6 +7,9 @@ Licensed under the MIT License. See LICENSE file for details.
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <CornerRadius x:Key="ButtonCornerRadius">8</CornerRadius>
+    <CornerRadius x:Key="TextBoxCornerRadius">8</CornerRadius>
+    <CornerRadius x:Key="CardCornerRadius">10</CornerRadius>
+    <CornerRadius x:Key="SegmentedControlCornerRadius">10</CornerRadius>
 
 </ResourceDictionary>
 

@@ -6,7 +6,6 @@ Licensed under the MIT License. See LICENSE file for details.
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:download="clr-namespace:avallama.Models.Download"
-                    xmlns:controls="clr-namespace:avallama.Controls"
                     xmlns:templatedControls="clr-namespace:avallama.Styles.TemplatedControls"
                     xmlns:services="clr-namespace:avallama.Services"
                     xmlns:dataTemplates="clr-namespace:avallama.DataTemplates">

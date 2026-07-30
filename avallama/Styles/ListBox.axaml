@@ -11,7 +11,6 @@ Licensed under the MIT License. See LICENSE file for details.
         <!-- To change between Dark/Light mode in the Preview, change the RequestedThemeVariant value-->
         <ThemeVariantScope RequestedThemeVariant="Light">
             <Border Padding="20" Background="{DynamicResource Surface}">
-
             </Border>
         </ThemeVariantScope>
 
@@ -75,7 +74,7 @@ Licensed under the MIT License. See LICENSE file for details.
                 <ContextMenu x:DataType="vm:ConversationViewModel">
                     <MenuItem Header="{services:LocalizationService Key='DELETE'}"
                               Command="{Binding $parent[ListBox].((vm:HomeViewModel)DataContext).DeleteConversationCommand}"
-                              CommandParameter="{Binding Conversation.Id}"/>
+                              CommandParameter="{Binding Conversation.Id}" />
                 </ContextMenu>
             </Setter.Value>
         </Setter>

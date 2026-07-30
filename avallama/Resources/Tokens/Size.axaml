@@ -8,6 +8,8 @@ Licensed under the MIT License. See LICENSE file for details.
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
 
     <system:Double x:Key="AvallamaWelcomeLogoHeight">120</system:Double>
+    <system:Double x:Key="IconInButtonSize">18</system:Double>
+    <system:Double x:Key="InfoIconSize">18</system:Double>
 
 </ResourceDictionary>
 

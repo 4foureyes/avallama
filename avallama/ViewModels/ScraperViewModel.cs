@@ -69,7 +69,7 @@ public partial class ScraperViewModel : PageViewModel
     public void CancelScraping()
     {
         _cancellationTokenSource?.Cancel();
-        _messenger.Send(new ApplicationMessage.RequestPage(ApplicationPage.Settings));
+        _messenger.Send(new ApplicationMessage.NavigateBack());
     }
 
     private async Task ScrapeModels()
@@ -104,7 +104,7 @@ public partial class ScraperViewModel : PageViewModel
             _dialogService.ShowInfoDialog(LocalizationService.GetString("SCRAPING_FINISHED_DESC"));
             _configurationService.SaveSetting(ConfigurationKey.LastUpdatedCache,
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
-            _messenger.Send(new ApplicationMessage.RequestPage(ApplicationPage.ModelManager));
+            _messenger.Send(new ApplicationMessage.NavigateBack());
 
             await monitorTask;
         }

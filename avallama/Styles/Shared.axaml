@@ -11,6 +11,15 @@ Licensed under the MIT License. See LICENSE file for details.
 
     <!-- Shared style definitions for which it makes no sense to create a separate file -->
 
+    <Style Selector="Viewbox.info">
+        <Setter Property="Height" Value="{DynamicResource InfoIconSize}" />
+        <Setter Property="Width" Value="{DynamicResource InfoIconSize}" />
+    </Style>
+
+    <Style Selector="Path">
+        <Setter Property="Stretch" Value="Uniform" />
+    </Style>
+
     <Style Selector="SelectableTextBlock">
         <Setter Property="SelectionBrush" Value="{DynamicResource Selection}" />
     </Style>

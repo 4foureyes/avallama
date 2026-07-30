@@ -33,7 +33,9 @@ public class LocalizationService : MarkupExtension
     // Requesting localized text by key
     public static string GetString(string key)
     {
-        return ResourceManager.GetString(key, _resourceCulture) ?? $"[{key}]";
+        var localizedString = ResourceManager.GetString(key, _resourceCulture) ?? $"[{key}]";
+        localizedString = localizedString.Replace("\\n", Environment.NewLine);
+        return localizedString;
     }
 
     // MarkupExtension

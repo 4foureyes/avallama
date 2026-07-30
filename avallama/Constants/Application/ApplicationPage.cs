@@ -7,7 +7,7 @@ public enum ApplicationPage
 {
     Welcome,
     Home,
-    Guide,
+    Onboarding,
     Settings,
     ModelManager,
     Scraper

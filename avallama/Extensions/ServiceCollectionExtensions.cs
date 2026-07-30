@@ -103,7 +103,7 @@ public static class ServiceCollectionExtensions
             collection.AddTransient<WelcomeViewModel>();
             collection.AddTransient<SettingsViewModel>();
             collection.AddSingleton<ModelManagerViewModel>();
-            collection.AddTransient<GuideViewModel>();
+            collection.AddTransient<OnboardingViewModel>();
             collection.AddTransient<ScraperViewModel>();
 
             collection.AddSingleton<PageFactory>();
@@ -115,7 +115,7 @@ public static class ServiceCollectionExtensions
             {
                 ApplicationPage.Welcome => serviceProvider.GetRequiredService<WelcomeViewModel>(),
                 ApplicationPage.Home => serviceProvider.GetRequiredService<HomeViewModel>(),
-                ApplicationPage.Guide => serviceProvider.GetRequiredService<GuideViewModel>(),
+                ApplicationPage.Onboarding => serviceProvider.GetRequiredService<OnboardingViewModel>(),
                 ApplicationPage.Settings => serviceProvider.GetRequiredService<SettingsViewModel>(),
                 ApplicationPage.ModelManager => serviceProvider.GetRequiredService<ModelManagerViewModel>(),
                 ApplicationPage.Scraper => serviceProvider.GetRequiredService<ScraperViewModel>(),

@@ -7,9 +7,6 @@ namespace avallama.Constants.Application;
 
 public static class ApplicationMessage
 {
-    // request ollama start confirmation dialog
-    public record AskOllamaStart;
-
     // request for app shutdown
     public record Shutdown;
 
@@ -19,8 +16,11 @@ public static class ApplicationMessage
     // request for settings to reload
     public record ReloadSettings;
 
-    // request for an application page
-    public record RequestPage(ApplicationPage Page);
+    // navigate to page (in MainViewModel)
+    public record NavigateToPage(ApplicationPage Page);
+
+    // navigate back (in MainViewModel)
+    public record NavigateBack();
 
     // notification for ModelManagerViewModel when a Model status' changes
     public record ModelStatusChanged(string ModelName);
