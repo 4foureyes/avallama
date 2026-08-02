@@ -17,13 +17,10 @@ public partial class MainViewModel : ViewModelBase
     // PageFactory which can reach the delegate created in App.axaml.cs, i.e. returns the given PageViewModel
     private readonly PageFactory _pageFactory;
     private readonly ConfigurationService _configurationService;
-    private readonly IMessenger _messenger;
 
-    private Stack<ApplicationPage> _navigationStack = new();
+    private readonly Stack<ApplicationPage> _navigationStack = new();
 
-    private string? _onboardingCompleted;
-
-    [ObservableProperty] private PageViewModel? _currentPageViewModel;
+    [ObservableProperty] private PageViewModel _currentPageViewModel;
 
     public MainViewModel(
         PageFactory pageFactory,
@@ -33,22 +30,17 @@ public partial class MainViewModel : ViewModelBase
     {
         _pageFactory = pageFactory;
         _configurationService = configurationService;
-        _messenger = messenger;
 
-        _messenger.Register<ApplicationMessage.NavigateToPage>(this,
+        messenger.Register<ApplicationMessage.NavigateToPage>(this,
             (_, msg) => { NavigateTo(msg.Page); });
 
-        _messenger.Register<ApplicationMessage.NavigateBack>(this, (_, _) => NavigateBack());
+        messenger.Register<ApplicationMessage.NavigateBack>(this, (_, _) => NavigateBack());
 
-        _onboardingCompleted = _configurationService.ReadSetting(ConfigurationKey.OnboardingCompleted);
-        if (string.IsNullOrEmpty(_onboardingCompleted))
-        {
-            CurrentPageViewModel = _pageFactory.GetPageViewModel(ApplicationPage.Welcome);
-        }
-        else if (_onboardingCompleted == "false")
-        {
-            CurrentPageViewModel = _pageFactory.GetPageViewModel(ApplicationPage.Home);
-        }
+        var onboardingCompleted = configurationService.ReadSetting(ConfigurationKey.OnboardingCompleted);
+
+        CurrentPageViewModel = _pageFactory.GetPageViewModel(string.IsNullOrEmpty(onboardingCompleted)
+            ? ApplicationPage.Welcome
+            : ApplicationPage.Home);
     }
 
     [RelayCommand]
@@ -56,15 +48,17 @@ public partial class MainViewModel : ViewModelBase
     {
         if (parameter is not ApplicationPage page) return;
 
-        // should never be null tho
-        if (CurrentPageViewModel != null)
-        {
-            _navigationStack.Push(CurrentPageViewModel.Page);
-        }
+        // pushes current page to stack (which is a navigation history) so we can pop it to go back
+        _navigationStack.Push(CurrentPageViewModel.Page);
 
-        if (string.IsNullOrEmpty(_onboardingCompleted) && page == ApplicationPage.Home)
+        var onboardingCompleted = _configurationService.ReadSetting(ConfigurationKey.OnboardingCompleted);
+
+        // if we receive 'Home' as page to navigate and the onboarding flag is empty
+        // that means the user finished onboarding, either skipped scraping or finished it
+        // so we set the flag here
+        if (string.IsNullOrEmpty(onboardingCompleted) && page is ApplicationPage.Home)
         {
-            _configurationService.SaveSetting(ConfigurationKey.OnboardingCompleted, "false");
+            _configurationService.SaveSetting(ConfigurationKey.OnboardingCompleted, "True");
         }
 
         CurrentPageViewModel = _pageFactory.GetPageViewModel(page);

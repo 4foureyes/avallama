@@ -20,15 +20,16 @@ public class OnboardingViewModelTests(TestServicesFixture fixture) : IClassFixtu
     [Fact]
     public async Task SkipConnectionTest_WhenTestingConnection_CancelsTestAndNavigates()
     {
-        var mockOllamaService = new Mock<IOllamaService>();
-        var mockConfigService = new Mock<IConfigurationService>();
+        var ollamaMock = fixture.OllamaMock;
+        var configMock = fixture.ConfigMock;
+        var messengerMock = fixture.MessengerMock;
 
-        mockOllamaService.Setup(x => x.CurrentServiceStatus)
+        ollamaMock.Setup(x => x.CurrentServiceStatus)
             .Returns(new OllamaServiceStatus(OllamaServiceState.Stopped));
 
         var capturedToken = CancellationToken.None;
 
-        mockOllamaService
+        ollamaMock
             .Setup(x => x.CheckConnectionAsync(It.IsAny<CancellationToken>()))
             .Callback<CancellationToken>(ct =>
             {
@@ -40,8 +41,9 @@ public class OnboardingViewModelTests(TestServicesFixture fixture) : IClassFixtu
             });
 
         var viewModel = new OnboardingViewModel(
-            mockOllamaService.Object,
-            mockConfigService.Object);
+            ollamaMock.Object,
+            configMock.Object,
+            messengerMock.Object);
 
         var testTask = viewModel.TestConnectionAsync();
 

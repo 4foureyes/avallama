@@ -12,8 +12,10 @@ using avallama.Constants.States;
 using avallama.Models.Ollama;
 using avallama.Services.Ollama;
 using avallama.Services.Persistence;
+using avallama.Constants.Application;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace avallama.ViewModels;
 
@@ -55,14 +57,14 @@ public partial class OnboardingViewModel : PageViewModel
     [ObservableProperty] private string _apiPortText = "11434";
 
     /// <summary>
-    /// Gets the current status of the Ollama service.
+    /// Gets or sets the current status of the Ollama service.
     /// </summary>
-    public OllamaServiceStatus OllamaStatus => _ollamaService.CurrentServiceStatus;
+    public OllamaServiceStatus OllamaStatus { get; set; } = new (OllamaServiceState.Stopped);
 
     /// <summary>
     /// Gets a value indicating whether the application is successfully connected to the Ollama service.
     /// </summary>
-    public bool IsOllamaConnected => _ollamaService.CurrentServiceStatus.ServiceState == OllamaServiceState.Ready;
+    public bool IsOllamaConnected => OllamaStatus.ServiceState == OllamaServiceState.Ready;
 
     /// <summary>
     /// Gets a value indicating whether the user can navigate back to a previous onboarding step.
@@ -78,9 +80,11 @@ public partial class OnboardingViewModel : PageViewModel
     /// </summary>
     /// <param name="ollamaService">The service for Ollama interactions.</param>
     /// <param name="configurationService">The service for persisting application settings.</param>
+    /// <param name="messenger">The service for sending and receiving messages.</param>
     public OnboardingViewModel(
         IOllamaService ollamaService,
-        IConfigurationService configurationService)
+        IConfigurationService configurationService,
+        IMessenger messenger)
     {
         Page = ApplicationPage.Onboarding;
 
@@ -93,7 +97,8 @@ public partial class OnboardingViewModel : PageViewModel
         if (!string.IsNullOrEmpty(apiHost)) ApiHostText = apiHost;
         if (!string.IsNullOrEmpty(apiPort)) ApiPortText = apiPort;
 
-        _ollamaService.StatusChanged += OllamaServiceStatusChanged;
+        messenger.Register<ApplicationMessage.OllamaStatusChangedMessage>(this,
+            (_, m) => OllamaServiceStatusChanged(m));
     }
 
     #endregion
@@ -184,9 +189,10 @@ public partial class OnboardingViewModel : PageViewModel
     /// <summary>
     /// Handles changes in the Ollama service status and updates the UI bindings accordingly.
     /// </summary>
-    /// <param name="status">The updated status of the service.</param>
-    private void OllamaServiceStatusChanged(OllamaServiceStatus status)
+    /// <param name="message">The updated status of the service.</param>
+    private void OllamaServiceStatusChanged(ApplicationMessage.OllamaStatusChangedMessage message)
     {
+        OllamaStatus = message.Status;
         OnPropertyChanged(nameof(OllamaStatus));
         OnPropertyChanged(nameof(IsOllamaConnected));
     }

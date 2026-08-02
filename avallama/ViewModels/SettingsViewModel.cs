@@ -11,7 +11,6 @@ using avallama.Services;
 using avallama.Services.Ollama;
 using avallama.Services.Persistence;
 using avallama.Utilities.Network;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;

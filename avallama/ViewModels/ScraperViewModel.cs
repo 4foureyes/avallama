@@ -104,7 +104,7 @@ public partial class ScraperViewModel : PageViewModel
             _dialogService.ShowInfoDialog(LocalizationService.GetString("SCRAPING_FINISHED_DESC"));
             _configurationService.SaveSetting(ConfigurationKey.LastUpdatedCache,
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
-            _messenger.Send(new ApplicationMessage.NavigateBack());
+            _messenger.Send(new ApplicationMessage.NavigateToPage(ApplicationPage.Home));
 
             await monitorTask;
         }

@@ -5,12 +5,14 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using avallama.Constants.Application;
 using avallama.Constants.Keys;
 using avallama.Constants.States;
 using avallama.Models;
 using avallama.Models.Dtos;
 using avallama.Models.Ollama;
 using avallama.Services.Persistence;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace avallama.Services.Ollama;
 
@@ -119,6 +121,7 @@ internal class OllamaService : IOllamaService
     private IOllamaApiClient _apiClient;
     private IOllamaScraper _scraper;
     private IConfigurationService _configurationService;
+    private IMessenger _messenger;
 
     private OllamaScraperResult? _currentScrapeSession;
 
@@ -130,12 +133,14 @@ internal class OllamaService : IOllamaService
         IOllamaProcessManager processManager,
         IOllamaApiClient apiClient,
         IOllamaScraper scraper,
-        IConfigurationService configurationService)
+        IConfigurationService configurationService,
+        IMessenger messenger)
     {
         _processManager = processManager;
         _apiClient = apiClient;
         _scraper = scraper;
         _configurationService = configurationService;
+        _messenger = messenger;
 
         _processManager.StatusChanged += _ => EvaluateServiceStatus();
         _apiClient.StatusChanged += _ => EvaluateServiceStatus();
@@ -155,6 +160,7 @@ internal class OllamaService : IOllamaService
             if (field.ServiceState == value.ServiceState && field.Message == value.Message) return;
             field = value;
             StatusChanged?.Invoke(value);
+            _messenger.Send(new ApplicationMessage.OllamaStatusChangedMessage(value));
         }
     } = new(OllamaServiceState.Stopped);
 
@@ -180,7 +186,7 @@ internal class OllamaService : IOllamaService
             await StartProcessAsync();
         }
 
-        await _apiClient.RetryConnectionAsync();
+        await _apiClient.RetryConnectionAsync(ct);
     }
 
     public async Task EnrichModelAsync(OllamaModel model) => await _apiClient.EnrichModelAsync(model);
