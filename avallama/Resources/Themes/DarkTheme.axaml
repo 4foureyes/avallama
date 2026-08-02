@@ -53,10 +53,8 @@ Licensed under the MIT License. See LICENSE file for details.
 
             <SolidColorBrush x:Key="NeutralIconFill" Color="{StaticResource Neutral300}" />
 
-        </ResourceDictionary>
-
-        <!-- Legacy dark theme colors (seed: #623079) -->
-        <ResourceDictionary x:Key="Dark">
+            <!-- TODO: remove before 0.4.0 -->
+            <!-- Legacy dark theme colors (seed: #623079) -->
             <Color x:Key="Selection">#80755085</Color> <!-- 50% opacity -->
             <SolidColorBrush x:Key="SurfaceTint">#E4B7F3</SolidColorBrush>
             <SolidColorBrush x:Key="PrimaryContainer">#5C396C</SolidColorBrush>
@@ -81,6 +79,7 @@ Licensed under the MIT License. See LICENSE file for details.
             <SolidColorBrush x:Key="SurfaceContainer">#231E23</SolidColorBrush>
             <SolidColorBrush x:Key="SurfaceContainerHigh">#2D282E</SolidColorBrush>
             <SolidColorBrush x:Key="SurfaceContainerHighest">#383339</SolidColorBrush>
+
         </ResourceDictionary>
 
     </ResourceDictionary.ThemeDictionaries>

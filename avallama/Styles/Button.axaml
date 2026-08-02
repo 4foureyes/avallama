@@ -46,7 +46,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
     <Style Selector="Button">
         <Setter Property="Cursor" Value="Hand" />
-        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="CornerRadius" Value="{DynamicResource ButtonCornerRadius}" />
         <Setter Property="Padding" Value="{DynamicResource ButtonPadding}" />
         <Setter Property="FontFamily" Value="{StaticResource Manrope}" />
         <Setter Property="FontSize" Value="{DynamicResource ButtonFontSize}" />
@@ -76,13 +76,13 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="Background" Value="{DynamicResource Secondary}" />
         <Setter Property="Foreground" Value="{DynamicResource OnSecondary}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorder}" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThickness}" />
 
         <Style Selector="^:pointerover /template/ ContentPresenter, ^:pressed /template/ ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource SecondaryHover}" />
             <Setter Property="Foreground" Value="{DynamicResource OnSecondary}" />
             <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBorder}" />
-            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderThickness" Value="{DynamicResource ButtonBorderThickness}" />
         </Style>
     </Style>
 
@@ -94,8 +94,6 @@ Licensed under the MIT License. See LICENSE file for details.
         </Style>
 
     </Style>
-
-
 
     <!-- Legacy styles - TODO: remove before 0.4.0 -->
 
