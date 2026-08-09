@@ -13,4 +13,3 @@ Licensed under the MIT License. See LICENSE file for details.
     <Thickness x:Key="SegmentedControlPadding">10</Thickness>
 
 </ResourceDictionary>
-

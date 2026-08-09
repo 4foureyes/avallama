@@ -12,4 +12,3 @@ Licensed under the MIT License. See LICENSE file for details.
     <system:Double x:Key="InfoIconSize">18</system:Double>
 
 </ResourceDictionary>
-

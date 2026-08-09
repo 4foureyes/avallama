@@ -12,4 +12,3 @@ Licensed under the MIT License. See LICENSE file for details.
     <CornerRadius x:Key="SegmentedControlCornerRadius">10</CornerRadius>
 
 </ResourceDictionary>
-
