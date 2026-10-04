@@ -39,14 +39,14 @@ jobs:
         run: dotnet --info
 
       - name: Restore
-        run: dotnet restore avallama.sln
+        run: dotnet restore avallama.slnx
 
       - name: Build (Release)
-        run: dotnet build avallama.sln --configuration Release --no-restore
+        run: dotnet build avallama.slnx --configuration Release --no-restore
 
       - name: Test (Release) with coverage
         run: >-
-          dotnet test avallama.sln
+          dotnet test avallama.slnx
           --configuration Release
           --no-build
           --settings avallama.Tests/runsettings.runsettings

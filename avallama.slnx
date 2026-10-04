@@ -1,9 +1,4 @@
 <Solution>
-  <Configurations>
-    <Platform Name="Any CPU" />
-    <Platform Name="x64" />
-    <Platform Name="x86" />
-  </Configurations>
   <Project Path="avallama.Tests/avallama.Tests.csproj" />
   <Project Path="avallama/avallama.csproj" />
 </Solution>
