@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Copyright (c) Márk Csörgő and Martin Bartos
 Licensed under the MIT License. See LICENSE file for details.
 -->
@@ -10,7 +10,6 @@ Licensed under the MIT License. See LICENSE file for details.
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="avallama.Views.DialogWindow"
         ExtendClientAreaToDecorationsHint="True"
-        ExtendClientAreaChromeHints="NoChrome"
         Icon="/Assets/avallama-circular.ico"
         ExtendClientAreaTitleBarHeightHint="0"
         PointerPressed="Window_PointerPressed"

@@ -11,6 +11,7 @@ using avallama.Services;
 using avallama.Services.Ollama;
 using avallama.Services.Persistence;
 using avallama.Utilities.Network;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -39,8 +40,6 @@ public partial class SettingsViewModel : PageViewModel
             field = value;
             if (value)
             {
-                /*
-                // asynchronously show restart dialog on the UI thread
                 Dispatcher.UIThread.InvokeAsync(async () =>
                 {
                     var dialogResult = await _dialogService.ShowConfirmationDialogAsync(
@@ -56,10 +55,6 @@ public partial class SettingsViewModel : PageViewModel
                         _messenger.Send(new ApplicationMessage.Restart());
                     }
                 });
-                */
-
-                // TODO: replace this with the confirmation dialog if app restart is fixed
-                _dialogService.ShowInfoDialog(LocalizationService.GetString("RESTART_NEEDED_DIALOG_TITLE"));
             }
 
             OnPropertyChanged();

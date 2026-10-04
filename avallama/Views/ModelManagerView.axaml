@@ -48,7 +48,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="Auto,Auto,*,Auto" HorizontalAlignment="Stretch">
 
             <!-- Search box -->
-            <TextBox Grid.Row="0" Watermark="{services:LocalizationService Key='SEARCH_FOR_MODELS'}" MaxLines="1"
+            <TextBox Grid.Row="0" PlaceholderText="{services:LocalizationService Key='SEARCH_FOR_MODELS'}" MaxLines="1"
                      Padding="16,8"
                      HorizontalAlignment="Stretch" Text="{Binding SearchBoxText}"
                      VerticalAlignment="Stretch">

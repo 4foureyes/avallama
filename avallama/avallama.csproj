@@ -48,8 +48,8 @@ Licensed under the MIT License. See LICENSE file for details.
 
     <!-- Versions -->
     <PropertyGroup>
-        <AvaloniaVersion>11.3.16</AvaloniaVersion>
-        <DotNetLibVersion>10.0.9</DotNetLibVersion>
+        <AvaloniaVersion>12.1.3</AvaloniaVersion>
+        <DotNetLibVersion>10.0.12</DotNetLibVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -57,13 +57,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)">
-            <!-- This condition is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
-            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Svg.Controls.Avalonia" Version="11.3.6.2" />
+        <PackageReference Include="Svg.Controls.Avalonia" Version="12.0.0.17" />
 
         <!-- .NET packages -->
         <PackageReference Include="Microsoft.Data.Sqlite" Version="$(DotNetLibVersion)" />
@@ -71,25 +65,10 @@ Licensed under the MIT License. See LICENSE file for details.
         <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="$(DotNetLibVersion)" />
         <PackageReference Include="System.Threading.RateLimiting" Version="$(DotNetLibVersion)" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="$(DotNetLibVersion)" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
 
         <!-- third party and other packages -->
-        <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Compile Update="Views\ModelManagerView.axaml.cs">
-            <DependentUpon>ModelManagerView.axaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Update="Views\SettingsView.axaml.cs">
-            <DependentUpon>SettingsView.axaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
-        <Compile Update="Styles\TemplatedControls\ModelItem.axaml.cs">
-            <DependentUpon>ModelItem.axaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
+        <PackageReference Include="HtmlAgilityPack" Version="1.13.0" />
     </ItemGroup>
 
 </Project>

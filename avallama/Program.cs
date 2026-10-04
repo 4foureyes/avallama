@@ -22,7 +22,6 @@ sealed class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .WithInterFont()
             .With(new MacOSPlatformOptions { ShowInDock = true, DisableDefaultApplicationMenuItems = true})
             .LogToTrace();
 }
