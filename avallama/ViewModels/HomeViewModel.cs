@@ -169,7 +169,7 @@ public partial class HomeViewModel : PageViewModel
         }
 
         var newConversation = new Conversation(
-            LocalizationService.GetString("NEW_CONVERSATION"),
+            LocalizationService.GetString("Chat.Conversation.DefaultTitle"),
             string.Empty
         );
 
@@ -193,11 +193,11 @@ public partial class HomeViewModel : PageViewModel
             ConversationViewModels.Count == 0) return;
 
         var res = await _dialogService.ShowConfirmationDialogAsync(
-            LocalizationService.GetString("CONFIRM_DELETION_DIALOG_TITLE"),
-            LocalizationService.GetString("DELETE"),
-            LocalizationService.GetString("CANCEL"),
-            string.Format(LocalizationService.GetString("CONFIRM_DELETION_DIALOG_DESC"),
-                LocalizationService.GetString("THIS_CONVERSATION")),
+            LocalizationService.GetString("Common.DeleteDialog.Title"),
+            LocalizationService.GetString("Common.Button.Delete"),
+            LocalizationService.GetString("Common.Button.Cancel"),
+            string.Format(LocalizationService.GetString("Common.DeleteDialog.Description"),
+                LocalizationService.GetString("Chat.Conversation.DeletionTarget")),
             ConfirmationType.Positive);
 
         if (res is ConfirmationResult { Confirmation: ConfirmationType.Negative }) return;
@@ -351,8 +351,8 @@ public partial class HomeViewModel : PageViewModel
         if (await _updateService.IsUpdateAvailableAsync())
         {
             _dialogService.ShowActionDialog(
-                LocalizationService.GetString("UPDATE_AVAILABLE"),
-                LocalizationService.GetString("OPEN_GITHUB"),
+                LocalizationService.GetString("Common.UpdateDialog.Title"),
+                LocalizationService.GetString("Common.Button.OpenGitHub"),
                 () =>
                 {
                     Process.Start(new ProcessStartInfo
@@ -363,7 +363,7 @@ public partial class HomeViewModel : PageViewModel
                     );
                 },
                 null,
-                LocalizationService.GetString("UPDATE_AVAILABLE_DESC"),
+                LocalizationService.GetString("Common.UpdateDialog.Description"),
                 false
             );
         }

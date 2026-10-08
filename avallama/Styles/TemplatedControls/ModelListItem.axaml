@@ -78,7 +78,7 @@ Licensed under the MIT License. See LICENSE file for details.
                             <download:ModelDownloadStatus>
                                 <download:ModelDownloadStatus.DownloadState>Failed</download:ModelDownloadStatus.DownloadState>
                                 <download:ModelDownloadStatus.Message>
-                                    <services:LocalizationService Key="NO_INTERNET_CONNECTION"/>
+                                    <services:LocalizationService Key="Common.Network.NoConnection"/>
                                 </download:ModelDownloadStatus.Message>
                             </download:ModelDownloadStatus>
                         </templatedControls:ModelListItem.DownloadStatus>
@@ -91,7 +91,7 @@ Licensed under the MIT License. See LICENSE file for details.
                             <download:ModelDownloadStatus>
                                 <download:ModelDownloadStatus.DownloadState>Failed</download:ModelDownloadStatus.DownloadState>
                                 <download:ModelDownloadStatus.Message>
-                                    <services:LocalizationService Key="NOT_ENOUGH_SPACE_DOWNLOAD"/>
+                                    <services:LocalizationService Key="Downloads.Warning.InsufficientSpaceShort"/>
                                 </download:ModelDownloadStatus.Message>
                             </download:ModelDownloadStatus>
                         </templatedControls:ModelListItem.DownloadStatus>

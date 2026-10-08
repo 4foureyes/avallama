@@ -15,7 +15,7 @@ public class LocalizationServiceTests
     [Fact]
     public void GetString_WithDefinedLocalizationKey_ReturnsCorrectLocalizedValue()
     {
-        const string key = "TEST";
+        const string key = "Common.Localization.TestValue";
 
         LocalizationService.ChangeLanguage(_hungarianCultureInfo);
         var hungarianLocalizedText = LocalizationService.GetString(key);
@@ -30,7 +30,7 @@ public class LocalizationServiceTests
     [Fact]
     public void GetString_WithUndefinedLocalizationKey_ReturnsUndefinedValue()
     {
-        const string key = "THIS_LOCALIZATION_KEY_IS_UNDEFINED";
+        const string key = "Common.Localization.UndefinedValue";
 
         LocalizationService.ChangeLanguage(_hungarianCultureInfo);
         var hungarianLocalizedText = LocalizationService.GetString(key);

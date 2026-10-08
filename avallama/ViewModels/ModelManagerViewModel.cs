@@ -270,7 +270,7 @@ public partial class ModelManagerViewModel : PageViewModel
     {
         if (!await _networkManager.IsInternetAvailableAsync())
         {
-            _dialogService.ShowErrorDialog(LocalizationService.GetString("NO_INTERNET_CONNECTION"), false);
+            _dialogService.ShowErrorDialog(LocalizationService.GetString("Common.Network.NoConnection"), false);
             return;
         }
 
@@ -317,7 +317,7 @@ public partial class ModelManagerViewModel : PageViewModel
 
         DownloadedModelsInfo =
             string.Format(
-                LocalizationService.GetString("DOWNLOADED_MODELS"),
+                LocalizationService.GetString("Models.List.DownloadedCount"),
                 downloadedModelsCount
             );
 
@@ -341,6 +341,6 @@ public partial class ModelManagerViewModel : PageViewModel
     [RelayCommand]
     public void ShowInfo()
     {
-        _dialogService.ShowInfoDialog(LocalizationService.GetString("MODEL_MANAGER_GUIDE"));
+        _dialogService.ShowInfoDialog(LocalizationService.GetString("Models.Guide.Description"));
     }
 }

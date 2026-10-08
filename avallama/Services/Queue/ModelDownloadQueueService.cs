@@ -93,37 +93,37 @@ public class ModelDownloadQueueService(
         switch (ex)
         {
             case NoInternetConnectionException:
-                errorKey = "NO_INTERNET_CONNECTION";
+                errorKey = "Common.Network.NoConnection";
                 break;
 
             case LostInternetConnectionException:
-                errorKey = "LOST_INTERNET_CONNECTION";
+                errorKey = "Common.Network.ConnectionLost";
                 break;
 
             case OllamaLocalServerUnreachableException:
-                errorKey = "OLLAMA_LOCAL_UNREACHABLE";
+                errorKey = "Ollama.Connection.LocalUnreachable";
                 break;
 
             case OllamaRemoteServerUnreachableException:
-                errorKey = "OLLAMA_REMOTE_UNREACHABLE";
+                errorKey = "Ollama.Connection.RemoteUnreachable";
                 break;
 
             case OllamaApiException apiEx:
-                errorKey = "DOWNLOAD_FAILED";
+                errorKey = "Downloads.Error.Failed";
                 arg = apiEx.StatusCode.ToString();
                 break;
 
             case InsufficientDiskSpaceException spaceEx:
-                errorKey = "INSUFFICIENT_DISK_SPACE";
+                errorKey = "Downloads.Error.InsufficientSpace";
                 arg = ConversionHelper.BytesToReadableSize(spaceEx.RequiredBytes);
                 break;
 
             case DiskFullException:
-                errorKey = "DISK_FULL_DURING_DOWNLOAD";
+                errorKey = "Downloads.Error.DiskFull";
                 break;
 
             default:
-                errorKey = "DOWNLOAD_FAILED";
+                errorKey = "Downloads.Error.Failed";
                 arg = ex.Message;
                 break;
         }

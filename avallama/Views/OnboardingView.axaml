@@ -26,13 +26,13 @@ Licensed under the MIT License. See LICENSE file for details.
             <!-- Disconnected -->
             <DataTemplate x:Key="Stopped" x:DataType="models:OllamaServiceStatus">
                 <TextBlock Classes="text" TextAlignment="Center" HorizontalAlignment="Center"
-                           Text="{services:LocalizationService Key='OLLAMA_DISCONNECTED_TEST'}" />
+                           Text="{services:LocalizationService Key='Onboarding.ConnectionStatus.Disconnected'}" />
             </DataTemplate>
 
             <!-- Connecting -->
             <DataTemplate x:Key="Starting" x:DataType="models:OllamaServiceStatus">
                 <TextBlock Classes="text" TextAlignment="Center" HorizontalAlignment="Center"
-                           Text="{services:LocalizationService Key='CONNECTING'}" />
+                           Text="{services:LocalizationService Key='Ollama.Connection.Connecting'}" />
             </DataTemplate>
 
             <!-- Connected -->
@@ -46,7 +46,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
                     <!-- Text -->
                     <TextBlock Classes="text success" TextAlignment="Center" HorizontalAlignment="Center"
-                               Text="{services:LocalizationService Key='OLLAMA_CONNECTED_TEST'}" />
+                               Text="{services:LocalizationService Key='Onboarding.ConnectionStatus.Connected'}" />
 
                 </StackPanel>
             </DataTemplate>
@@ -62,7 +62,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
                     <!-- Text -->
                     <TextBlock Classes="text error" TextAlignment="Center" HorizontalAlignment="Center"
-                               Text="{services:LocalizationService Key='OLLAMA_FAILED_TEST'}" />
+                               Text="{services:LocalizationService Key='Onboarding.ConnectionStatus.Failed'}" />
 
                 </StackPanel>
             </DataTemplate>
@@ -84,9 +84,9 @@ Licensed under the MIT License. See LICENSE file for details.
 
                         <!-- Texts-->
                         <StackPanel Grid.Row="0" Orientation="Vertical">
-                            <TextBlock Text="{services:LocalizationService Key='CONNECT_OLLAMA'}"
+                            <TextBlock Text="{services:LocalizationService Key='Onboarding.Connection.Title'}"
                                        Classes="page-title" />
-                            <TextBlock Text="{services:LocalizationService Key='CONNECT_OLLAMA_DESC'}"
+                            <TextBlock Text="{services:LocalizationService Key='Onboarding.Connection.Description'}"
                                        Classes="page-subtitle" />
                         </StackPanel>
 
@@ -97,7 +97,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
                             <!-- Host input field -->
                             <TextBlock Classes="text" Grid.Row="0" Grid.Column="0"
-                                       Text="{services:LocalizationService Key='API_HOST'}"
+                                       Text="{services:LocalizationService Key='Onboarding.ApiHost.Label'}"
                                        VerticalAlignment="Center" />
                             <TextBox Grid.Row="0" Grid.Column="1"
                                      Width="260"
@@ -105,7 +105,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
                             <!-- Port input field -->
                             <TextBlock Classes="text" Grid.Row="1" Grid.Column="0"
-                                       Text="{services:LocalizationService Key='API_PORT'}"
+                                       Text="{services:LocalizationService Key='Onboarding.ApiPort.Label'}"
                                        VerticalAlignment="Center" />
                             <TextBox Grid.Row="1" Grid.Column="1"
                                      Text="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).ApiPortText}" />
@@ -113,7 +113,7 @@ Licensed under the MIT License. See LICENSE file for details.
                             <!-- Test Connection button -->
                             <Button Grid.Row="2" Grid.Column="0" DockPanel.Dock="Left"
                                     Classes="tertiary"
-                                    Content="{services:LocalizationService Key='TEST_CONNECTION'}"
+                                    Content="{services:LocalizationService Key='Onboarding.Connection.Test'}"
                                     HorizontalAlignment="Center"
                                     Command="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).TestConnectionCommand}" />
 
@@ -134,7 +134,7 @@ Licensed under the MIT License. See LICENSE file for details.
                             <!-- Skip For Now -->
                             <Button DockPanel.Dock="Left"
                                     Classes="tertiary clear"
-                                    Content="{services:LocalizationService Key='SKIP_FOR_NOW'}"
+                                    Content="{services:LocalizationService Key='Common.Button.SkipForNow'}"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.6"
                                     Command="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).SkipConnectionTestCommand}" />
 
@@ -142,7 +142,7 @@ Licensed under the MIT License. See LICENSE file for details.
                             <Button DockPanel.Dock="Right"
                                     Classes="primary"
                                     HorizontalAlignment="Center"
-                                    Content="{services:LocalizationService Key='CONTINUE'}"
+                                    Content="{services:LocalizationService Key='Common.Button.Continue'}"
                                     IsEnabled="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).IsOllamaConnected}"
                                     Command="{Binding $parent[UserControl].((vm:OnboardingViewModel)DataContext).NavigateToCommand}"
                                     CommandParameter="{x:Static constants:OnboardingContent.Scraper}" />
@@ -166,9 +166,9 @@ Licensed under the MIT License. See LICENSE file for details.
 
                         <!-- Texts -->
                         <StackPanel Grid.Row="0" Orientation="Vertical" Spacing="{DynamicResource SpacingM}">
-                            <TextBlock Text="{services:LocalizationService Key='SCRAPER_ASK_TITLE'}"
+                            <TextBlock Text="{services:LocalizationService Key='Onboarding.LibrarySetup.Title'}"
                                        Classes="page-title" />
-                            <TextBlock Text="{services:LocalizationService Key='SCRAPER_ASK_DESC'}"
+                            <TextBlock Text="{services:LocalizationService Key='Onboarding.LibrarySetup.Description'}"
                                        Classes="page-subtitle"
                                        TextWrapping="Wrap" />
                         </StackPanel>
@@ -178,13 +178,13 @@ Licensed under the MIT License. See LICENSE file for details.
                                     HorizontalAlignment="Center">
 
                             <!-- Set Up Library -->
-                            <Button Classes="primary" Content="{services:LocalizationService Key='SET_UP_LIBRARY'}"
+                            <Button Classes="primary" Content="{services:LocalizationService Key='Onboarding.LibrarySetup.Start'}"
                                     Command="{Binding $parent[Window].((vm:MainViewModel)DataContext).NavigateToCommand}"
                                     CommandParameter="{x:Static app:ApplicationPage.Scraper}" />
 
                             <!-- Skip For Now -->
                             <Button Classes="tertiary clear"
-                                    Content="{services:LocalizationService Key='SKIP_FOR_NOW'}"
+                                    Content="{services:LocalizationService Key='Common.Button.SkipForNow'}"
                                     Command="{Binding $parent[Window].((vm:MainViewModel)DataContext).NavigateToCommand}"
                                     CommandParameter="{x:Static app:ApplicationPage.Home}"
                                     Opacity="0.75" />
@@ -209,7 +209,7 @@ Licensed under the MIT License. See LICENSE file for details.
                 <Viewbox>
                     <Path Data="{DynamicResource CaretLeftBold}" />
                 </Viewbox>
-                <TextBlock Text="{services:LocalizationService Key='BACK'}" />
+                <TextBlock Text="{services:LocalizationService Key='Common.Button.Back'}" />
             </StackPanel>
         </Button>
 

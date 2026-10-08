@@ -17,12 +17,12 @@ public class ModelSizeConverter : IValueConverter
         if (value is long modelSize)
         {
             return string.Format(
-                LocalizationService.GetString("MODEL_SIZE"),
+                LocalizationService.GetString("Models.Details.Size"),
                 ConversionHelper.BytesToReadableSize(modelSize)
             );
         }
 
-        return string.Format(LocalizationService.GetString("MODEL_SIZE"), "0 GB");
+        return string.Format(LocalizationService.GetString("Models.Details.Size"), "0 GB");
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

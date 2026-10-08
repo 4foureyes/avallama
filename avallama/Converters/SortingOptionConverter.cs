@@ -20,11 +20,11 @@ public class SortingOptionConverter : IValueConverter
         {
             return sortingOption switch
             {
-                SortingOption.Downloaded => LocalizationService.GetString("SORT_DOWNLOADED"),
-                SortingOption.PullCountAscending => LocalizationService.GetString("SORT_PULL_COUNT_ASCENDING"),
-                SortingOption.PullCountDescending => LocalizationService.GetString("SORT_PULL_COUNT_DESCENDING"),
-                SortingOption.SizeAscending => LocalizationService.GetString("SORT_SIZE_ASCENDING"),
-                SortingOption.SizeDescending => LocalizationService.GetString("SORT_SIZE_DESCENDING"),
+                SortingOption.Downloaded => LocalizationService.GetString("Models.Sorting.Downloaded"),
+                SortingOption.PullCountAscending => LocalizationService.GetString("Models.Sorting.PullCountAscending"),
+                SortingOption.PullCountDescending => LocalizationService.GetString("Models.Sorting.PullCountDescending"),
+                SortingOption.SizeAscending => LocalizationService.GetString("Models.Sorting.SizeAscending"),
+                SortingOption.SizeDescending => LocalizationService.GetString("Models.Sorting.SizeDescending"),
                 _ => null
             };
         }

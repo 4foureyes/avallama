@@ -18,7 +18,7 @@ Licensed under the MIT License. See LICENSE file for details.
             <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
 
                 <!-- Queued text -->
-                <TextBlock Grid.Column="0" Text="{services:LocalizationService Key='QUEUED'}"
+                <TextBlock Grid.Column="0" Text="{services:LocalizationService Key='Downloads.Status.Queued'}"
                            VerticalAlignment="Center" />
 
                 <!-- Cancel button -->
@@ -52,7 +52,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
         <!-- Downloadable template -->
         <DataTemplate x:Key="Downloadable" DataType="download:ModelDownloadStatus">
-            <Button Content="{services:LocalizationService Key='DOWNLOAD'}"
+            <Button Content="{services:LocalizationService Key='Common.Button.Download'}"
                     Cursor="Hand"
                     Command="{Binding $parent[templatedControls:ModelItem].DownloadCommand}">
             </Button>
@@ -99,7 +99,7 @@ Licensed under the MIT License. See LICENSE file for details.
             <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
 
                 <TextBlock Grid.Column="0"
-                           Text="{services:LocalizationService Key='DOWNLOAD_PAUSED'}"
+                           Text="{services:LocalizationService Key='Downloads.Status.Paused'}"
                            VerticalAlignment="Center" Margin="0,0,8,0" />
 
                 <!-- Resume button -->
@@ -124,7 +124,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <!-- Downloaded template -->
         <DataTemplate x:Key="Downloaded">
             <Button Cursor="Hand" Classes="errorButton"
-                    Content="{services:LocalizationService Key='DELETE'}"
+                    Content="{services:LocalizationService Key='Common.Button.Delete'}"
                     Command="{Binding $parent[templatedControls:ModelItem].DeleteCommand}">
             </Button>
         </DataTemplate>

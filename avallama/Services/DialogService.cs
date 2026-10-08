@@ -283,11 +283,11 @@ public class DialogService(
     /// Example usage:
     /// <code>
     /// _dialogService.ShowActionDialog(
-    ///     title: LocalizationService.GetString("OLLAMA_NOT_INSTALLED"),
-    ///     actionButtonText:  LocalizationService.GetString("DOWNLOAD"),
+    ///     title: LocalizationService.GetString("Ollama.InstallationDialog.Title"),
+    ///     actionButtonText:  LocalizationService.GetString("Common.Button.Download"),
     ///     action: RedirectToOllamaDownload,
     ///     closeAction: _appService.Shutdown,
-    ///     description: LocalizationService.GetString("OLLAMA_NOT_INSTALLED_DESC")
+    ///     description: LocalizationService.GetString("Ollama.InstallationDialog.Description")
     /// );
     /// </code>
     /// </example>
@@ -328,7 +328,7 @@ public class DialogService(
             }
             else
             {
-                control.NegativeButton.Content = LocalizationService.GetString("CLOSE");
+                control.NegativeButton.Content = LocalizationService.GetString("Common.Button.Close");
                 control.NegativeButton.Classes.Add("secondaryButton");
                 control.NegativeButton.Click += (_, _) =>
                 {
@@ -482,13 +482,13 @@ public class DialogService(
     /// Example usage:
     /// <code>
     /// var dialogResult = await _dialogService.ShowInputDialog(
-    ///     title: LocalizationService.GetString("OLLAMA_REMOTE_DIALOG_TITLE"),
-    ///     description: LocalizationService.GetString("OLLAMA_REMOTE_DIALOG_DESC"),
+    ///     title: LocalizationService.GetString("Ollama.RemoteConnectionDialog.Title"),
+    ///     description: LocalizationService.GetString("Ollama.RemoteConnectionDialog.Description"),
     ///     inputFields: new List()
     ///     {
-    ///         new (placeholder: LocalizationService.GetString("API_HOST_SETTING")),
+    ///         new (placeholder: LocalizationService.GetString("Settings.ApiHost.Label")),
     ///         new (
-    ///             placeholder: LocalizationService.GetString("API_PORT_SETTING"),
+    ///             placeholder: LocalizationService.GetString("Settings.ApiPort.Label"),
     ///             inputValue: 11434.ToString()
     ///         )
     ///     }

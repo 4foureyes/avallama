@@ -74,7 +74,7 @@ public partial class ConversationViewModel : ViewModelBase, IDisposable
     /// <summary>
     /// Gets the warning text when no models are downloaded.
     /// </summary>
-    public string NoModelsText { get; } = LocalizationService.GetString("NOT_DOWNLOADED_WARNING");
+    public string NoModelsText { get; } = LocalizationService.GetString("Chat.ModelSelector.NoDownloadedModels");
 
     /// <summary>
     /// Gets or sets the collection of available models.
@@ -209,7 +209,7 @@ public partial class ConversationViewModel : ViewModelBase, IDisposable
             if (_ollamaService.CurrentServiceStatus.ServiceState != OllamaServiceState.Ready)
             {
                 HandleFailedGeneration(_ollamaService.CurrentServiceStatus.Message ??
-                                       LocalizationService.GetString("OLLAMA_CONNECTION_ERROR"));
+                                       LocalizationService.GetString("Ollama.Connection.Failed"));
                 return;
             }
         }
@@ -308,7 +308,7 @@ public partial class ConversationViewModel : ViewModelBase, IDisposable
                     // also regenerate if the title is still "new conversation", but it was not updated after the first message exchange,
                     // this can happen if the application is closed while a new conversation is being generated.
                     // let's just hope they didn't also switch their localization settings in the meantime :)
-                    if (Conversation.Title == LocalizationService.GetString("NEW_CONVERSATION") &&
+                    if (Conversation.Title == LocalizationService.GetString("Chat.Conversation.DefaultTitle") &&
                         Conversation.Messages.Count == 4)
                     {
                         await GenerateTitle(token);
@@ -470,7 +470,7 @@ public partial class ConversationViewModel : ViewModelBase, IDisposable
 
                 if (OllamaApiClient.IsConnectionRemote(apiHost))
                 {
-                    RemoteText = string.Format(LocalizationService.GetString("REMOTE_CONNECTION"),
+                    RemoteText = string.Format(LocalizationService.GetString("Chat.Connection.RemoteEndpoint"),
                         apiHost + ":" + apiPort);
                     IsRemoteTextVisible = true;
                 }
@@ -486,7 +486,7 @@ public partial class ConversationViewModel : ViewModelBase, IDisposable
                 if (IsGenerating)
                 {
                     _generationCts.Cancel();
-                    HandleFailedGeneration(status.Message ?? LocalizationService.GetString("OLLAMA_CONNECTION_ERROR"));
+                    HandleFailedGeneration(status.Message ?? LocalizationService.GetString("Ollama.Connection.Failed"));
                 }
                 else
                 {
@@ -497,11 +497,11 @@ public partial class ConversationViewModel : ViewModelBase, IDisposable
 
             case OllamaServiceState.NotInstalled:
                 _dialogService.ShowActionDialog(
-                    title: LocalizationService.GetString("OLLAMA_NOT_INSTALLED"),
-                    actionButtonText: LocalizationService.GetString("DOWNLOAD"),
+                    title: LocalizationService.GetString("Ollama.InstallationDialog.Title"),
+                    actionButtonText: LocalizationService.GetString("Common.Button.Download"),
                     action: RedirectToOllamaDownload,
                     closeAction: null,
-                    description: LocalizationService.GetString("OLLAMA_NOT_INSTALLED_DESC"),
+                    description: LocalizationService.GetString("Ollama.InstallationDialog.Description"),
                     actionButtonOnly: true
                 );
                 break;

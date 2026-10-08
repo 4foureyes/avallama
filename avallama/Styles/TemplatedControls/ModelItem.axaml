@@ -145,7 +145,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
                         <!-- Warning message -->
                         <TextBlock Grid.Row="0" Grid.Column="1"
-                                   Text="{services:LocalizationService Key='MIGHT_RUN_SLOW'}"
+                                   Text="{services:LocalizationService Key='Models.Performance.MightRunSlow'}"
                                    IsVisible="{TemplateBinding RunsSlow}" FontSize="14"
                                    Foreground="{DynamicResource Error}"
                                    VerticalAlignment="Center"
@@ -210,7 +210,7 @@ Licensed under the MIT License. See LICENSE file for details.
                                     <!-- Learn more hyperlink -->
                                     <HyperlinkButton
                                         Grid.Row="2"
-                                        Content="{services:LocalizationService Key='LEARN_MORE'}"
+                                        Content="{services:LocalizationService Key='Common.Button.LearnMore'}"
                                         Foreground="{DynamicResource Primary}" Padding="0"
                                         Cursor="Hand"
                                         Command="{Binding $parent[UserControl].((vm:ModelManagerViewModel)DataContext).ForwardToOllamaCommand}"

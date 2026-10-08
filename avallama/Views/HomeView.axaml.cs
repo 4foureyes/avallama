@@ -145,7 +145,7 @@ public partial class HomeView : UserControl
                 break;
             case >= 300:
                 buttonTextBlock?.IsVisible = true;
-                NewConversationBtn.Content = LocalizationService.GetString("NEW");
+                NewConversationBtn.Content = LocalizationService.GetString("Chat.Conversation.New");
                 break;
         }
     }

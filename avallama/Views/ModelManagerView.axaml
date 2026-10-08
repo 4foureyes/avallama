@@ -36,7 +36,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <StackPanel x:Name="PageTitle" Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Spacing="6"
                     HorizontalAlignment="Left" Margin="0,0,0,20">
             <TextBlock
-                Text="{services:LocalizationService Key='MODEL_MANAGER'}" Classes="H1"
+                Text="{services:LocalizationService Key='Models.Page.Title'}" Classes="H1"
                 Foreground="{DynamicResource OnSurface}" VerticalAlignment="Center" />
             <Button Command="{Binding ShowInfo}" Classes="clearButton" Cursor="Hand">
                 <PathIcon Data="{DynamicResource InfoFill}" Foreground="{DynamicResource OnSurfaceVariant}"
@@ -48,7 +48,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <Grid Grid.Row="1" Grid.Column="0" RowDefinitions="Auto,Auto,*,Auto" HorizontalAlignment="Stretch">
 
             <!-- Search box -->
-            <TextBox Grid.Row="0" PlaceholderText="{services:LocalizationService Key='SEARCH_FOR_MODELS'}" MaxLines="1"
+            <TextBox Grid.Row="0" PlaceholderText="{services:LocalizationService Key='Models.Search.Placeholder'}" MaxLines="1"
                      Padding="16,8"
                      HorizontalAlignment="Stretch" Text="{Binding SearchBoxText}"
                      VerticalAlignment="Stretch">
@@ -62,7 +62,7 @@ Licensed under the MIT License. See LICENSE file for details.
             <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="0,12,0,0" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch">
                 <TextBlock Grid.Column="0"
-                           Text="{services:LocalizationService Key='SORT_BY'}"
+                           Text="{services:LocalizationService Key='Models.Sorting.Label'}"
                            VerticalAlignment="Center"
                            FontSize="12"
                            Foreground="{DynamicResource OnSurface}"
@@ -85,7 +85,7 @@ Licensed under the MIT License. See LICENSE file for details.
                         Spacing="30" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <controls:DynamicSvg Path="/Assets/Svg/sad.svg" Height="120" FillColor="{DynamicResource Primary}" />
 
-                <TextBlock Text="{services:LocalizationService Key='NO_MODELS_FOUND'}"
+                <TextBlock Text="{services:LocalizationService Key='Models.List.Empty'}"
                            HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"
                            FontSize="16" TextWrapping="Wrap" Foreground="{DynamicResource Primary}"
                            TextAlignment="Center" />
@@ -158,7 +158,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <!-- Back button -->
         <Button Grid.Column="3" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                 Margin="0,22,0,0"
-                Content="{services:LocalizationService Key='BACK'}"
+                Content="{services:LocalizationService Key='Common.Button.Back'}"
                 Command="{Binding Path=((vm:MainViewModel)DataContext).NavigateBackCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                 Cursor="Hand" />
     </Grid>

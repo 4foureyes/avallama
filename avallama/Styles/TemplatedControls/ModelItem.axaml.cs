@@ -214,21 +214,21 @@ public class ModelItem : TemplatedControl
             // localized text for information key
             var localizedKey = kv.Key switch
             {
-                ModelInfoKey.Format => LocalizationService.GetString("FORMAT"),
-                ModelInfoKey.Architecture => LocalizationService.GetString("GENERAL_ARCHITECTURE"),
-                ModelInfoKey.QuantizationLevel => LocalizationService.GetString("QUANTIZATION_LEVEL"),
-                ModelInfoKey.Parameters => LocalizationService.GetString("PARAMETERS"),
-                ModelInfoKey.BlockCount => LocalizationService.GetString("BLOCK_COUNT"),
-                ModelInfoKey.ContextLength => LocalizationService.GetString("CONTEXT_LENGTH"),
-                ModelInfoKey.EmbeddingLength => LocalizationService.GetString("EMBEDDING_LENGTH"),
-                ModelInfoKey.PullCount => LocalizationService.GetString("PULL_COUNT"),
-                ModelInfoKey.LastUpdated => LocalizationService.GetString("LAST_UPDATED"),
+                ModelInfoKey.Format => LocalizationService.GetString("Models.Details.Format"),
+                ModelInfoKey.Architecture => LocalizationService.GetString("Models.Details.Architecture"),
+                ModelInfoKey.QuantizationLevel => LocalizationService.GetString("Models.Details.QuantizationLevel"),
+                ModelInfoKey.Parameters => LocalizationService.GetString("Models.Details.Parameters"),
+                ModelInfoKey.BlockCount => LocalizationService.GetString("Models.Details.BlockCount"),
+                ModelInfoKey.ContextLength => LocalizationService.GetString("Models.Details.ContextLength"),
+                ModelInfoKey.EmbeddingLength => LocalizationService.GetString("Models.Details.EmbeddingLength"),
+                ModelInfoKey.PullCount => LocalizationService.GetString("Models.Details.PullCount"),
+                ModelInfoKey.LastUpdated => LocalizationService.GetString("Models.Details.LastUpdated"),
                 _ => kv.Key
             };
 
             return $"{localizedKey}: {kv.Value}";
         }));
 
-        if (!string.IsNullOrWhiteSpace(licenseInfo.Value)) Information += $"\n{LocalizationService.GetString("LICENSE")}: {licenseInfo.Value}";
+        if (!string.IsNullOrWhiteSpace(licenseInfo.Value)) Information += $"\n{LocalizationService.GetString("Models.Details.License")}: {licenseInfo.Value}";
     }
 }

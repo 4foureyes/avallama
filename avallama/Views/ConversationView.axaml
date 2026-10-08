@@ -34,7 +34,7 @@ Licensed under the MIT License. See LICENSE file for details.
                       Classes="spinnerAnimation"
                       IsVisible="{Binding IsInitializing}" />
 
-            <TextBlock Text="{services:LocalizationService Key='LOADING_MESSAGES'}"
+            <TextBlock Text="{services:LocalizationService Key='Chat.Message.Loading'}"
                        FontSize="18" />
 
         </StackPanel>
@@ -125,7 +125,7 @@ Licensed under the MIT License. See LICENSE file for details.
 
                                                 <!-- Error message -->
                                                 <TextBlock Grid.Column="1"
-                                                           Text="{services:LocalizationService Key='MESSAGE_GENERATION_FAILED'}"
+                                                           Text="{services:LocalizationService Key='Chat.Generation.Failed'}"
                                                            Foreground="{DynamicResource Error}"
                                                            FontSize="14" TextAlignment="Left"
                                                            TextWrapping="Wrap"
@@ -138,7 +138,7 @@ Licensed under the MIT License. See LICENSE file for details.
                                                        TextWrapping="Wrap"
                                                        Margin="0,10,0,0" />
 
-                                            <Button Content="{services:LocalizationService Key='RETRY'}"
+                                            <Button Content="{services:LocalizationService Key='Common.Button.Retry'}"
                                                     Command="{Binding $parent[UserControl].((vm:ConversationViewModel)DataContext).RetryMessageCommand}"
                                                     CommandParameter="{Binding .}" />
                                         </StackPanel>
@@ -251,7 +251,7 @@ Licensed under the MIT License. See LICENSE file for details.
                 <!-- Message TextBox -->
                 <TextBox x:Name="MessageTextBox"
                          Height="90"
-                         Watermark="{services:LocalizationService Key='SEND_MESSAGE'}"
+                         Watermark="{services:LocalizationService Key='Chat.MessageInput.Placeholder'}"
                          Margin="0,30,0,0"
                          Padding="14, 10"
                          CornerRadius="14"
@@ -296,7 +296,7 @@ Licensed under the MIT License. See LICENSE file for details.
                 </TextBox>
 
                 <!-- LLM response warning text -->
-                <TextBlock Text="{services:LocalizationService Key='LLM_RESPONSE_WARNING'}"
+                <TextBlock Text="{services:LocalizationService Key='Chat.Message.AccuracyWarning'}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Margin="0,8"

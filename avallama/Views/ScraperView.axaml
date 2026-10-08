@@ -25,7 +25,7 @@ Licensed under the MIT License. See LICENSE file for details.
                                  Classes="spinnerAnimation" />
 
             <!-- Title -->
-            <TextBlock Text="{services:LocalizationService Key='SCRAPER_TITLE'}"
+            <TextBlock Text="{services:LocalizationService Key='Models.LibraryUpdate.Title'}"
                        FontSize="20" FontWeight="Medium" TextAlignment="Center" />
 
             <!-- Progress text -->
@@ -34,13 +34,13 @@ Licensed under the MIT License. See LICENSE file for details.
 
             <!-- Cancel button -->
             <Button IsEnabled="{Binding IsCancelEnabled}"
-                    Content="{services:LocalizationService Key='CANCEL'}" HorizontalAlignment="Center"
+                    Content="{services:LocalizationService Key='Common.Button.Cancel'}" HorizontalAlignment="Center"
                     Margin="0,30,0,0" Cursor="Hand"
                     Command="{Binding CancelScraping}" />
         </StackPanel>
 
         <!-- Description -->
-        <TextBlock Grid.Row="3" Text="{services:LocalizationService Key='SCRAPER_DESCRIPTION'}"
+        <TextBlock Grid.Row="3" Text="{services:LocalizationService Key='Models.LibraryUpdate.Description'}"
                    FontSize="14" Opacity="0.5" MaxWidth="500" TextWrapping="Wrap" TextAlignment="Center" />
     </Grid>
 </UserControl>

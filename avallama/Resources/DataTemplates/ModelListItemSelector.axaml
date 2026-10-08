@@ -57,7 +57,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <DataTemplate x:Key="Queued">
             <TextBlock
                 Classes="downloadStatusText"
-                Text="{services:LocalizationService Key='QUEUED'}"
+                Text="{services:LocalizationService Key='Downloads.Status.Queued'}"
                 FontSize="12" />
         </DataTemplate>
 

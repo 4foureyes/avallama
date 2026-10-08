@@ -53,7 +53,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu x:DataType="models:Message">
-                    <MenuItem Header="{services:LocalizationService Key='DELETE'}"
+                    <MenuItem Header="{services:LocalizationService Key='Common.Button.Delete'}"
                               Command="{Binding $parent[UserControl].((vm:ConversationViewModel)DataContext).DeleteMessageCommand}"
                               CommandParameter="{Binding .}"/>
                 </ContextMenu>

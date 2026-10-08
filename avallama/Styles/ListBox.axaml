@@ -72,7 +72,7 @@ Licensed under the MIT License. See LICENSE file for details.
         <Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu x:DataType="vm:ConversationViewModel">
-                    <MenuItem Header="{services:LocalizationService Key='DELETE'}"
+                    <MenuItem Header="{services:LocalizationService Key='Common.Button.Delete'}"
                               Command="{Binding $parent[ListBox].((vm:HomeViewModel)DataContext).DeleteConversationCommand}"
                               CommandParameter="{Binding Conversation.Id}" />
                 </ContextMenu>

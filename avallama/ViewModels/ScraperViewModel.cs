@@ -58,7 +58,7 @@ public partial class ScraperViewModel : PageViewModel
     {
         if (!await _networkManager.IsInternetAvailableAsync())
         {
-            _dialogService.ShowErrorDialog(LocalizationService.GetString("NO_INTERNET_CONNECTION"), false);
+            _dialogService.ShowErrorDialog(LocalizationService.GetString("Common.Network.NoConnection"), false);
             CancelScraping();
             return;
         }
@@ -87,21 +87,21 @@ public partial class ScraperViewModel : PageViewModel
                 _receivedModels++;
 
                 ProgressText = string.Format(
-                    LocalizationService.GetString("SCRAPER_MODELS_FOUND"),
+                    LocalizationService.GetString("Models.LibraryUpdate.ModelsFound"),
                     _receivedModels
                 );
 
                 models.Add(model);
             }
 
-            ProgressText = LocalizationService.GetString("SCRAPER_CACHING_MODELS");
+            ProgressText = LocalizationService.GetString("Models.LibraryUpdate.Caching");
 
             // This "calls" the scraper again, but the result is cached in OllamaService
             var families = await _ollamaService.GetScrapedFamiliesAsync();
             await _modelCacheService.CacheModelFamilyAsync(families);
             await _modelCacheService.CacheModelsAsync(models);
 
-            _dialogService.ShowInfoDialog(LocalizationService.GetString("SCRAPING_FINISHED_DESC"));
+            _dialogService.ShowInfoDialog(LocalizationService.GetString("Models.LibraryUpdate.Completed"));
             _configurationService.SaveSetting(ConfigurationKey.LastUpdatedCache,
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
             _messenger.Send(new ApplicationMessage.NavigateToPage(ApplicationPage.Home));
@@ -128,7 +128,7 @@ public partial class ScraperViewModel : PageViewModel
 
                 if (!await _networkManager.IsInternetAvailableAsync())
                 {
-                    _dialogService.ShowErrorDialog(LocalizationService.GetString("LOST_INTERNET_CONNECTION"), false);
+                    _dialogService.ShowErrorDialog(LocalizationService.GetString("Common.Network.ConnectionLost"), false);
                     CancelScraping();
                     return;
                 }

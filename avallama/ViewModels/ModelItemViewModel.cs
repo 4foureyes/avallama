@@ -139,10 +139,10 @@ public partial class ModelItemViewModel : ViewModelBase
 
         if (!Model.IsDownloaded) return;
         var dialogResult = await _dialogService.ShowConfirmationDialogAsync(
-            LocalizationService.GetString("CONFIRM_DELETION_DIALOG_TITLE"),
-            LocalizationService.GetString("DELETE"),
-            LocalizationService.GetString("CANCEL"),
-            string.Format(LocalizationService.GetString("CONFIRM_DELETION_DIALOG_DESC"),
+            LocalizationService.GetString("Common.DeleteDialog.Title"),
+            LocalizationService.GetString("Common.Button.Delete"),
+            LocalizationService.GetString("Common.Button.Cancel"),
+            string.Format(LocalizationService.GetString("Common.DeleteDialog.Description"),
                 Model.Name),
             ConfirmationType.Positive
         );
@@ -159,7 +159,7 @@ public partial class ModelItemViewModel : ViewModelBase
             }
             else
             {
-                _dialogService.ShowErrorDialog(LocalizationService.GetString("ERROR_DELETING_MODEL"),
+                _dialogService.ShowErrorDialog(LocalizationService.GetString("Models.Error.DeleteFailed"),
                     false);
             }
         }
@@ -232,14 +232,14 @@ public partial class ModelItemViewModel : ViewModelBase
                     {
                         // TODO: proper logging
                         _dialogService.ShowErrorDialog(
-                            string.Format(LocalizationService.GetString("ERROR_UPDATING_MODEL"), ex.Message),
+                            string.Format(LocalizationService.GetString("Models.Error.MetadataUpdateFailed"), ex.Message),
                             false);
                     }
 
                     break;
                 case DownloadState.Failed:
                     _dialogService.ShowErrorDialog(
-                        DownloadRequest.Status.Message ?? LocalizationService.GetString("UNKNOWN_ERROR"),
+                        DownloadRequest.Status.Message ?? LocalizationService.GetString("Common.Error.Unknown"),
                         false);
                     break;
             }
@@ -262,8 +262,8 @@ public partial class ModelItemViewModel : ViewModelBase
         switch (DownloadRequest.DownloadPartCount)
         {
             case > 1:
-                ShortDownloadStatusText = LocalizationService.GetString("FINALIZING");
-                LongDownloadStatusText = LocalizationService.GetString("FINALIZING_DOWNLOAD");
+                ShortDownloadStatusText = LocalizationService.GetString("Downloads.Status.FinalizingShort");
+                LongDownloadStatusText = LocalizationService.GetString("Downloads.Status.Finalizing");
                 break;
             case 1:
             {
@@ -280,7 +280,7 @@ public partial class ModelItemViewModel : ViewModelBase
                     ShortDownloadStatusText = "0%";
                 }
 
-                LongDownloadStatusText = LocalizationService.GetString("DOWNLOADING");
+                LongDownloadStatusText = LocalizationService.GetString("Downloads.Status.Downloading");
                 LongDownloadStatusText +=
                     $" - {ConversionHelper.BytesToReadableSize(downloadedBytes)}/{ConversionHelper.BytesToReadableSize(totalBytes)}";
 

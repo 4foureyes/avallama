@@ -35,12 +35,12 @@ Licensed under the MIT License. See LICENSE file for details.
 
                 <!-- New conversation button -->
                 <Button Grid.Column="0" x:Name="NewConversationBtn" Classes="avallamaWhite"
-                        Content="{services:LocalizationService Key='NEW'}" FontWeight="Bold"
+                        Content="{services:LocalizationService Key='Chat.Conversation.New'}" FontWeight="Bold"
                         Margin="0,0,14,0" HorizontalAlignment="Stretch" Cursor="Hand"
                         IsEnabled="True" Command="{Binding CreateNewConversation}" />
 
                 <!-- Conversation searchbar -->
-                <TextBox Grid.Column="1" Watermark="{services:LocalizationService Key='SEARCH'}" MaxLines="1"
+                <TextBox Grid.Column="1" Watermark="{services:LocalizationService Key='Chat.Search.Placeholder'}" MaxLines="1"
                          Background="{DynamicResource SurfaceContainerHighest}"
                          Text="{Binding SearchBoxText}">
                     <TextBox.InnerRightContent>

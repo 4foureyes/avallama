@@ -43,10 +43,10 @@ public partial class SettingsViewModel : PageViewModel
                 Dispatcher.UIThread.InvokeAsync(async () =>
                 {
                     var dialogResult = await _dialogService.ShowConfirmationDialogAsync(
-                        title: LocalizationService.GetString("RESTART_NEEDED_DIALOG_TITLE"),
-                        positiveButtonText: LocalizationService.GetString("RESTART_NOW"),
-                        negativeButtonText: LocalizationService.GetString("LATER"),
-                        description: LocalizationService.GetString("RESTART_NEEDED_DIALOG_DESC")
+                        title: LocalizationService.GetString("Common.RestartDialog.Title"),
+                        positiveButtonText: LocalizationService.GetString("Common.Button.RestartNow"),
+                        negativeButtonText: LocalizationService.GetString("Common.Button.Later"),
+                        description: LocalizationService.GetString("Common.RestartDialog.Description")
                     );
 
                     if (dialogResult is ConfirmationResult { Confirmation: ConfirmationType.Positive })
@@ -209,7 +209,7 @@ public partial class SettingsViewModel : PageViewModel
         IsUpdateCheckEnabled = isUpdateCheckEnabled == "True";
 
         var lastModelUpdate = _configurationService.ReadSetting(ConfigurationKey.LastUpdatedCache);
-        LastModelUpdate = LocalizationService.GetString("LAST_UPDATED") + ": " + (!lastModelUpdate.Equals(string.Empty) ? lastModelUpdate : LocalizationService.GetString("NEVER"));
+        LastModelUpdate = LocalizationService.GetString("Models.Details.LastUpdated") + ": " + (!lastModelUpdate.Equals(string.Empty) ? lastModelUpdate : LocalizationService.GetString("Common.Value.Never"));
     }
 
     private void SaveSettings()
@@ -242,14 +242,14 @@ public partial class SettingsViewModel : PageViewModel
 
         if (!IsValidHost(ApiHost))
         {
-            _dialogService.ShowErrorDialog(LocalizationService.GetString("INVALID_HOST_ERR"));
+            _dialogService.ShowErrorDialog(LocalizationService.GetString("Settings.ApiHost.ValidationError"));
             ApiHost = _configurationService.ReadSetting(ConfigurationKey.ApiHost);
             return;
         }
 
         if (!IsValidPort(ApiPort))
         {
-            _dialogService.ShowErrorDialog(LocalizationService.GetString("INVALID_PORT_ERR"));
+            _dialogService.ShowErrorDialog(LocalizationService.GetString("Settings.ApiPort.ValidationError"));
             ApiPort = _configurationService.ReadSetting(ConfigurationKey.ApiPort);
             return;
         }
@@ -274,7 +274,7 @@ public partial class SettingsViewModel : PageViewModel
     {
         if (!await _networkManager.IsInternetAvailableAsync())
         {
-            _dialogService.ShowErrorDialog(LocalizationService.GetString("NO_INTERNET_CONNECTION"));
+            _dialogService.ShowErrorDialog(LocalizationService.GetString("Common.Network.NoConnection"));
             return;
         }
         Process.Start(new ProcessStartInfo

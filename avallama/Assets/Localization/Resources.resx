@@ -28,550 +28,562 @@ Licensed under the MIT License. See LICENSE file for details.
             PublicKeyToken=b77a5c561934e089
         </value>
     </resheader>
-    <data name="GET_STARTED" xml:space="preserve">
-        <value>Get Started</value>
-    </data>
-    <data name="SETTINGS" xml:space="preserve">
-        <value>Settings</value>
-    </data>
-    <data name="CANCEL" xml:space="preserve">
-        <value>Cancel</value>
-    </data>
-    <data name="SAVE" xml:space="preserve">
-        <value>Save</value>
-    </data>
-    <data name="TOKEN_SEC" xml:space="preserve">
-        <value>tokens/sec</value>
-    </data>
-    <data name="ONLY_SUPPORTED_MODEL" xml:space="preserve">
-        <value>Currently the only supported model is {0}</value>
-    </data>
-    <data name="SEND_MESSAGE" xml:space="preserve">
-        <value>Send a message..</value>
-    </data>
-    <data name="OLLAMA_STARTED" xml:space="preserve">
-        <value>Ollama has been successfully started</value>
-    </data>
-    <data name="OLLAMA_FAILED" xml:space="preserve">
-        <value>An error occurred while starting ollama: {0}</value>
-    </data>
-    <data name="OLLAMA_STARTING" xml:space="preserve">
-        <value>Starting Ollama.. </value>
-    </data>
-    <data name="OLLAMA_ALREADY_RUNNING" xml:space="preserve">
-        <value>Ollama is already running</value>
-    </data>
-    <data name="UNKNOWN_ERROR" xml:space="preserve">
-        <value>An unknown error occured</value>
-    </data>
-    <data name="MULTIPLE_INSTANCES_ERROR" xml:space="preserve">
-        <value>Multiple instances of Ollama detected. Please ensure only one is running.</value>
-    </data>
-    <data name="OLLAMA_NOT_INSTALLED" xml:space="preserve">
-        <value>Ollama is not installed</value>
-    </data>
-    <data name="GENERATING_MESSAGE" xml:space="preserve">
-        <value>Generating response...</value>
-    </data>
-    <data name="NOT_DOWNLOADED_WARNING" xml:space="preserve">
-        <value>No downloaded models found</value>
-    </data>
-    <data name="LOADING_MODELS" xml:space="preserve">
-        <value>Loading models..</value>
-    </data>
-    <data name="STARTING_DOWNLOAD" xml:space="preserve">
-        <value>Starting download...</value>
-    </data>
-    <data name="VERIFYING_DOWNLOAD" xml:space="preserve">
-        <value>Verifying download...</value>
-    </data>
-    <data name="NEW_CONVERSATION" xml:space="preserve">
-        <value>New conversation</value>
-    </data>
-    <data name="SEARCH" xml:space="preserve">
-        <value>Search..</value>
-    </data>
-    <data name="NEW" xml:space="preserve">
-        <value>New</value>
-    </data>
-    <data name="VERSION_LABEL" xml:space="preserve">
-        <value>Version:</value>
-    </data>
-    <data name="SHORT_DESC" xml:space="preserve">
-        <value>A user-friendly GUI for Ollama</value>
-    </data>
-    <data name="DEVELOPERS" xml:space="preserve">
-        <value>Developers:</value>
-    </data>
-    <data name="DEVELOPER_NAMES" xml:space="preserve">
-        <value>Márk Csörgő and Martin Bartos</value>
-    </data>
-    <data name="TECH_USED" xml:space="preserve">
-        <value>Technologies used:</value>
-    </data>
-    <data name="LICENSE_DETAILS" xml:space="preserve">
-        <value>MIT License, see LICENSE file for details</value>
-    </data>
-    <data name="GITHUB_BUTTON" xml:space="preserve">
-        <value>GitHub</value>
-    </data>
-    <data name="FROM_TEAM" xml:space="preserve">
-        <value>From the 4foureyes team</value>
-    </data>
-    <data name="CLOSE" xml:space="preserve">
-        <value>Close</value>
-    </data>
-    <data name="LANGUAGE_SETTING" xml:space="preserve">
-        <value>Language</value>
-    </data>
-    <data name="LANGUAGE_SETTING_DESC" xml:space="preserve">
-        <value>Changes the application language</value>
-    </data>
-    <data name="COLOR_SCHEME_SETTING" xml:space="preserve">
-        <value>Color scheme</value>
-    </data>
-    <data name="COLOR_SCHEME_SETTING_DESC" xml:space="preserve">
-        <value>The color scheme of the app</value>
-    </data>
-    <data name="LIGHT_THEME" xml:space="preserve">
-        <value>Light</value>
-    </data>
-    <data name="DARK_THEME" xml:space="preserve">
-        <value>Dark</value>
-    </data>
-    <data name="RESTART_NEEDED_DIALOG_TITLE" xml:space="preserve">
-        <value>Some changes will take effect after restarting the application</value>
-    </data>
-    <data name="SETTINGS_SAVED" xml:space="preserve">
-        <value>Changes are saved</value>
-    </data>
-    <data name="ABOUT" xml:space="preserve">
-        <value>About</value>
-    </data>
-    <data name="DOWNLOAD_OLLAMA" xml:space="preserve">
-        <value>Download Ollama ({0})</value>
-    </data>
-    <data name="SKIP" xml:space="preserve">
-        <value>Skip</value>
-    </data>
-    <data name="GUIDE_ITEM_1_TITLE" xml:space="preserve">
-        <value>Smart Conversations</value>
-    </data>
-    <data name="GUIDE_ITEM_1_DESCRIPTION" xml:space="preserve">
-        <value>Chat with multiple Ollama models at once, switch between them seamlessly, and keep several conversations active simultaneously. All conversations are stored locally on your machine — nothing is sent to third parties.</value>
-    </data>
-    <data name="GUIDE_ITEM_2_TITLE" xml:space="preserve">
-        <value>Model Manager</value>
-    </data>
-    <data name="GUIDE_ITEM_3_TITLE" xml:space="preserve">
-        <value>Personalized Settings</value>
-    </data>
-    <data name="COMING_SOON" xml:space="preserve">
-        <value>Coming soon with more features..</value>
-    </data>
-    <data name="THANK_YOU" xml:space="preserve">
-        <value>Thank you for trying avallama!</value>
-    </data>
-    <data name="MODEL_MANAGER" xml:space="preserve">
-        <value>Model manager</value>
-    </data>
-    <data name="MODEL_PARAMETER_SIZE" xml:space="preserve">
-        <value>Parameters: {0}B</value>
-    </data>
-    <data name="QUANTIZATION_LEVEL" xml:space="preserve">
-        <value>Quantization level</value>
-    </data>
-    <data name="NOT_ENOUGH_SPACE_DOWNLOAD" xml:space="preserve">
-        <value>Not enough space to download</value>
-    </data>
-    <data name="SEARCH_FOR_MODELS" xml:space="preserve">
-        <value>Search for models..</value>
-    </data>
-    <data name="INSUFFICIENT_VRAM" xml:space="preserve">
-        <value>Insufficient VRAM</value>
-    </data>
-    <data name="RUNS_OKAY" xml:space="preserve">
-        <value>Runs okay</value>
-    </data>
-    <data name="RUNS_GREAT" xml:space="preserve">
-        <value>Runs great</value>
-    </data>
-    <data name="START" xml:space="preserve">
-        <value>Start</value>
-    </data>
-    <data name="ERROR_DIALOG_TITLE" xml:space="preserve">
-        <value>An error has occurred</value>
-    </data>
-    <data name="SCROLL_TO_BOTTOM_SETTING" xml:space="preserve">
-        <value>Scroll to bottom</value>
-    </data>
-    <data name="SCROLL_AUTOMATIC" xml:space="preserve">
-        <value>Automatic</value>
-    </data>
-    <data name="SCROLL_FLOATING" xml:space="preserve">
-        <value>Floating button</value>
-    </data>
-    <data name="NONE" xml:space="preserve">
-        <value>None</value>
-    </data>
-    <data name="SCROLL_TO_BOTTOM_SETTING_DESC" xml:space="preserve">
-        <value>Scroll behavior on new message</value>
-    </data>
-    <data name="API_HOST_SETTING" xml:space="preserve">
-        <value>Ollama API Host</value>
-    </data>
-    <data name="API_HOST_SETTING_DESC" xml:space="preserve">
-        <value>IP address of Ollama host machine (default is localhost)</value>
-    </data>
-    <data name="API_PORT_SETTING" xml:space="preserve">
-        <value>Ollama API Port</value>
-    </data>
-    <data name="API_PORT_SETTING_DESC" xml:space="preserve">
-        <value>Exposed port of the Ollama host machine (default is 11434)</value>
-    </data>
-    <data name="INVALID_HOST_ERR" xml:space="preserve">
-        <value>Ollama API host is invalid, please enter a valid address. (IPv4 or "localhost")</value>
-    </data>
-    <data name="INVALID_PORT_ERR" xml:space="preserve">
-        <value>Ollama API port is invalid, please enter a valid port. (1 - 65535)</value>
-    </data>
-    <data name="OLLAMA_CONNECTION_ERROR" xml:space="preserve">
-        <value>Could not establish connection with Ollama.</value>
-    </data>
-    <data name="POPULAR_MODELS" xml:space="preserve">
-        <value>Popular models</value>
-    </data>
-    <data name="SIZE_IN_GB" xml:space="preserve">
-        <value>{0} GB</value>
-    </data>
-    <data name="OLLAMA_RUN_FROM_DIALOG_TITLE" xml:space="preserve">
-        <value>Where would you like to start Ollama from?</value>
-    </data>
-    <data name="OLLAMA_RUN_FROM_DIALOG_REMOTE" xml:space="preserve">
-        <value>Connect to a server</value>
-    </data>
-    <data name="OLLAMA_NOT_INSTALLED_DESC" xml:space="preserve">
-        <value>Would you like to download it?</value>
-    </data>
-    <data name="DOWNLOAD" xml:space="preserve">
-        <value>Download</value>
-    </data>
-    <data name="OLLAMA_REMOTE_DIALOG_TITLE" xml:space="preserve">
-        <value>Connecting to a remote server</value>
-    </data>
-    <data name="OLLAMA_REMOTE_DIALOG_DESC" xml:space="preserve">
-        <value>Please enter the server's IP address and port</value>
-    </data>
-    <data name="NO_MODELS_FOUND" xml:space="preserve">
-        <value>No models found</value>
-    </data>
-    <data name="NO_CONNECTION_DOWNLOAD" xml:space="preserve">
-        <value>No connection to download</value>
-    </data>
-    <data name="LEARN_MORE" xml:space="preserve">
-        <value>Learn more</value>
-    </data>
-    <data name="GENERAL_ARCHITECTURE" xml:space="preserve">
-        <value>General architecture</value>
-    </data>
-    <data name="BLOCK_COUNT" xml:space="preserve">
-        <value>Block count</value>
-    </data>
-    <data name="CONTEXT_LENGTH" xml:space="preserve">
-        <value>Context length</value>
-    </data>
-    <data name="EMBEDDING_LENGTH" xml:space="preserve">
-        <value>Embedding length</value>
-    </data>
-    <data name="TOKEN_SEC_FORMAT" xml:space="preserve">
-        <value>{0} tokens/sec</value>
-    </data>
-    <data name="MIGHT_RUN_SLOW" xml:space="preserve">
-        <value>Might run slow on your system</value>
-    </data>
-    <data name="DOWNLOADED_MODELS" xml:space="preserve">
-        <value>{0} downloaded models</value>
-    </data>
-    <data name="GENERATION_SPEED" xml:space="preserve">
-        <value>Generation speed</value>
-    </data>
-    <data name="SORT_BY" xml:space="preserve">
-        <value>Sort by:</value>
-    </data>
-    <data name="MODEL_SIZE" xml:space="preserve">
-        <value>Size: {0}</value>
-    </data>
-    <data name="SORT_SIZE_DESCENDING" xml:space="preserve">
-        <value>Size (descending)</value>
-    </data>
-    <data name="SORT_SIZE_ASCENDING" xml:space="preserve">
-        <value>Size (ascending)</value>
-    </data>
-    <data name="SORT_DOWNLOADED" xml:space="preserve">
-        <value>Downloaded</value>
-    </data>
-    <data name="MODEL_INFORMATION" xml:space="preserve">
-        <value>Model information</value>
-    </data>
-    <data name="BACK" xml:space="preserve">
+
+    <!-- Keys use Category.Component.Function (PascalCase), sorted within each category. -->
+
+    <!-- Common: Shared buttons, dialogs, values, and application errors. -->
+    <data name="Common.Button.Back" xml:space="preserve">
         <value>Back</value>
     </data>
-    <data name="RESUME_DOWNLOAD" xml:space="preserve">
-        <value>Resume download ({0})</value>
+    <data name="Common.Button.Cancel" xml:space="preserve">
+        <value>Cancel</value>
     </data>
-    <data name="DELETE" xml:space="preserve">
-        <value>Delete</value>
+    <data name="Common.Button.Close" xml:space="preserve">
+        <value>Close</value>
     </data>
-    <data name="DOWNLOADING" xml:space="preserve">
-        <value>Downloading</value>
-    </data>
-    <data name="DOWNLOAD_PAUSED" xml:space="preserve">
-        <value>Download paused</value>
-    </data>
-    <data name="MULTIPLE_DOWNLOADS_WARNING" xml:space="preserve">
-        <value>A download is already in progress. Please cancel the current download before starting a new one.\n\nWe're working on supporting multiple downloads in the future.</value>
-    </data>
-    <data name="CONFIRM_DELETION_DIALOG_TITLE" xml:space="preserve">
-        <value>Confirm deletion</value>
-    </data>
-    <data name="CONFIRM_DELETION_DIALOG_DESC" xml:space="preserve">
-        <value>Are you sure you want to delete {0}?</value>
-    </data>
-    <data name="RESTART_NEEDED_DIALOG_DESC" xml:space="preserve">
-        <value>Would you like to restart the application now?</value>
-    </data>
-    <data name="RESTART_NOW" xml:space="preserve">
-        <value>Restart now</value>
-    </data>
-    <data name="LATER" xml:space="preserve">
-        <value>Later</value>
-    </data>
-    <data name="REMOTE_CONNECTION" xml:space="preserve">
-        <value>Remote connection: {0}</value>
-    </data>
-    <data name="RETRY" xml:space="preserve">
-        <value>Retry</value>
-    </data>
-    <data name="CONNECTING" xml:space="preserve">
-        <value>Connecting...</value>
-    </data>
-    <data name="SHOW_INFORMATIONAL_SETTING" xml:space="preserve">
-        <value>Show informational messages</value>
-    </data>
-    <data name="SHOW_INFORMATIONAL_SETTING_DESC" xml:space="preserve">
-        <value>Display informational messages about the model and the app's status on the top of the conversation.</value>
-    </data>
-    <data name="RESET_TO_DEFAULT" xml:space="preserve">
-        <value>Reset to default</value>
-    </data>
-    <data name="ON" xml:space="preserve">
-        <value>On</value>
-    </data>
-    <data name="OFF" xml:space="preserve">
-        <value>Off</value>
-    </data>
-    <data name="SYSTEM_COLOR_SCHEME" xml:space="preserve">
-        <value>Default (system)</value>
-    </data>
-    <data name="MESSAGE_GENERATION_FAILED" xml:space="preserve">
-        <value>An error occurred while generating this message.</value>
-    </data>
-    <data name="DATABASE_ERROR_OCCURRED" xml:space="preserve">
-        <value>A database error has occurred: </value>
-    </data>
-    <data name="ERROR_DELETING_MODEL" xml:space="preserve">
-        <value>Error occurred deleting model.</value>
-    </data>
-    <data name="THIS_CONVERSATION" xml:space="preserve">
-        <value>this conversation</value>
-    </data>
-    <data name="FORMAT" xml:space="preserve">
-        <value>Format</value>
-    </data>
-    <data name="SCRAPER_TITLE" xml:space="preserve">
-        <value>Updating your model library</value>
-    </data>
-    <data name="SCRAPER_MODELS_FOUND" xml:space="preserve">
-        <value>{0} models found..</value>
-    </data>
-    <data name="SCRAPER_DESCRIPTION" xml:space="preserve">
-        <value>This process may take several minutes. Please keep the application open while it collects the latest model information.</value>
-    </data>
-    <data name="SCRAPING_FINISHED_DESC" xml:space="preserve">
-        <value>Model library updated successfully.</value>
-    </data>
-    <data name="SCRAPER_CACHING_MODELS" xml:space="preserve">
-        <value>Caching models..</value>
-    </data>
-    <data name="SORT_PULL_COUNT_ASCENDING" xml:space="preserve">
-        <value>Pull count (ascending)</value>
-    </data>
-    <data name="SORT_PULL_COUNT_DESCENDING" xml:space="preserve">
-        <value>Pull count (descending)</value>
-    </data>
-    <data name="PULL_COUNT" xml:space="preserve">
-        <value>Pull count</value>
-    </data>
-    <data name="LAST_UPDATED" xml:space="preserve">
-        <value>Last updated</value>
-    </data>
-    <data name="UPDATE_MODEL_LIBRARY" xml:space="preserve">
-        <value>Update model library</value>
-    </data>
-    <data name="GUIDE_ITEM_2_DESCRIPTION" xml:space="preserve">
-        <value>Browse, download, or remove any Ollama model. View detailed info and manage your local library with ease.</value>
-    </data>
-    <data name="GUIDE_ITEM_3_DESCRIPTION" xml:space="preserve">
-        <value>Customize your experience: switch between light and dark modes, connect to different Ollama servers, update your library and tailor the app to your preferences.</value>
-    </data>
-    <data name="GUIDE_COMPLETION_MESSAGE" xml:space="preserve">
-        <value>Avallama is still under development, and issues may arise while using the application. Please report any issues on GitHub.</value>
-    </data>
-    <data name="NEVER" xml:space="preserve">
-        <value>Never</value>
-    </data>
-    <data name="MODEL_MANAGER_GUIDE" xml:space="preserve">
-        <value>The Model Manager allows you to easily browse, download, and manage language models available through Ollama. The model list is obtained directly from the official Ollama website. All obtained models are saved into a local database.\n\nExplanation of the technical details shown for each model:\n\n- Format: The model's file and storage format.\n\n- Architecture: The model's underlying design (e.g., LLaMA, Mistral), which affects performance and capabilities.\n\n- Block count: The number of internal layers; more blocks generally mean higher capability but greater resource usage.\n\n- Context length: The number of tokens the model can consider in a single request, enabling longer conversations and documents.\n\n- Embedding length: The size of the vector representations produced by the model, useful for semantic search and similarity tasks.\n\n- Quantization level: The level of compression applied to the model; lower-bit quantization reduces memory use and increases speed, with minor accuracy trade-offs.</value>
-    </data>
-    <data name="TEST" xml:space="preserve">
-        <value>Testing localization values</value>
-    </data>
-    <data name="PARAMETERS" xml:space="preserve">
-        <value>Parameters</value>
-    </data>
-    <data name="NO_INTERNET_CONNECTION" xml:space="preserve">
-        <value>No internet connection. Please try again.</value>
-    </data>
-    <data name="LOST_INTERNET_CONNECTION" xml:space="preserve">
-        <value>Internet connection lost. Please try again.</value>
-    </data>
-    <data name="NO_DISK_SPACE_MODEL_DOWNLOAD_WARNING" xml:space="preserve">
-        <value>There is not enough storage space on the disk to download this model.</value>
-    </data>
-    <data name="INSUFFICIENT_DISK_SPACE" xml:space="preserve">
-        <value>There is not enough storage space on the disk to download this model.</value>
-    </data>
-    <data name="OLLAMA_LOCAL_UNREACHABLE" xml:space="preserve">
-        <value>Local Ollama server is unreachable. The host settings may not be configured correctly.</value>
-    </data>
-    <data name="OLLAMA_REMOTE_UNREACHABLE" xml:space="preserve">
-        <value>Remote Ollama server is unreachable. The host settings may not be configured correctly.</value>
-    </data>
-    <data name="DISK_FULL_DURING_DOWNLOAD" xml:space="preserve">
-        <value>Download failed due to insufficient disk space.</value>
-    </data>
-    <data name="PARALLEL_DOWNLOAD_SETTING" xml:space="preserve">
-        <value>Parallel downloads</value>
-    </data>
-    <data name="PARALLEL_DOWNLOAD_SETTING_DESC" xml:space="preserve">
-        <value>Enable downloading multiple models at the same time. When disabled, models will be downloaded sequentially in a queue.</value>
-    </data>
-    <data name="QUEUED" xml:space="preserve">
-        <value>Queued</value>
-    </data>
-    <data name="FINALIZING_DOWNLOAD" xml:space="preserve">
-        <value>Finalizing download..</value>
-    </data>
-    <data name="FINALIZING" xml:space="preserve">
-        <value>Finalizing..</value>
-    </data>
-    <data name="DOWNLOAD_FAILED" xml:space="preserve">
-        <value>Download failed: {0}</value>
-    </data>
-    <data name="NOT_NOW" xml:space="preserve">
-        <value>Not now</value>
-    </data>
-    <data name="UPDATE_CHECK_SETTING" xml:space="preserve">
-        <value>Update checking</value>
-    </data>
-    <data name="UPDATE_CHECK_SETTING_DESC" xml:space="preserve">
-        <value>When enabled, the application will automatically check if a newer version is available during startup.</value>
-    </data>
-    <data name="UPDATE_AVAILABLE" xml:space="preserve">
-        <value>An update is available</value>
-    </data>
-    <data name="OPEN_GITHUB" xml:space="preserve">
-        <value>Open GitHub</value>
-    </data>
-    <data name="UPDATE_AVAILABLE_DESC" xml:space="preserve">
-        <value>To update, download the latest release from our GitHub page.</value>
-    </data>
-    <data name="OLLAMA_STOPPED_UNEXPECTEDLY" xml:space="preserve">
-        <value>Ollama stopped unexpectedly.</value>
-    </data>
-    <data name="EXIT_CODE" xml:space="preserve">
-        <value>Exit code</value>
-    </data>
-    <data name="ERROR_UPDATING_MODEL" xml:space="preserve">
-        <value>An error has occurred while updating the model metadata: {0}</value>
-    </data>
-    <data name="LLM_RESPONSE_WARNING" xml:space="preserve">
-        <value>LLMs can make mistakes. Always verify important information.</value>
-    </data>
-    <data name="LICENSE" xml:space="preserve">
-        <value>License</value>
-    </data>
-    <data name="LOADING_MESSAGES" xml:space="preserve">
-        <value>Loading messages..</value>
-    </data>
-    <data name="GENERATION_CANCELED" xml:space="preserve">
-        <value>Generation canceled</value>
-    </data>
-    <data name="WELCOME_TEXT" xml:space="preserve">
-        <value>Welcome to Avallama!</value>
-    </data>
-    <data name="WELCOME_SUBTEXT" xml:space="preserve">
-        <value>Your free, open-source, private desktop client for Ollama.</value>
-    </data>
-    <data name="CONNECT_OLLAMA" xml:space="preserve">
-        <value>Connect to Ollama</value>
-    </data>
-    <data name="CONNECT_OLLAMA_DESC" xml:space="preserve">
-        <value>Configure your connection to Ollama.</value>
-    </data>
-    <data name="TEST_CONNECTION" xml:space="preserve">
-        <value>Test Connection</value>
-    </data>
-    <data name="SKIP_FOR_NOW" xml:space="preserve">
-        <value>Skip For Now</value>
-    </data>
-    <data name="CONTINUE" xml:space="preserve">
+    <data name="Common.Button.Continue" xml:space="preserve">
         <value>Continue</value>
     </data>
-    <data name="OLLAMA_CONNECTED" xml:space="preserve">
-        <value>Ollama is connected: {0}</value>
+    <data name="Common.Button.Delete" xml:space="preserve">
+        <value>Delete</value>
     </data>
-    <data name="OLLAMA_DISCONNECTED_TEST" xml:space="preserve">
-        <value>Ollama is disconnected</value>
+    <data name="Common.Button.Download" xml:space="preserve">
+        <value>Download</value>
     </data>
-    <data name="OLLAMA_UNREACHABLE" xml:space="preserve">
-        <value>Ollama is unreachable</value>
+    <data name="Common.Button.Later" xml:space="preserve">
+        <value>Later</value>
     </data>
-    <data name="LOCAL" xml:space="preserve">
-        <value>Local</value>
+    <data name="Common.Button.LearnMore" xml:space="preserve">
+        <value>Learn more</value>
     </data>
-    <data name="REMOTE" xml:space="preserve">
-        <value>Remote</value>
+    <data name="Common.Button.NotNow" xml:space="preserve">
+        <value>Not now</value>
     </data>
-    <data name="SCRAPER_ASK_TITLE" xml:space="preserve">
-        <value>Ready to discover new models?</value>
+    <data name="Common.Button.OpenGitHub" xml:space="preserve">
+        <value>Open GitHub</value>
     </data>
-    <data name="SCRAPER_ASK_DESC" xml:space="preserve">
-        <value>Avallama can fetch the complete list of available Ollama models. This allows you to browse parameters, hardware requirements, and features before pulling any model to your computer.\n\nTakes about 2-3 minutes. You can always do it later in Settings.</value>
+    <data name="Common.Button.RestartNow" xml:space="preserve">
+        <value>Restart now</value>
     </data>
-    <data name="SET_UP_LIBRARY" xml:space="preserve">
-        <value>Set Up Library</value>
+    <data name="Common.Button.Retry" xml:space="preserve">
+        <value>Retry</value>
     </data>
-    <data name="API_HOST" xml:space="preserve">
+    <data name="Common.Button.Save" xml:space="preserve">
+        <value>Save</value>
+    </data>
+    <data name="Common.Button.Skip" xml:space="preserve">
+        <value>Skip</value>
+    </data>
+    <data name="Common.Button.SkipForNow" xml:space="preserve">
+        <value>Skip For Now</value>
+    </data>
+    <data name="Common.Button.Start" xml:space="preserve">
+        <value>Start</value>
+    </data>
+    <data name="Common.DeleteDialog.Description" xml:space="preserve">
+        <value>Are you sure you want to delete {0}?</value>
+    </data>
+    <data name="Common.DeleteDialog.Title" xml:space="preserve">
+        <value>Confirm deletion</value>
+    </data>
+    <data name="Common.Error.Database" xml:space="preserve">
+        <value>A database error has occurred: </value>
+    </data>
+    <data name="Common.Error.Unknown" xml:space="preserve">
+        <value>An unknown error occured</value>
+    </data>
+    <data name="Common.ErrorDialog.Title" xml:space="preserve">
+        <value>An error has occurred</value>
+    </data>
+    <data name="Common.Localization.TestValue" xml:space="preserve">
+        <value>Testing localization values</value>
+    </data>
+    <data name="Common.Network.ConnectionLost" xml:space="preserve">
+        <value>Internet connection lost. Please try again.</value>
+    </data>
+    <data name="Common.Network.NoConnection" xml:space="preserve">
+        <value>No internet connection. Please try again.</value>
+    </data>
+    <data name="Common.RestartDialog.Description" xml:space="preserve">
+        <value>Would you like to restart the application now?</value>
+    </data>
+    <data name="Common.RestartDialog.Title" xml:space="preserve">
+        <value>Some changes will take effect after restarting the application</value>
+    </data>
+    <data name="Common.Toggle.Off" xml:space="preserve">
+        <value>Off</value>
+    </data>
+    <data name="Common.Toggle.On" xml:space="preserve">
+        <value>On</value>
+    </data>
+    <data name="Common.Unit.GigabytesFormat" xml:space="preserve">
+        <value>{0} GB</value>
+    </data>
+    <data name="Common.UpdateDialog.Description" xml:space="preserve">
+        <value>To update, download the latest release from our GitHub page.</value>
+    </data>
+    <data name="Common.UpdateDialog.Title" xml:space="preserve">
+        <value>An update is available</value>
+    </data>
+    <data name="Common.Value.Never" xml:space="preserve">
+        <value>Never</value>
+    </data>
+    <data name="Common.Value.None" xml:space="preserve">
+        <value>None</value>
+    </data>
+
+    <!-- Onboarding: Welcome, connection setup, library setup, and feature guides. -->
+    <data name="Onboarding.ApiHost.Label" xml:space="preserve">
         <value>API Host:</value>
     </data>
-    <data name="API_PORT" xml:space="preserve">
+    <data name="Onboarding.ApiPort.Label" xml:space="preserve">
         <value>API Port:</value>
     </data>
-    <data name="OLLAMA_CONNECTED_TEST" xml:space="preserve">
+    <data name="Onboarding.Completion.ComingSoon" xml:space="preserve">
+        <value>Coming soon with more features..</value>
+    </data>
+    <data name="Onboarding.Completion.DevelopmentNotice" xml:space="preserve">
+        <value>Avallama is still under development, and issues may arise while using the application. Please report any issues on GitHub.</value>
+    </data>
+    <data name="Onboarding.Completion.ThankYou" xml:space="preserve">
+        <value>Thank you for trying avallama!</value>
+    </data>
+    <data name="Onboarding.Connection.Description" xml:space="preserve">
+        <value>Configure your connection to Ollama.</value>
+    </data>
+    <data name="Onboarding.Connection.Test" xml:space="preserve">
+        <value>Test Connection</value>
+    </data>
+    <data name="Onboarding.Connection.Title" xml:space="preserve">
+        <value>Connect to Ollama</value>
+    </data>
+    <data name="Onboarding.ConnectionStatus.Connected" xml:space="preserve">
         <value>Ollama is connected</value>
     </data>
-    <data name="OLLAMA_FAILED_TEST" xml:space="preserve">
+    <data name="Onboarding.ConnectionStatus.Disconnected" xml:space="preserve">
+        <value>Ollama is disconnected</value>
+    </data>
+    <data name="Onboarding.ConnectionStatus.Failed" xml:space="preserve">
         <value>Ollama is not available</value>
+    </data>
+    <data name="Onboarding.ConversationsGuide.Description" xml:space="preserve">
+        <value>Chat with multiple Ollama models at once, switch between them seamlessly, and keep several conversations active simultaneously. All conversations are stored locally on your machine — nothing is sent to third parties.</value>
+    </data>
+    <data name="Onboarding.LibrarySetup.Description" xml:space="preserve">
+        <value>Avallama can fetch the complete list of available Ollama models. This allows you to browse parameters, hardware requirements, and features before pulling any model to your computer.\n\nTakes about 2-3 minutes. You can always do it later in Settings.</value>
+    </data>
+    <data name="Onboarding.LibrarySetup.Start" xml:space="preserve">
+        <value>Set Up Library</value>
+    </data>
+    <data name="Onboarding.LibrarySetup.Title" xml:space="preserve">
+        <value>Ready to discover new models?</value>
+    </data>
+    <data name="Onboarding.ModelsGuide.Description" xml:space="preserve">
+        <value>Browse, download, or remove any Ollama model. View detailed info and manage your local library with ease.</value>
+    </data>
+    <data name="Onboarding.ModelsGuide.Title" xml:space="preserve">
+        <value>Model Manager</value>
+    </data>
+    <data name="Onboarding.SettingsGuide.Description" xml:space="preserve">
+        <value>Customize your experience: switch between light and dark modes, connect to different Ollama servers, update your library and tailor the app to your preferences.</value>
+    </data>
+    <data name="Onboarding.SettingsGuide.Title" xml:space="preserve">
+        <value>Personalized Settings</value>
+    </data>
+    <data name="Onboarding.Welcome.Description" xml:space="preserve">
+        <value>Your free, open-source, private desktop client for Ollama.</value>
+    </data>
+    <data name="Onboarding.Welcome.GetStarted" xml:space="preserve">
+        <value>Get Started</value>
+    </data>
+    <data name="Onboarding.Welcome.Title" xml:space="preserve">
+        <value>Welcome to Avallama!</value>
+    </data>
+
+    <!-- Chat: Conversations, message input, and response generation. -->
+    <data name="Chat.Connection.RemoteEndpoint" xml:space="preserve">
+        <value>Remote connection: {0}</value>
+    </data>
+    <data name="Chat.Conversation.DefaultTitle" xml:space="preserve">
+        <value>New conversation</value>
+    </data>
+    <data name="Chat.Conversation.DeletionTarget" xml:space="preserve">
+        <value>this conversation</value>
+    </data>
+    <data name="Chat.Conversation.New" xml:space="preserve">
+        <value>New</value>
+    </data>
+    <data name="Chat.Generation.Canceled" xml:space="preserve">
+        <value>Generation canceled</value>
+    </data>
+    <data name="Chat.Generation.Failed" xml:space="preserve">
+        <value>An error occurred while generating this message.</value>
+    </data>
+    <data name="Chat.Generation.InProgress" xml:space="preserve">
+        <value>Generating response...</value>
+    </data>
+    <data name="Chat.Generation.SpeedLabel" xml:space="preserve">
+        <value>Generation speed</value>
+    </data>
+    <data name="Chat.Generation.TokensPerSecondFormat" xml:space="preserve">
+        <value>{0} tokens/sec</value>
+    </data>
+    <data name="Chat.Generation.TokensPerSecondUnit" xml:space="preserve">
+        <value>tokens/sec</value>
+    </data>
+    <data name="Chat.Message.AccuracyWarning" xml:space="preserve">
+        <value>LLMs can make mistakes. Always verify important information.</value>
+    </data>
+    <data name="Chat.Message.Loading" xml:space="preserve">
+        <value>Loading messages..</value>
+    </data>
+    <data name="Chat.MessageInput.Placeholder" xml:space="preserve">
+        <value>Send a message..</value>
+    </data>
+    <data name="Chat.ModelSelector.NoDownloadedModels" xml:space="preserve">
+        <value>No downloaded models found</value>
+    </data>
+    <data name="Chat.ModelSelector.SupportedModel" xml:space="preserve">
+        <value>Currently the only supported model is {0}</value>
+    </data>
+    <data name="Chat.Search.Placeholder" xml:space="preserve">
+        <value>Search..</value>
+    </data>
+
+    <!-- Models: Model browsing, details, sorting, and library updates. -->
+    <data name="Models.Details.Architecture" xml:space="preserve">
+        <value>General architecture</value>
+    </data>
+    <data name="Models.Details.BlockCount" xml:space="preserve">
+        <value>Block count</value>
+    </data>
+    <data name="Models.Details.ContextLength" xml:space="preserve">
+        <value>Context length</value>
+    </data>
+    <data name="Models.Details.EmbeddingLength" xml:space="preserve">
+        <value>Embedding length</value>
+    </data>
+    <data name="Models.Details.Format" xml:space="preserve">
+        <value>Format</value>
+    </data>
+    <data name="Models.Details.LastUpdated" xml:space="preserve">
+        <value>Last updated</value>
+    </data>
+    <data name="Models.Details.License" xml:space="preserve">
+        <value>License</value>
+    </data>
+    <data name="Models.Details.ParameterCount" xml:space="preserve">
+        <value>Parameters: {0}B</value>
+    </data>
+    <data name="Models.Details.Parameters" xml:space="preserve">
+        <value>Parameters</value>
+    </data>
+    <data name="Models.Details.PullCount" xml:space="preserve">
+        <value>Pull count</value>
+    </data>
+    <data name="Models.Details.QuantizationLevel" xml:space="preserve">
+        <value>Quantization level</value>
+    </data>
+    <data name="Models.Details.Size" xml:space="preserve">
+        <value>Size: {0}</value>
+    </data>
+    <data name="Models.Details.Title" xml:space="preserve">
+        <value>Model information</value>
+    </data>
+    <data name="Models.Error.DeleteFailed" xml:space="preserve">
+        <value>Error occurred deleting model.</value>
+    </data>
+    <data name="Models.Error.MetadataUpdateFailed" xml:space="preserve">
+        <value>An error has occurred while updating the model metadata: {0}</value>
+    </data>
+    <data name="Models.Guide.Description" xml:space="preserve">
+        <value>The Model Manager allows you to easily browse, download, and manage language models available through Ollama. The model list is obtained directly from the official Ollama website. All obtained models are saved into a local database.\n\nExplanation of the technical details shown for each model:\n\n- Format: The model's file and storage format.\n\n- Architecture: The model's underlying design (e.g., LLaMA, Mistral), which affects performance and capabilities.\n\n- Block count: The number of internal layers; more blocks generally mean higher capability but greater resource usage.\n\n- Context length: The number of tokens the model can consider in a single request, enabling longer conversations and documents.\n\n- Embedding length: The size of the vector representations produced by the model, useful for semantic search and similarity tasks.\n\n- Quantization level: The level of compression applied to the model; lower-bit quantization reduces memory use and increases speed, with minor accuracy trade-offs.</value>
+    </data>
+    <data name="Models.LibraryUpdate.Caching" xml:space="preserve">
+        <value>Caching models..</value>
+    </data>
+    <data name="Models.LibraryUpdate.Completed" xml:space="preserve">
+        <value>Model library updated successfully.</value>
+    </data>
+    <data name="Models.LibraryUpdate.Description" xml:space="preserve">
+        <value>This process may take several minutes. Please keep the application open while it collects the latest model information.</value>
+    </data>
+    <data name="Models.LibraryUpdate.ModelsFound" xml:space="preserve">
+        <value>{0} models found..</value>
+    </data>
+    <data name="Models.LibraryUpdate.Start" xml:space="preserve">
+        <value>Update model library</value>
+    </data>
+    <data name="Models.LibraryUpdate.Title" xml:space="preserve">
+        <value>Updating your model library</value>
+    </data>
+    <data name="Models.List.DownloadedCount" xml:space="preserve">
+        <value>{0} downloaded models</value>
+    </data>
+    <data name="Models.List.Empty" xml:space="preserve">
+        <value>No models found</value>
+    </data>
+    <data name="Models.List.Loading" xml:space="preserve">
+        <value>Loading models..</value>
+    </data>
+    <data name="Models.List.Popular" xml:space="preserve">
+        <value>Popular models</value>
+    </data>
+    <data name="Models.Page.Title" xml:space="preserve">
+        <value>Model manager</value>
+    </data>
+    <data name="Models.Performance.InsufficientVram" xml:space="preserve">
+        <value>Insufficient VRAM</value>
+    </data>
+    <data name="Models.Performance.MightRunSlow" xml:space="preserve">
+        <value>Might run slow on your system</value>
+    </data>
+    <data name="Models.Performance.RunsGreat" xml:space="preserve">
+        <value>Runs great</value>
+    </data>
+    <data name="Models.Performance.RunsOkay" xml:space="preserve">
+        <value>Runs okay</value>
+    </data>
+    <data name="Models.Search.Placeholder" xml:space="preserve">
+        <value>Search for models..</value>
+    </data>
+    <data name="Models.Sorting.Downloaded" xml:space="preserve">
+        <value>Downloaded</value>
+    </data>
+    <data name="Models.Sorting.Label" xml:space="preserve">
+        <value>Sort by:</value>
+    </data>
+    <data name="Models.Sorting.PullCountAscending" xml:space="preserve">
+        <value>Pull count (ascending)</value>
+    </data>
+    <data name="Models.Sorting.PullCountDescending" xml:space="preserve">
+        <value>Pull count (descending)</value>
+    </data>
+    <data name="Models.Sorting.SizeAscending" xml:space="preserve">
+        <value>Size (ascending)</value>
+    </data>
+    <data name="Models.Sorting.SizeDescending" xml:space="preserve">
+        <value>Size (descending)</value>
+    </data>
+
+    <!-- Downloads: Download actions, progress, warnings, and errors. -->
+    <data name="Downloads.Button.Resume" xml:space="preserve">
+        <value>Resume download ({0})</value>
+    </data>
+    <data name="Downloads.Error.DiskFull" xml:space="preserve">
+        <value>Download failed due to insufficient disk space.</value>
+    </data>
+    <data name="Downloads.Error.Failed" xml:space="preserve">
+        <value>Download failed: {0}</value>
+    </data>
+    <data name="Downloads.Error.InsufficientSpace" xml:space="preserve">
+        <value>There is not enough storage space on the disk to download this model.</value>
+    </data>
+    <data name="Downloads.Status.Downloading" xml:space="preserve">
+        <value>Downloading</value>
+    </data>
+    <data name="Downloads.Status.Finalizing" xml:space="preserve">
+        <value>Finalizing download..</value>
+    </data>
+    <data name="Downloads.Status.FinalizingShort" xml:space="preserve">
+        <value>Finalizing..</value>
+    </data>
+    <data name="Downloads.Status.Paused" xml:space="preserve">
+        <value>Download paused</value>
+    </data>
+    <data name="Downloads.Status.Queued" xml:space="preserve">
+        <value>Queued</value>
+    </data>
+    <data name="Downloads.Status.Starting" xml:space="preserve">
+        <value>Starting download...</value>
+    </data>
+    <data name="Downloads.Status.Verifying" xml:space="preserve">
+        <value>Verifying download...</value>
+    </data>
+    <data name="Downloads.Warning.InsufficientSpace" xml:space="preserve">
+        <value>There is not enough storage space on the disk to download this model.</value>
+    </data>
+    <data name="Downloads.Warning.InsufficientSpaceShort" xml:space="preserve">
+        <value>Not enough space to download</value>
+    </data>
+    <data name="Downloads.Warning.NoConnection" xml:space="preserve">
+        <value>No connection to download</value>
+    </data>
+
+    <!-- Ollama: Ollama installation, process lifecycle, and connections. -->
+    <data name="Ollama.Connection.ConnectedEndpoint" xml:space="preserve">
+        <value>Ollama is connected: {0}</value>
+    </data>
+    <data name="Ollama.Connection.Connecting" xml:space="preserve">
+        <value>Connecting...</value>
+    </data>
+    <data name="Ollama.Connection.Failed" xml:space="preserve">
+        <value>Could not establish connection with Ollama.</value>
+    </data>
+    <data name="Ollama.Connection.Local" xml:space="preserve">
+        <value>Local</value>
+    </data>
+    <data name="Ollama.Connection.LocalUnreachable" xml:space="preserve">
+        <value>Local Ollama server is unreachable. The host settings may not be configured correctly.</value>
+    </data>
+    <data name="Ollama.Connection.Remote" xml:space="preserve">
+        <value>Remote</value>
+    </data>
+    <data name="Ollama.Connection.RemoteUnreachable" xml:space="preserve">
+        <value>Remote Ollama server is unreachable. The host settings may not be configured correctly.</value>
+    </data>
+    <data name="Ollama.Connection.Unreachable" xml:space="preserve">
+        <value>Ollama is unreachable</value>
+    </data>
+    <data name="Ollama.InstallationDialog.Description" xml:space="preserve">
+        <value>Would you like to download it?</value>
+    </data>
+    <data name="Ollama.InstallationDialog.Download" xml:space="preserve">
+        <value>Download Ollama ({0})</value>
+    </data>
+    <data name="Ollama.InstallationDialog.Title" xml:space="preserve">
+        <value>Ollama is not installed</value>
+    </data>
+    <data name="Ollama.Process.AlreadyRunning" xml:space="preserve">
+        <value>Ollama is already running</value>
+    </data>
+    <data name="Ollama.Process.ExitCodeLabel" xml:space="preserve">
+        <value>Exit code</value>
+    </data>
+    <data name="Ollama.Process.MultipleInstances" xml:space="preserve">
+        <value>Multiple instances of Ollama detected. Please ensure only one is running.</value>
+    </data>
+    <data name="Ollama.Process.StartFailed" xml:space="preserve">
+        <value>An error occurred while starting ollama: {0}</value>
+    </data>
+    <data name="Ollama.Process.Started" xml:space="preserve">
+        <value>Ollama has been successfully started</value>
+    </data>
+    <data name="Ollama.Process.Starting" xml:space="preserve">
+        <value>Starting Ollama.. </value>
+    </data>
+    <data name="Ollama.Process.StoppedUnexpectedly" xml:space="preserve">
+        <value>Ollama stopped unexpectedly.</value>
+    </data>
+    <data name="Ollama.RemoteConnectionDialog.Description" xml:space="preserve">
+        <value>Please enter the server's IP address and port</value>
+    </data>
+    <data name="Ollama.RemoteConnectionDialog.Title" xml:space="preserve">
+        <value>Connecting to a remote server</value>
+    </data>
+    <data name="Ollama.StartupDialog.ConnectToServer" xml:space="preserve">
+        <value>Connect to a server</value>
+    </data>
+    <data name="Ollama.StartupDialog.Title" xml:space="preserve">
+        <value>Where would you like to start Ollama from?</value>
+    </data>
+
+    <!-- Settings: Setting labels, descriptions, options, and validation. -->
+    <data name="Settings.ApiHost.Description" xml:space="preserve">
+        <value>IP address of Ollama host machine (default is localhost)</value>
+    </data>
+    <data name="Settings.ApiHost.Label" xml:space="preserve">
+        <value>Ollama API Host</value>
+    </data>
+    <data name="Settings.ApiHost.ValidationError" xml:space="preserve">
+        <value>Ollama API host is invalid, please enter a valid address. (IPv4 or "localhost")</value>
+    </data>
+    <data name="Settings.ApiPort.Description" xml:space="preserve">
+        <value>Exposed port of the Ollama host machine (default is 11434)</value>
+    </data>
+    <data name="Settings.ApiPort.Label" xml:space="preserve">
+        <value>Ollama API Port</value>
+    </data>
+    <data name="Settings.ApiPort.ValidationError" xml:space="preserve">
+        <value>Ollama API port is invalid, please enter a valid port. (1 - 65535)</value>
+    </data>
+    <data name="Settings.Button.ResetToDefault" xml:space="preserve">
+        <value>Reset to default</value>
+    </data>
+    <data name="Settings.ColorScheme.Dark" xml:space="preserve">
+        <value>Dark</value>
+    </data>
+    <data name="Settings.ColorScheme.Description" xml:space="preserve">
+        <value>The color scheme of the app</value>
+    </data>
+    <data name="Settings.ColorScheme.Label" xml:space="preserve">
+        <value>Color scheme</value>
+    </data>
+    <data name="Settings.ColorScheme.Light" xml:space="preserve">
+        <value>Light</value>
+    </data>
+    <data name="Settings.ColorScheme.System" xml:space="preserve">
+        <value>Default (system)</value>
+    </data>
+    <data name="Settings.InformationalMessages.Description" xml:space="preserve">
+        <value>Display informational messages about the model and the app's status on the top of the conversation.</value>
+    </data>
+    <data name="Settings.InformationalMessages.Label" xml:space="preserve">
+        <value>Show informational messages</value>
+    </data>
+    <data name="Settings.Language.Description" xml:space="preserve">
+        <value>Changes the application language</value>
+    </data>
+    <data name="Settings.Language.Label" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="Settings.Page.Saved" xml:space="preserve">
+        <value>Changes are saved</value>
+    </data>
+    <data name="Settings.Page.Title" xml:space="preserve">
+        <value>Settings</value>
+    </data>
+    <data name="Settings.ParallelDownloads.Description" xml:space="preserve">
+        <value>Enable downloading multiple models at the same time. When disabled, models will be downloaded sequentially in a queue.</value>
+    </data>
+    <data name="Settings.ParallelDownloads.Label" xml:space="preserve">
+        <value>Parallel downloads</value>
+    </data>
+    <data name="Settings.ScrollToBottom.Automatic" xml:space="preserve">
+        <value>Automatic</value>
+    </data>
+    <data name="Settings.ScrollToBottom.Description" xml:space="preserve">
+        <value>Scroll behavior on new message</value>
+    </data>
+    <data name="Settings.ScrollToBottom.FloatingButton" xml:space="preserve">
+        <value>Floating button</value>
+    </data>
+    <data name="Settings.ScrollToBottom.Label" xml:space="preserve">
+        <value>Scroll to bottom</value>
+    </data>
+    <data name="Settings.UpdateCheck.Description" xml:space="preserve">
+        <value>When enabled, the application will automatically check if a newer version is available during startup.</value>
+    </data>
+    <data name="Settings.UpdateCheck.Label" xml:space="preserve">
+        <value>Update checking</value>
+    </data>
+
+    <!-- About: Application information, credits, and license details. -->
+    <data name="About.Application.Description" xml:space="preserve">
+        <value>A user-friendly GUI for Ollama</value>
+    </data>
+    <data name="About.Application.Title" xml:space="preserve">
+        <value>About</value>
+    </data>
+    <data name="About.Button.GitHub" xml:space="preserve">
+        <value>GitHub</value>
+    </data>
+    <data name="About.Developers.Label" xml:space="preserve">
+        <value>Developers:</value>
+    </data>
+    <data name="About.Developers.Names" xml:space="preserve">
+        <value>Márk Csörgő and Martin Bartos</value>
+    </data>
+    <data name="About.License.Description" xml:space="preserve">
+        <value>MIT License, see LICENSE file for details</value>
+    </data>
+    <data name="About.Team.Credit" xml:space="preserve">
+        <value>From the 4foureyes team</value>
+    </data>
+    <data name="About.Technologies.Label" xml:space="preserve">
+        <value>Technologies used:</value>
+    </data>
+    <data name="About.Version.Label" xml:space="preserve">
+        <value>Version:</value>
     </data>
 </root>

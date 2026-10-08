@@ -31,18 +31,18 @@ Licensed under the MIT License. See LICENSE file for details.
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
                         Spacing="{DynamicResource WelcomeTextSpacing}">
 
-                <TextBlock Text="{services:LocalizationService Key='WELCOME_TEXT'}"
+                <TextBlock Text="{services:LocalizationService Key='Onboarding.Welcome.Title'}"
                            Classes="page-title"
                            TextAlignment="Center" />
 
-                <TextBlock Text="{services:LocalizationService Key='WELCOME_SUBTEXT'}"
+                <TextBlock Text="{services:LocalizationService Key='Onboarding.Welcome.Description'}"
                            Classes="page-subtitle"
                            TextAlignment="Center" />
 
             </StackPanel>
 
             <!-- Get Started (button) -->
-            <Button Content="{services:LocalizationService Key='GET_STARTED'}"
+            <Button Content="{services:LocalizationService Key='Onboarding.Welcome.GetStarted'}"
                     Classes="primary"
                     HorizontalAlignment="Center"
                     Command="{Binding Path=((vm:MainViewModel)DataContext).NavigateToCommand, RelativeSource={RelativeSource AncestorType=Window}}"

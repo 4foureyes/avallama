@@ -145,9 +145,9 @@ public partial class App : Application
         // this is for later for some fancy dialog
         _dialogService?.ShowInfoDialog(
             "Avallama - " + Version
-                          + "\n\nCopyright (c) " + LocalizationService.GetString("DEVELOPER_NAMES")
-                          + "\n\n" + LocalizationService.GetString("LICENSE_DETAILS")
-                          + "\n\n" + LocalizationService.GetString("FROM_TEAM") + " (github.com/4foureyes/avallama)"
+                          + "\n\nCopyright (c) " + LocalizationService.GetString("About.Developers.Names")
+                          + "\n\n" + LocalizationService.GetString("About.License.Description")
+                          + "\n\n" + LocalizationService.GetString("About.Team.Credit") + " (github.com/4foureyes/avallama)"
         );
     }
 }

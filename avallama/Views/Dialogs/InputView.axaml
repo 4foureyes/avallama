@@ -22,10 +22,10 @@ Licensed under the MIT License. See LICENSE file for details.
             <TextBox Classes="settingTextBox" Watermark="Input Text" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="16">
-            <Button Content="{services:LocalizationService Key='SAVE'}"
+            <Button Content="{services:LocalizationService Key='Common.Button.Save'}"
                     x:Name="SaveButton" Cursor="Hand" />
             <Button Classes="lessSecondaryButton"
-                    Content="{services:LocalizationService Key='CLOSE'}"
+                    Content="{services:LocalizationService Key='Common.Button.Close'}"
                     x:Name="CloseButton" Cursor="Hand" />
         </StackPanel>
     </StackPanel>

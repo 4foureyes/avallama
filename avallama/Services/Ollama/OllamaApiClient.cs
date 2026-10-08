@@ -474,12 +474,12 @@ internal class OllamaApiClient(
         if (IsConnectionRemote(configurationService.ReadSetting(ConfigurationKey.ApiHost)))
         {
             Status = new OllamaApiStatus(OllamaApiState.Failed,
-                LocalizationService.GetString("OLLAMA_REMOTE_UNREACHABLE"));
+                LocalizationService.GetString("Ollama.Connection.RemoteUnreachable"));
         }
         else
         {
             Status = new OllamaApiStatus(OllamaApiState.Failed,
-                LocalizationService.GetString("OLLAMA_LOCAL_UNREACHABLE"));
+                LocalizationService.GetString("Ollama.Connection.LocalUnreachable"));
         }
     }
 
